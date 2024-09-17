@@ -3,7 +3,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Riconas\\RiconasApi\\Admin": "apps/admin",
+            "Riconas\\RiconasApi\\Admin\\": "apps/admin",
             "Riconas\\RiconasApi\\": "src/"
         }
     },
@@ -11,6 +11,7 @@
         "slim/slim": "^4.14",
         "slim/psr7": "^1.7",
         "slim/http": "^1.4",
-        "php-di/slim-bridge": "^3.4"
+        "php-di/slim-bridge": "^3.4",
+        "vlucas/phpdotenv": "^5.6"
     }
 }

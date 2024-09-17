@@ -4,7 +4,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 date_default_timezone_set('UTC');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 if ($_ENV['APP_DEBUG'] === "true") {
