@@ -24,6 +24,9 @@ final class User
     #[Column(type: 'string', nullable: false, enumType: UserRole::class)]
     private UserRole $role;
 
+    #[Column(type: 'string', nullable: false, enumType: UserStatus::class)]
+    private UserStatus $status;
+
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
@@ -64,6 +67,18 @@ final class User
     public function setRole(UserRole $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getStatus(): UserStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(UserStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
