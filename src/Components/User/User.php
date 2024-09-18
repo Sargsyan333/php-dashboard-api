@@ -37,9 +37,11 @@ final class User
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     public function getPassword(): string
@@ -47,9 +49,11 @@ final class User
         return $this->password;
     }
 
-    public function setPassword(string $password): void
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 
     public function getRole(): UserRole
@@ -57,9 +61,11 @@ final class User
         return $this->role;
     }
 
-    public function setRole(UserRole $role): void
+    public function setRole(UserRole $role): self
     {
         $this->role = $role;
+
+        return $this;
     }
 
     public function getCreatedAt(): DateTimeImmutable
@@ -67,8 +73,10 @@ final class User
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 }
