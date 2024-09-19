@@ -23,17 +23,19 @@ class AuthenticationController extends BaseController
     {
         $email = $request->getParam('email');
         $password = $request->getParam('password');
+        $appName = $request->getHeaderLine('App');
 
-        if (empty($email) || empty($password)) {
+        if (empty($email) || empty($password) || empty($appName)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
-                'message' => 'Invalid username/password'
+                'message' => 'Invalid request params'
             ];
 
             return $response->withJson($result, 400);
         }
 
-        $user = $this->userRepository->findByEmailAndRole($email, UserRole::ROLE_ADMIN);
+        $userRole = $appName === 'admin' ? UserRole::ROLE_ADMIN : UserRole::ROLE_COWORKER;
+        $user = $this->userRepository->findByEmailAndRole($email, $userRole);
         if (is_null($user)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,

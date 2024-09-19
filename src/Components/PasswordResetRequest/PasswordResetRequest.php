@@ -13,29 +13,34 @@ use Doctrine\ORM\Mapping\Table;
 #[Entity, Table(name: 'password_reset_requests')]
 final class PasswordResetRequest
 {
-    #[Id, Column(type: 'integer'), GeneratedValue(strategy: 'AUTO')]
-    private readonly int $id;
+    #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
+    private readonly string $id;
 
-    #[Column(type: 'integer', nullable: false)]
-    private int $userId;
+    #[Column(name: 'user_id', type: 'string', nullable: false)]
+    private string $userId;
 
-    #[Column(type: 'string', nullable: false)]
+    #[Column(name: 'code', type: 'string', nullable: false)]
     private string $code;
 
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
-    public function getId(): int
+    public function __construct()
+    {
+        $this->createdAt = new DateTimeImmutable('now');
+    }
+
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getUserId(): int
+    public function getUserId(): string
     {
         return $this->userId;
     }
 
-    public function setUserId(int $userId): self
+    public function setUserId(string $userId): self
     {
         $this->userId = $userId;
 
@@ -57,12 +62,5 @@ final class PasswordResetRequest
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 }

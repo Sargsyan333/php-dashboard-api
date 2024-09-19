@@ -24,8 +24,18 @@ return [
 
         return new \Doctrine\ORM\EntityManager($connection, $config);
     },
-    Riconas\RiconasApi\Components\User\Repository\UserRepository::class => function (ContainerInterface $c) {
-        return new Riconas\RiconasApi\Components\User\Repository\UserRepository(
+    Components\User\Repository\UserRepository::class => function (ContainerInterface $c) {
+        return new Components\User\Repository\UserRepository(
+            $c->get(\Doctrine\ORM\EntityManager::class),
+        );
+    },
+    Components\PasswordResetRequest\Repository\PasswordResetRequestRepository::class => function (ContainerInterface $c) {
+        return new Components\PasswordResetRequest\Repository\PasswordResetRequestRepository(
+            $c->get(\Doctrine\ORM\EntityManager::class),
+        );
+    },
+    Components\PasswordResetRequest\Service\PasswordResetRequestService::class => function (ContainerInterface $c) {
+        return new Components\PasswordResetRequest\Service\PasswordResetRequestService(
             $c->get(\Doctrine\ORM\EntityManager::class),
         );
     },
