@@ -3,12 +3,14 @@
 use Psr\Container\ContainerInterface;
 
 return [
+    'db-config' => require __DIR__ . '/../configs/db.config.php',
     \Doctrine\ORM\EntityManager::class => function (ContainerInterface $c) {
+        $dbConfigs = $c->get('db-config');
         $dbParams = [
-            'driver'   => 'pdo_mysql',
-            'user'     => $_ENV['DB_USERNAME'],
-            'password' => $_ENV['DB_PASSWORD'],
-            'dbname'   => $_ENV['DB_NAME'],
+            'driver' => 'pdo_mysql',
+            'user' => $dbConfigs['username'],
+            'password' => $dbConfigs['password'],
+            'dbname' => $dbConfigs['database'],
         ];
 
         $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(['/'], $_ENV['APP_DEBUG'] === "true");
