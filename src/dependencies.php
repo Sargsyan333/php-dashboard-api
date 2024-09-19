@@ -1,9 +1,15 @@
 <?php
 
+namespace Riconas\RiconasApi;
+
 use Psr\Container\ContainerInterface;
 
 return [
     'db-config' => require __DIR__ . '/../configs/db.config.php',
+    'jwt-config' => require __DIR__ . '/../configs/jwt.config.php',
+    \Riconas\RiconasApi\Integrations\Firebase\Jwt\JwtEncoder::class => function (ContainerInterface $c) {
+        return new \Riconas\RiconasApi\Integrations\Firebase\Jwt\JwtEncoder($c->get('jwt-config'));
+    },
     \Doctrine\ORM\EntityManager::class => function (ContainerInterface $c) {
         $dbConfigs = $c->get('db-config');
         $dbParams = [
