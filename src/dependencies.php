@@ -29,7 +29,9 @@ return [
             $c->get(\Doctrine\ORM\EntityManager::class),
         );
     },
-    \Riconas\RiconasApi\Authentication\AuthenticationService::class => function (ContainerInterface $c) {
-        return new \Riconas\RiconasApi\Authentication\AuthenticationService();
+    Authentication\AuthenticationService::class => function (ContainerInterface $c) {
+        return new Authentication\AuthenticationService(
+            $c->get(Integrations\Firebase\Jwt\JwtEncoder::class),
+        );
     }
 ];
