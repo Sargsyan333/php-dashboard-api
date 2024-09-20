@@ -13,4 +13,10 @@ class PasswordResetRequestRepository extends EntityRepository
     {
         parent::__construct($entityManager, new ClassMetadata(PasswordResetRequest::class));
     }
+
+    public function findByCode(string $code): ?PasswordResetRequest
+    {
+        return $this->findOneBy(['code' => $code]);
+    }
 }
+

@@ -5,16 +5,19 @@ namespace Riconas\RiconasApi\Components\PasswordResetRequest;
 use DateTimeImmutable;
 
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Riconas\RiconasApi\Components\User\User;
 
 #[Entity, Table(name: 'password_reset_requests')]
 final class PasswordResetRequest
 {
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
-    private readonly string $id;
+    private string $id;
 
     #[Column(name: 'user_id', type: 'string', nullable: false)]
     private string $userId;
@@ -24,6 +27,10 @@ final class PasswordResetRequest
 
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
+
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private User $user;
 
     public function __construct()
     {
@@ -38,6 +45,11 @@ final class PasswordResetRequest
     public function getUserId(): string
     {
         return $this->userId;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 
     public function setUserId(string $userId): self

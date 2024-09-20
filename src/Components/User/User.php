@@ -11,10 +11,10 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\GeneratedValue;
 
 #[Entity, Table(name: 'users')]
-final class User
+class User
 {
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
-    private readonly string $id;
+    private string $id;
     #[Column(type: 'string', unique: true, nullable: false)]
     private string $email;
 

@@ -6,16 +6,18 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\PasswordResetRequest\Service\PasswordResetRequestService;
 use Riconas\RiconasApi\Components\User\Repository\UserRepository;
 use Riconas\RiconasApi\Components\User\UserRole;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Slim\Http\ServerRequest;
 
 class PasswordResetController extends BaseController
 {
     private UserRepository $userRepository;
-
     private PasswordResetRequestService $passwordResetRequestService;
 
-    public function __construct(UserRepository $userRepository, PasswordResetRequestService $passwordResetRequestService)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        PasswordResetRequestService $passwordResetRequestService,
+    ) {
         $this->userRepository = $userRepository;
         $this->passwordResetRequestService = $passwordResetRequestService;
     }
@@ -50,5 +52,35 @@ class PasswordResetController extends BaseController
         // TODO send password reset request email
 
         return $response->withJson([], 202);
+    }
+
+    public function resetPasswordAction(ServerRequest $request, Response $response): Response
+    {
+        $passwordResetCode = $request->getParam('code');
+        $newPassword = $request->getParam('new_password');
+
+        $appName = $request->getHeaderLine('App');
+
+        if (empty($passwordResetCode) || empty($newPassword) || empty($appName)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        try {
+            $this->passwordResetRequestService->resetUserPassword($passwordResetCode, $newPassword);
+        } catch (RecordNotFoundException) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Password reset code not found',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        return $response->withJson([], 204);
     }
 }
