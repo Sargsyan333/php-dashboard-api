@@ -11,6 +11,9 @@ return [
     Integrations\Firebase\Jwt\JwtEncoder::class => function (ContainerInterface $c) {
         return new Integrations\Firebase\Jwt\JwtEncoder($c->get('jwt-config'));
     },
+    Integrations\Firebase\Jwt\JwtDecoder::class => function (ContainerInterface $c) {
+        return new Integrations\Firebase\Jwt\JwtDecoder($c->get('jwt-config'));
+    },
     EntityManager::class => function (ContainerInterface $c) {
         $dbConfigs = $c->get('db-config');
         $dbParams = [
@@ -48,6 +51,8 @@ return [
     Authentication\AuthenticationService::class => function (ContainerInterface $c) {
         return new Authentication\AuthenticationService(
             $c->get(Integrations\Firebase\Jwt\JwtEncoder::class),
+            $c->get(Integrations\Firebase\Jwt\JwtDecoder::class),
+            $c->get(Components\User\Repository\UserRepository::class),
         );
     }
 ];
