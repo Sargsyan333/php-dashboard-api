@@ -10,6 +10,8 @@ use Slim\Http\ServerRequest;
 
 class AuthenticationController extends BaseController
 {
+    private const ERROR_INCORRECT_CREDENTIALS = 'incorrect_credentials';
+
     private UserRepository $userRepository;
     private AuthenticationService $authenticationService;
 
@@ -38,7 +40,7 @@ class AuthenticationController extends BaseController
         $user = $this->userRepository->findByEmailAndRole($email, $userRole);
         if (is_null($user)) {
             $result = [
-                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'code' => self::ERROR_INCORRECT_CREDENTIALS,
                 'message' => 'Incorrect email password'
             ];
 
@@ -47,7 +49,7 @@ class AuthenticationController extends BaseController
 
         if (!$this->authenticationService->verifyUserPassword($user->getPassword(), $password)) {
             $result = [
-                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'code' => self::ERROR_INCORRECT_CREDENTIALS,
                 'message' => 'Incorrect email password'
             ];
 
