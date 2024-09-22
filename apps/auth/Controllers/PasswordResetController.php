@@ -41,13 +41,13 @@ class PasswordResetController extends BaseController
         if (is_null($user)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
-                'message' => 'Invalid request params'
+                'message' => 'Invalid request params',
             ];
 
             return $response->withJson($result, 400);
         }
 
-        $this->passwordResetRequestService->requestPasswordReset($user->getId());
+        $this->passwordResetRequestService->requestPasswordReset($user);
 
         // TODO send password reset request email
 

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Riconas\RiconasApi\Components\PasswordResetRequest\PasswordResetRequest;
 use Riconas\RiconasApi\Components\PasswordResetRequest\Repository\PasswordResetRequestRepository;
 use Riconas\RiconasApi\Components\User\Service\UserService;
+use Riconas\RiconasApi\Components\User\User;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Riconas\RiconasApi\Utility\StringUtility;
 
@@ -27,11 +28,11 @@ class PasswordResetRequestService
         $this->userService = $userService;
     }
 
-    public function requestPasswordReset(string $userId): void
+    public function requestPasswordReset(User $user): void
     {
         $passwordResetRequest = new PasswordResetRequest();
         $passwordResetRequest
-            ->setUserId($userId)
+            ->setUser($user)
             ->setCode(StringUtility::generateRandomString(32));
 
         $this->entityManager->persist($passwordResetRequest);
