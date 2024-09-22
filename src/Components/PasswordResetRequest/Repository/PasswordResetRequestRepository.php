@@ -18,5 +18,10 @@ class PasswordResetRequestRepository extends EntityRepository
     {
         return $this->findOneBy(['code' => $code]);
     }
+
+    public function findByUserId(string $userId): ?PasswordResetRequest
+    {
+        return $this->findOneBy(['userId' => $userId]);
+    }
 }
 

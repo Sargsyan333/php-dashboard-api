@@ -12,6 +12,8 @@ use Riconas\RiconasApi\Utility\StringUtility;
 
 class PasswordResetRequestService
 {
+    private const NEW_PASSWORD_REQUEST_ALLOW_TIME = 2 * 3600;
+
     private EntityManager $entityManager;
 
     private PasswordResetRequestRepository $passwordResetRequestRepository;
@@ -30,6 +32,17 @@ class PasswordResetRequestService
 
     public function requestPasswordReset(User $user): void
     {
+        $previousPasswordResetRequest = $this->passwordResetRequestRepository->findByUserId($user->getId());
+        if ($previousPasswordResetRequest) {
+            $previousPasswordRequestTime = $previousPasswordResetRequest->getCreatedAt()->getTimestamp();
+            if (time() - $previousPasswordRequestTime <= self::NEW_PASSWORD_REQUEST_ALLOW_TIME) {
+                return;
+            }
+
+            // 2 hours have passed we can send a new recovery email
+            $this->entityManager->remove($previousPasswordResetRequest);
+        }
+
         $passwordResetRequest = new PasswordResetRequest();
         $passwordResetRequest
             ->setUser($user)
@@ -37,6 +50,8 @@ class PasswordResetRequestService
 
         $this->entityManager->persist($passwordResetRequest);
         $this->entityManager->flush();
+
+        // TODO send password reset request email
     }
 
     public function resetUserPassword(string $passwordResetCode, string $newPlainPassword): void

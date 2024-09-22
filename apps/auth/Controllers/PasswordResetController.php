@@ -49,8 +49,6 @@ class PasswordResetController extends BaseController
 
         $this->passwordResetRequestService->requestPasswordReset($user);
 
-        // TODO send password reset request email
-
         return $response->withJson([], 202);
     }
 
