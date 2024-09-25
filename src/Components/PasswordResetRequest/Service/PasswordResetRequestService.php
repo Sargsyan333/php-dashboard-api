@@ -8,11 +8,12 @@ use Riconas\RiconasApi\Components\PasswordResetRequest\Repository\PasswordResetR
 use Riconas\RiconasApi\Components\User\Service\UserService;
 use Riconas\RiconasApi\Components\User\User;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
+use Riconas\RiconasApi\Mailing\MailingService;
 use Riconas\RiconasApi\Utility\StringUtility;
 
 class PasswordResetRequestService
 {
-    private const NEW_PASSWORD_REQUEST_ALLOW_TIME = 2 * 3600;
+    private const NEW_PASSWORD_REQUEST_ALLOW_TIME = 7200;
 
     private EntityManager $entityManager;
 
@@ -20,14 +21,18 @@ class PasswordResetRequestService
 
     private UserService $userService;
 
+    private MailingService $mailingService;
+
     public function __construct(
         EntityManager $entityManager,
         PasswordResetRequestRepository $passwordResetRequestRepository,
-        UserService $userService
+        UserService $userService,
+        MailingService $mailingService
     ) {
         $this->entityManager = $entityManager;
         $this->passwordResetRequestRepository = $passwordResetRequestRepository;
         $this->userService = $userService;
+        $this->mailingService = $mailingService;
     }
 
     public function requestPasswordReset(User $user): void
@@ -51,7 +56,10 @@ class PasswordResetRequestService
         $this->entityManager->persist($passwordResetRequest);
         $this->entityManager->flush();
 
-        // TODO send password reset request email
+        $passwordResetLink = $this->buildResetPasswordLink($passwordResetRequest->getCode());
+
+        // TODO replace the language code string with database value
+        $this->mailingService->sendPasswordRecoveryEmail($user->getEmail(), 'de', $passwordResetLink);
     }
 
     public function resetUserPassword(string $passwordResetCode, string $newPlainPassword): void
@@ -70,5 +78,10 @@ class PasswordResetRequestService
         $this->entityManager->remove($passwordResetRequest);
 
         $this->entityManager->flush();
+    }
+
+    private function buildResetPasswordLink(string $passwordResetRequestCode): string
+    {
+        return "https://riconas-admin-dashboard.netlify.app/reset-password?code={$passwordResetRequestCode}";
     }
 }

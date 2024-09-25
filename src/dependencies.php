@@ -8,11 +8,15 @@ use Psr\Container\ContainerInterface;
 return [
     'db-config' => require __DIR__ . '/../configs/db.config.php',
     'jwt-config' => require __DIR__ . '/../configs/jwt.config.php',
+    'mail-config' => require __DIR__ . '/../configs/mail.config.php',
     Integrations\Firebase\Jwt\JwtEncoder::class => function (ContainerInterface $c) {
         return new Integrations\Firebase\Jwt\JwtEncoder($c->get('jwt-config'));
     },
     Integrations\Firebase\Jwt\JwtDecoder::class => function (ContainerInterface $c) {
         return new Integrations\Firebase\Jwt\JwtDecoder($c->get('jwt-config'));
+    },
+    Integrations\Mailgun\MailgunClient::class => function (ContainerInterface $c) {
+        return new Integrations\Mailgun\MailgunClient($c->get('mail-config'));
     },
     EntityManager::class => function (ContainerInterface $c) {
         $dbConfigs = $c->get('db-config');
@@ -46,6 +50,7 @@ return [
             $c->get(EntityManager::class),
             $c->get(Components\PasswordResetRequest\Repository\PasswordResetRequestRepository::class),
             $c->get(Components\User\Service\UserService::class),
+            $c->get(Mailing\MailingService::class),
         );
     },
     Authentication\AuthenticationService::class => function (ContainerInterface $c) {
@@ -53,6 +58,11 @@ return [
             $c->get(Integrations\Firebase\Jwt\JwtEncoder::class),
             $c->get(Integrations\Firebase\Jwt\JwtDecoder::class),
             $c->get(Components\User\Repository\UserRepository::class),
+        );
+    },
+    Mailing\MailingService::class => function (ContainerInterface $c) {
+        return new Mailing\MailingService(
+            $c->get(Integrations\Mailgun\MailgunClient::class),
         );
     }
 ];
