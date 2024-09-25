@@ -54,7 +54,6 @@ class Authentication
         );
 
         if ($authenticatedUser) {
-            // Set authenticated user in container
             $request = $request->withAttribute('AuthUser', $authenticatedUser);
 
             $response = $handler->handle($request);
