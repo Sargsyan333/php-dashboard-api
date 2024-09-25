@@ -4,6 +4,7 @@ namespace Riconas\RiconasApi\Authentication;
 
 use Riconas\RiconasApi\Components\User\Repository\UserRepository;
 use Riconas\RiconasApi\Components\User\User;
+use Riconas\RiconasApi\Components\User\UserRole;
 use Riconas\RiconasApi\Integrations\Firebase\Jwt\JwtDecoder;
 use Riconas\RiconasApi\Integrations\Firebase\Jwt\JwtEncoder;
 
@@ -34,7 +35,7 @@ class AuthenticationService
         return $this->jwtEncoder->encode(['user_email' => $user->getEmail()]);
     }
 
-    public function getAuthenticatedUser(string $accessToken): ?User
+    public function getAuthenticatedUser(string $accessToken, UserRole $userRole): ?User
     {
         try {
             $accessTokenData = $this->jwtDecoder->decode($accessToken);
@@ -46,7 +47,7 @@ class AuthenticationService
             return null;
         }
 
-        $user = $this->userRepository->findByEmailAndRole($accessTokenData['user_email']);
+        $user = $this->userRepository->findByEmailAndRole($accessTokenData['user_email'], $userRole);
 
         return $user;
     }

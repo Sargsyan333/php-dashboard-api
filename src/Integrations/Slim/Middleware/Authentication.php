@@ -2,11 +2,11 @@
 
 namespace Riconas\RiconasApi\Integrations\Slim\Middleware;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Riconas\RiconasApi\Authentication\AuthenticationService;
+use Riconas\RiconasApi\Components\User\UserRole;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Routing\RouteContext;
 
@@ -22,12 +22,14 @@ class Authentication
 
     private AuthenticationService $authenticationService;
 
-    private ContainerInterface $container;
+    private string $appName;
 
-    public function __construct(AuthenticationService $authenticationService, ContainerInterface $container)
-    {
+    public function __construct(
+        AuthenticationService $authenticationService,
+        string $appName
+    ) {
         $this->authenticationService = $authenticationService;
-        $this->container = $container;
+        $this->appName = $appName;
     }
 
     public function __invoke(Request $request, RequestHandler $handler): Response
@@ -46,11 +48,14 @@ class Authentication
         $authHeaderLine = $request->getHeaderLine('Authorization');
         $accessToken = str_replace('Bearer ', '', $authHeaderLine);
 
-        $authenticatedUser = $this->authenticationService->getAuthenticatedUser($accessToken);
+        $authenticatedUser = $this->authenticationService->getAuthenticatedUser(
+            $accessToken,
+            $this->appName === "admin" ? UserRole::ROLE_ADMIN : UserRole::ROLE_COWORKER,
+        );
 
         if ($authenticatedUser) {
             // Set authenticated user in container
-            $this->container->set('AuthUser', $authenticatedUser);
+            $request = $request->withAttribute('AuthUser', $authenticatedUser);
 
             return $handler->handle($request);
         } else {

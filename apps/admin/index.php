@@ -1,5 +1,7 @@
 <?php
 
+namespace Riconas\RiconasApi\Admin;
+
 require_once __DIR__ . '/../../src/bootstrap.php';
 
 use Riconas\RiconasApi\Integrations\Slim\Common\ApiErrorRenderer;
@@ -7,11 +9,12 @@ use DI\Bridge\Slim\Bridge;
 
 $app = Bridge::create($container);
 
-//$app->add(
-//    new \Admin\Middleware\Authentication(
-//        $container->get(\Services\AuthenticationService::class)
-//    )
-//);
+$app->add(
+    new \Riconas\RiconasApi\Integrations\Slim\Middleware\Authentication(
+        $container->get(\Riconas\RiconasApi\Authentication\AuthenticationService::class),
+        'admin',
+    ),
+);
 
 $app->addRoutingMiddleware();
 
