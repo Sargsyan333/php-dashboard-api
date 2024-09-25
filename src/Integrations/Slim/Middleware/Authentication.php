@@ -57,7 +57,11 @@ class Authentication
             // Set authenticated user in container
             $request = $request->withAttribute('AuthUser', $authenticatedUser);
 
-            return $handler->handle($request);
+            $response = $handler->handle($request);
+
+            $newAccessToken = $this->authenticationService->generateAccessToken($authenticatedUser);
+
+            return $response->withHeader('Authorization', 'Bearer ' . $newAccessToken);
         } else {
             $response = new \Slim\Psr7\Response(401);
             $response
