@@ -31,4 +31,14 @@ class UserPreferenceService
         $this->entityManager->persist($userPreference);
         $this->entityManager->flush();
     }
+
+    public function getLanguagePreference(string $userId): string
+    {
+        $userPreference = $this->userPreferenceRepository->findByUserId($userId);
+        if (is_null($userPreference)) {
+            return UserPreference::DEFAULT_LANGUAGE;
+        }
+
+        return $userPreference->getLanguage()->value;
+    }
 }

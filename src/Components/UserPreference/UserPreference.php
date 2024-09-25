@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping\Table;
 #[Entity, Table(name: 'user_preferences')]
 class UserPreference
 {
+    public const DEFAULT_LANGUAGE = UserLanguage::English->value;
+
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
     private string $id;
 

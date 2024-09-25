@@ -62,6 +62,7 @@ return [
             $c->get(Components\PasswordResetRequest\Repository\PasswordResetRequestRepository::class),
             $c->get(Components\User\Service\UserService::class),
             $c->get(Mailing\MailingService::class),
+            $c->get(Components\UserPreference\Service\UserPreferenceService::class),
         );
     },
     Authentication\AuthenticationService::class => function (ContainerInterface $c) {

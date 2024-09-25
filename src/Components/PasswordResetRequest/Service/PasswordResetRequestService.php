@@ -7,6 +7,7 @@ use Riconas\RiconasApi\Components\PasswordResetRequest\PasswordResetRequest;
 use Riconas\RiconasApi\Components\PasswordResetRequest\Repository\PasswordResetRequestRepository;
 use Riconas\RiconasApi\Components\User\Service\UserService;
 use Riconas\RiconasApi\Components\User\User;
+use Riconas\RiconasApi\Components\UserPreference\Service\UserPreferenceService;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Riconas\RiconasApi\Mailing\MailingService;
 use Riconas\RiconasApi\Utility\StringUtility;
@@ -23,16 +24,20 @@ class PasswordResetRequestService
 
     private MailingService $mailingService;
 
+    private UserPreferenceService $userPreferenceService;
+
     public function __construct(
         EntityManager $entityManager,
         PasswordResetRequestRepository $passwordResetRequestRepository,
         UserService $userService,
-        MailingService $mailingService
+        MailingService $mailingService,
+        UserPreferenceService $userPreferenceService
     ) {
         $this->entityManager = $entityManager;
         $this->passwordResetRequestRepository = $passwordResetRequestRepository;
         $this->userService = $userService;
         $this->mailingService = $mailingService;
+        $this->userPreferenceService = $userPreferenceService;
     }
 
     public function requestPasswordReset(User $user): void
@@ -56,10 +61,9 @@ class PasswordResetRequestService
         $this->entityManager->persist($passwordResetRequest);
         $this->entityManager->flush();
 
+        $userPreferenceLang = $this->userPreferenceService->getLanguagePreference($user->getId());
         $passwordResetLink = $this->buildResetPasswordLink($passwordResetRequest->getCode());
-
-        // TODO replace the language code string with database value
-        $this->mailingService->sendPasswordRecoveryEmail($user->getEmail(), 'de', $passwordResetLink);
+        $this->mailingService->sendPasswordRecoveryEmail($user->getEmail(), $userPreferenceLang, $passwordResetLink);
     }
 
     public function resetUserPassword(string $passwordResetCode, string $newPlainPassword): void
