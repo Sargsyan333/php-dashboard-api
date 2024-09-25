@@ -40,6 +40,17 @@ return [
     Components\User\Service\UserService::class => function (ContainerInterface $c) {
         return new Components\User\Service\UserService();
     },
+    Components\UserPreference\Repository\UserPreferenceRepository::class => function (ContainerInterface $c) {
+        return new Components\UserPreference\Repository\UserPreferenceRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\UserPreference\Service\UserPreferenceService::class => function (ContainerInterface $c) {
+        return new Components\UserPreference\Service\UserPreferenceService(
+            $c->get(Components\UserPreference\Repository\UserPreferenceRepository::class),
+            $c->get(EntityManager::class),
+        );
+    },
     Components\PasswordResetRequest\Repository\PasswordResetRequestRepository::class => function (ContainerInterface $c) {
         return new Components\PasswordResetRequest\Repository\PasswordResetRequestRepository(
             $c->get(EntityManager::class),
