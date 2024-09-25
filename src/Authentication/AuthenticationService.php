@@ -30,7 +30,7 @@ class AuthenticationService
         return false;
     }
 
-    public function createAccessToken(User $user): string
+    public function generateAccessToken(User $user): string
     {
         return $this->jwtEncoder->encode(['user_email' => $user->getEmail()]);
     }

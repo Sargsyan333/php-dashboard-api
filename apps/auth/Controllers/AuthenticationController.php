@@ -56,13 +56,9 @@ class AuthenticationController extends BaseController
             return $response->withJson($result, 401);
         }
 
-        $accessToken = $this->authenticationService->createAccessToken($user);
+        $accessToken = $this->authenticationService->generateAccessToken($user);
+        $response = $response->withHeader('Authorization', 'Bearer ' . $accessToken);
 
-        return $response->withJson(
-            [
-                'access_token' => $accessToken,
-            ],
-            200
-        );
+        return $response->withJson([], 204);
     }
 }
