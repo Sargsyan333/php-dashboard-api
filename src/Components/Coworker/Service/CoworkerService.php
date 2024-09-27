@@ -30,7 +30,7 @@ class CoworkerService
 
         $coworker = new Coworker();
         $coworker
-            ->setUserId($coworkerUser->getId())
+            ->setUser($coworkerUser)
             ->setCompanyName($companyName)
         ;
 
