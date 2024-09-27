@@ -72,7 +72,7 @@ class CoworkerController extends BaseController
 
     public function listAction(ServerRequest $request, Response $response): Response
     {
-        $page = $request->getParam('page', 0);
+        $page = $request->getParam('page', 1);
         $perPage = $request->getParam('per_page', self::MAX_PER_PAGE);
 
         $response = $this->validatePagingParams($page, $perPage, $response);
