@@ -13,6 +13,7 @@ class CoworkerController extends BaseController
 {
     private const ERROR_DUPLICATE_COWORKER_NAME = 'duplicate_name';
     private const ERROR_DUPLICATE_COWORKER_EMAIL = 'duplicate_email';
+    protected const MAX_PER_PAGE = 20;
 
     private CoworkerService $coworkerService;
 
@@ -67,5 +68,32 @@ class CoworkerController extends BaseController
         $this->coworkerService->createCoworker($companyName, $email);
 
         return $response->withJson([], 201);
+    }
+
+    public function listAction(ServerRequest $request, Response $response): Response
+    {
+        $page = $request->getParam('page', 0);
+        $perPage = $request->getParam('per_page', self::MAX_PER_PAGE);
+
+        $response = $this->validatePagingParams($page, $perPage, $response);
+        if (400 === $response->getStatusCode()) {
+            return $response;
+        }
+
+        $offset = ($page - 1) * $perPage;
+        $coworkers = $this->coworkerRepository->getList($offset, $perPage);
+
+        $responseData = [];
+        foreach ($coworkers as $coworker) {
+            $responseData[] = [
+                'id' => $coworker['id'],
+                'company_name' => $coworker['companyName'],
+                'registration_date' => $coworker['createdAt']->format('Y-m-d H:i:s'),
+                'email' => $coworker['email'],
+                'status' => $coworker['status']->value,
+            ];
+        }
+
+        return $response->withJson(['items' => $responseData], 200);
     }
 }

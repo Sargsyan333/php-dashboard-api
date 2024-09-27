@@ -5,7 +5,6 @@ namespace Riconas\RiconasApi\Admin;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use Slim\Routing\RouteCollectorProxy;
-use function Clue\StreamFilter\fun;
 
 global $app;
 
@@ -18,5 +17,6 @@ $app->group('/user', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/coworkers', function (RouteCollectorProxy $group) {
+    $group->get('', Controllers\CoworkerController::class . ':listAction');
     $group->post('', Controllers\CoworkerController::class . ':createOneAction');
 });

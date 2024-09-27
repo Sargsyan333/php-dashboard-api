@@ -22,7 +22,7 @@ class CoworkerService
         $coworkerUser
             ->setEmail($emailAddress)
             ->setRole(UserRole::ROLE_COWORKER)
-            ->setStatus(UserStatus::STATUS_ACTIVE)
+            ->setStatus(UserStatus::STATUS_INACTIVE)
         ;
 
         $this->entityManager->persist($coworkerUser);

@@ -18,4 +18,21 @@ class CoworkerRepository extends EntityRepository
     {
         return $this->findOneBy(['companyName' => $companyName]);
     }
+
+    public function getList(int $offset, int $limit): array
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('c.id, c.companyName, c.createdAt, u.email, u.status')
+            ->from(Coworker::class, 'c')
+            ->join('c.user', 'u')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+        ;
+        $query = $queryBuilder->getQuery();
+
+        $result = $query->getResult();
+
+        return $result;
+    }
 }
