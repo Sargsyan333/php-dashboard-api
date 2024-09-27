@@ -18,8 +18,8 @@ class User
     #[Column(type: 'string', unique: true, nullable: false)]
     private string $email;
 
-    #[Column(type: 'string', length: 60, nullable: false)]
-    private string $password;
+    #[Column(type: 'string', length: 60, nullable: true)]
+    private ?string $password;
 
     #[Column(type: 'string', nullable: false, enumType: UserRole::class)]
     private UserRole $role;
@@ -52,7 +52,7 @@ class User
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }

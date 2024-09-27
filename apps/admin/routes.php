@@ -5,6 +5,7 @@ namespace Riconas\RiconasApi\Admin;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use Slim\Routing\RouteCollectorProxy;
+use function Clue\StreamFilter\fun;
 
 global $app;
 
@@ -14,4 +15,8 @@ $app->get('/', function (ServerRequest $request, Response $response) {
 
 $app->group('/user', function (RouteCollectorProxy $group) {
     $group->post('/language', Controllers\UserController::class . ':setLanguageAction');
+});
+
+$app->group('/coworkers', function (RouteCollectorProxy $group) {
+    $group->post('', Controllers\CoworkerController::class . ':createOneAction');
 });
