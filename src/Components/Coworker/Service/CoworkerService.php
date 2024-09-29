@@ -38,6 +38,22 @@ class CoworkerService
         $this->entityManager->flush();
     }
 
+    public function updateCoworker(Coworker $coworker, string $newCompanyName, string $newEmailAddress): void
+    {
+        $coworkerUser = $coworker->getUser();
+        if ($coworkerUser->getEmail() !== $newEmailAddress) {
+            $coworkerUser->setEmail($newEmailAddress);
+            $coworkerUser->setStatus(UserStatus::STATUS_INACTIVE);
+        }
+
+        if ($coworker->getCompanyName() !== $newCompanyName) {
+            $coworker->setCompanyName($newCompanyName);
+        }
+
+        $this->entityManager->persist($coworker);
+        $this->entityManager->flush();
+    }
+
     public function deleteCoworker(Coworker $coworker): void
     {
         $coworkerUser = $coworker->getUser();

@@ -114,4 +114,58 @@ class CoworkerController extends BaseController
 
         return $response->withJson([], 204);
     }
+
+    public function updateOneAction(ServerRequest $request, Response $response): Response
+    {
+        $newCompanyNewName = $request->getParam('company_name');
+        $newEmail = $request->getParam('email');
+
+        if (empty($newCompanyNewName) || empty($newEmail)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $coworkerId = $request->getAttribute('id');
+        $coworker = $this->coworkerRepository->findById($coworkerId);
+        if (is_null($coworker)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Coworker with supplied id could not be found',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        if ($coworker->getCompanyName() !== $newCompanyNewName) {
+            $coworkerWithSameName = $this->coworkerRepository->findByCompanyName($newCompanyNewName);
+            if (false === is_null($coworkerWithSameName)) {
+                $result = [
+                    'code' => self::ERROR_DUPLICATE_COWORKER_NAME,
+                    'message' => 'Coworker with same name already exists',
+                ];
+
+                return $response->withJson($result, 400);
+            }
+        }
+
+        if ($coworker->getUser()->getEmail() !== $newEmail) {
+            $coworkerWithSameEmail = $this->userRepository->findByEmailAndRole($newEmail, UserRole::ROLE_COWORKER);
+            if (false === is_null($coworkerWithSameEmail)) {
+                $result = [
+                    'code' => self::ERROR_DUPLICATE_COWORKER_EMAIL,
+                    'message' => 'Coworker with same email already exists',
+                ];
+
+                return $response->withJson($result, 400);
+            }
+        }
+
+        $this->coworkerService->updateCoworker($coworker, $newCompanyNewName, $newEmail);
+
+        return $response->withJson([], 204);
+    }
 }
