@@ -19,4 +19,5 @@ $app->group('/user', function (RouteCollectorProxy $group) {
 $app->group('/coworkers', function (RouteCollectorProxy $group) {
     $group->get('', Controllers\CoworkerController::class . ':listAction');
     $group->post('', Controllers\CoworkerController::class . ':createOneAction');
+    $group->delete('/{id}', Controllers\CoworkerController::class . ':deleteOneAction');
 });

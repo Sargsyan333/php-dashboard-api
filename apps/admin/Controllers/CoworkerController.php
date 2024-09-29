@@ -96,4 +96,22 @@ class CoworkerController extends BaseController
 
         return $response->withJson(['items' => $responseData], 200);
     }
+
+    public function deleteOneAction(ServerRequest $request, Response $response)
+    {
+        $coworkerId = $request->getAttribute('id');
+        $coworker = $this->coworkerRepository->findById($coworkerId);
+        if (is_null($coworker)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Coworker with supplied id could not be found',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->coworkerService->deleteCoworker($coworker);
+
+        return $response->withJson([], 204);
+    }
 }

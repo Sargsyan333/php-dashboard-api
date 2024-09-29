@@ -37,4 +37,13 @@ class CoworkerService
         $this->entityManager->persist($coworker);
         $this->entityManager->flush();
     }
+
+    public function deleteCoworker(Coworker $coworker): void
+    {
+        $coworkerUser = $coworker->getUser();
+
+        $this->entityManager->remove($coworkerUser);
+        $this->entityManager->remove($coworker);
+        $this->entityManager->flush();
+    }
 }

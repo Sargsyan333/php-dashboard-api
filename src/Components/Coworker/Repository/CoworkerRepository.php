@@ -19,6 +19,11 @@ class CoworkerRepository extends EntityRepository
         return $this->findOneBy(['companyName' => $companyName]);
     }
 
+    public function findById(string $id): ?Coworker
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
     public function getList(int $offset, int $limit): array
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
