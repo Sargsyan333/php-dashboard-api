@@ -1,0 +1,25 @@
+<?php
+
+namespace Riconas\RiconasApi\Components\Client\Service;
+
+use Doctrine\ORM\EntityManager;
+use Riconas\RiconasApi\Components\Client\Client;
+
+class ClientService
+{
+    private EntityManager $entityManager;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function createClient(string $name): void
+    {
+        $client = new Client();
+        $client->setName($name);
+
+        $this->entityManager->persist($client);
+        $this->entityManager->flush();
+    }
+}

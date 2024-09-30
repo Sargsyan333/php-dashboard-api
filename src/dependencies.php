@@ -32,6 +32,16 @@ return [
 
         return new EntityManager($connection, $config);
     },
+    Components\Client\Repository\ClientRepository::class => function (ContainerInterface $c) {
+        return new Components\Client\Repository\ClientRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\Client\Service\ClientService::class => function (ContainerInterface $c) {
+        return new Components\Client\Service\ClientService(
+            $c->get(EntityManager::class),
+        );
+    },
     Components\Coworker\Repository\CoworkerRepository::class => function (ContainerInterface $c) {
         return new Components\Coworker\Repository\CoworkerRepository(
             $c->get(EntityManager::class),
