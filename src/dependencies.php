@@ -50,6 +50,17 @@ return [
     Components\User\Service\UserService::class => function (ContainerInterface $c) {
         return new Components\User\Service\UserService();
     },
+    Components\UserInvitation\Repository\UserInvitationRepository::class => function (ContainerInterface $c) {
+        return new Components\UserInvitation\Repository\UserInvitationRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\UserInvitation\Service\UserInvitationService::class => function (ContainerInterface $c) {
+        return new Components\UserInvitation\Service\UserInvitationService(
+            $c->get(EntityManager::class),
+            $c->get(Components\UserInvitation\Repository\UserInvitationRepository::class),
+        );
+    },
     Components\UserPreference\Repository\UserPreferenceRepository::class => function (ContainerInterface $c) {
         return new Components\UserPreference\Repository\UserPreferenceRepository(
             $c->get(EntityManager::class),
