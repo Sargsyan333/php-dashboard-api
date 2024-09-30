@@ -6,6 +6,7 @@ use Riconas\RiconasApi\Components\Coworker\Coworker;
 use Riconas\RiconasApi\Components\User\User;
 use Riconas\RiconasApi\Components\User\UserRole;
 use Riconas\RiconasApi\Components\User\UserStatus;
+use Riconas\RiconasApi\Components\UserInvitation\Repository\UserInvitationRepository;
 use Riconas\RiconasApi\Components\UserInvitation\Service\UserInvitationService;
 use Riconas\RiconasApi\Components\UserPreference\Service\UserPreferenceService;
 use Riconas\RiconasApi\Mailing\MailingService;
@@ -16,17 +17,20 @@ class CoworkerService
     private UserInvitationService $userInvitationService;
     private MailingService $mailingService;
     private UserPreferenceService $userPreferenceService;
+    private UserInvitationRepository $userInvitationRepository;
 
     public function __construct(
         EntityManager $entityManager,
         UserInvitationService $userInvitationService,
         MailingService $mailingService,
-        UserPreferenceService $userPreferenceService
+        UserPreferenceService $userPreferenceService,
+        UserInvitationRepository $userInvitationRepository
     ) {
         $this->entityManager = $entityManager;
         $this->userInvitationService = $userInvitationService;
         $this->mailingService = $mailingService;
         $this->userPreferenceService = $userPreferenceService;
+        $this->userInvitationRepository = $userInvitationRepository;
     }
 
     public function createCoworker(string $companyName, string $emailAddress): void
@@ -57,6 +61,8 @@ class CoworkerService
         if ($coworkerUser->getEmail() !== $newEmailAddress) {
             $coworkerUser->setEmail($newEmailAddress);
             $coworkerUser->setStatus(UserStatus::STATUS_INACTIVE);
+
+            $this->userInvitationRepository->deleteByUserId($coworkerUser->getId());
         }
 
         if ($coworker->getCompanyName() !== $newCompanyName) {

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Riconas\RiconasApi\Components\User\User;
 use Riconas\RiconasApi\Components\UserInvitation\Repository\UserInvitationRepository;
 use Riconas\RiconasApi\Components\UserInvitation\UserInvitation;
+use Riconas\RiconasApi\Components\UserInvitation\UserInvitationStatus;
 use Riconas\RiconasApi\Utility\StringUtility;
 
 class UserInvitationService
@@ -39,6 +40,20 @@ class UserInvitationService
         $this->entityManager->flush();
 
         return $this->buildInvitationLink($userInvitation->getCode());
+    }
+
+    public function getInvitationStatus(string $userId): UserInvitationStatus
+    {
+        $userInvitation = $this->userInvitationRepository->findByUserId($userId);
+        if (is_null($userInvitation)) {
+            return UserInvitationStatus::NOT_SENT;
+        }
+
+        if (is_null($userInvitation->getVerifiedAt())) {
+            return UserInvitationStatus::PENDING;
+        }
+
+        return UserInvitationStatus::ACCEPTED;
     }
 
     private function buildInvitationLink(string $invitationCode): string

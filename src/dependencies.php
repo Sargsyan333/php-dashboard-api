@@ -43,6 +43,7 @@ return [
             $c->get(Components\UserInvitation\Service\UserInvitationService::class),
             $c->get(Mailing\MailingService::class),
             $c->get(Components\UserPreference\Service\UserPreferenceService::class),
+            $c->get(Components\UserInvitation\Repository\UserInvitationRepository::class),
         );
     },
     Components\User\Repository\UserRepository::class => function (ContainerInterface $c) {

@@ -14,13 +14,20 @@ class UserInvitationRepository extends EntityRepository
         parent::__construct($entityManager, new ClassMetadata(UserInvitation::class));
     }
 
-    public function findByCode(string $code): ?UserInvitation
-    {
-        return $this->findOneBy(['code' => $code]);
-    }
-
     public function findByUserId(string $userId): ?UserInvitation
     {
         return $this->findOneBy(['userId' => $userId]);
+    }
+
+    public function deleteByUserId(string $userId): void
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->delete(UserInvitation::class, 'u')
+            ->where('u.userId = :userId')
+            ->setParameter('userId', $userId);
+        ;
+        $query = $queryBuilder->getQuery();
+        $query->execute();
     }
 }

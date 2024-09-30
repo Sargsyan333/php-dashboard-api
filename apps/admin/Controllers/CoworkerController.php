@@ -7,6 +7,7 @@ use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\Coworker\Service\CoworkerService;
 use Riconas\RiconasApi\Components\User\Repository\UserRepository;
 use Riconas\RiconasApi\Components\User\UserRole;
+use Riconas\RiconasApi\Components\UserInvitation\Service\UserInvitationService;
 use Slim\Http\ServerRequest;
 
 class CoworkerController extends BaseController
@@ -21,14 +22,18 @@ class CoworkerController extends BaseController
 
     private UserRepository $userRepository;
 
+    private UserInvitationService $userInvitationService;
+
     public function __construct(
         CoworkerService $coworkerService,
         CoworkerRepository $coworkerRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        UserInvitationService $userInvitationService
     ) {
         $this->coworkerService = $coworkerService;
         $this->coworkerRepository = $coworkerRepository;
         $this->userRepository = $userRepository;
+        $this->userInvitationService = $userInvitationService;
     }
 
     public function createOneAction(ServerRequest $request, Response $response): Response
@@ -90,7 +95,7 @@ class CoworkerController extends BaseController
                 'company_name' => $coworker['companyName'],
                 'registration_date' => $coworker['createdAt']->format('Y-m-d H:i:s'),
                 'email' => $coworker['email'],
-                'status' => $coworker['status']->value,
+                'invitation_status' => $this->userInvitationService->getInvitationStatus($coworker['userId'])->value,
             ];
         }
 

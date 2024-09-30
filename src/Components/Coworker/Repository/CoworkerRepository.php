@@ -28,7 +28,7 @@ class CoworkerRepository extends EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('c.id, c.companyName, c.createdAt, u.email, u.status')
+            ->select('c.id, c.companyName, c.createdAt, c.userId, u.email')
             ->from(Coworker::class, 'c')
             ->join('c.user', 'u')
             ->setFirstResult($offset)
