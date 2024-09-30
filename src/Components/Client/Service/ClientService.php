@@ -22,4 +22,18 @@ class ClientService
         $this->entityManager->persist($client);
         $this->entityManager->flush();
     }
+
+    public function updateClient(Client $client, string $newName): void
+    {
+        $client->setName($newName);
+
+        $this->entityManager->persist($client);
+        $this->entityManager->flush();
+    }
+
+    public function deleteClient(Client $client): void
+    {
+        $this->entityManager->remove($client);
+        $this->entityManager->flush();
+    }
 }

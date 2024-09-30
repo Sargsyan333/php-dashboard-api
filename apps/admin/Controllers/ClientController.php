@@ -74,4 +74,63 @@ class ClientController extends BaseController
 
         return $response->withJson(['items' => $responseData], 200);
     }
+
+    public function deleteOneAction(ServerRequest $request, Response $response)
+    {
+        $clientId = $request->getAttribute('id');
+        $client = $this->clientRepository->findById($clientId);
+        if (is_null($client)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Client with supplied id could not be found',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->clientService->deleteClient($client);
+
+        return $response->withJson([], 204);
+    }
+
+    public function updateOneAction(ServerRequest $request, Response $response): Response
+    {
+        $newName = $request->getParam('name');
+
+        if (empty($newName)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $clientId = $request->getAttribute('id');
+        $client = $this->clientRepository->findById($clientId);
+        if (is_null($client)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Client with supplied id could not be found',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        if ($client->getName() !== $newName) {
+            $clientWithSameName = $this->clientRepository->findByName($newName);
+            if (false === is_null($clientWithSameName)) {
+                $result = [
+                    'code' => self::ERROR_DUPLICATE_CLIENT_NAME,
+                    'message' => 'Client with same name already exists',
+                ];
+
+                return $response->withJson($result, 400);
+            }
+        }
+
+        $this->clientService->updateClient($client, $newName);
+
+        return $response->withJson([], 204);
+    }
 }
