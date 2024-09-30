@@ -43,6 +43,6 @@ class UserInvitationService
 
     private function buildInvitationLink(string $invitationCode): string
     {
-        return "https://riconas-admin-dashboard.netlify.app/accept-invite?code={$invitationCode}";
+        return "{$_ENV['WEBSITE_DOMAIN']}/accept-invite?code={$invitationCode}";
     }
 }

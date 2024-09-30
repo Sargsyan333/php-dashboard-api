@@ -86,6 +86,6 @@ class PasswordResetRequestService
 
     private function buildResetPasswordLink(string $passwordResetRequestCode): string
     {
-        return "https://riconas-admin-dashboard.netlify.app/reset-password?code={$passwordResetRequestCode}";
+        return "{$_ENV['WEBSITE_DOMAIN']}/reset-password?code={$passwordResetRequestCode}";
     }
 }
