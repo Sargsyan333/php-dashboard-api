@@ -99,6 +99,7 @@ return [
     Mailing\MailingService::class => function (ContainerInterface $c) {
         return new Mailing\MailingService(
             $c->get(Integrations\Mailgun\MailgunClient::class),
+            $c->get('mail-config'),
         );
     }
 ];

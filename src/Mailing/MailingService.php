@@ -7,12 +7,14 @@ use Riconas\RiconasApi\Integrations\Mailgun\MailgunClient;
 class MailingService
 {
     private MailgunClient $client;
+    private array $config;
 
     private string $mailTemplatesPath = __DIR__ . '/../../mail_templates';
 
-    public function __construct(MailgunClient $client)
+    public function __construct(MailgunClient $client, array $config)
     {
         $this->client = $client;
+        $this->config = $config;
     }
 
     public function sendPasswordRecoveryEmail(
@@ -27,7 +29,7 @@ class MailingService
 
         $this->client->sendEmail(
             $recipientEmailAddress,
-            'Recover your password',
+            $this->config['mail_subjects']['password_recovery'][$languageCode],
             file_get_contents("{$dirPath}/template.txt"),
             file_get_contents("{$dirPath}/template.html"),
             [
@@ -48,7 +50,7 @@ class MailingService
 
         $this->client->sendEmail(
             $recipientEmailAddress,
-            'Invitation to collaborate on Riconas',
+            $this->config['mail_subjects']['coworker_invitation'][$languageCode],
             file_get_contents("{$dirPath}/template.txt"),
             file_get_contents("{$dirPath}/template.html"),
             [
