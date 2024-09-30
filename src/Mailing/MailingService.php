@@ -34,6 +34,7 @@ class MailingService
             file_get_contents("{$dirPath}/template.html"),
             [
                 'resetPasswordLink' => $passwordResetLink,
+                'logoLink' => $_ENV['LOGO_LINK'],
             ],
         );
     }
@@ -55,6 +56,7 @@ class MailingService
             file_get_contents("{$dirPath}/template.html"),
             [
                 'invitationLink' => $invitationLink,
+                'logoLink' => $_ENV['LOGO_LINK'],
             ],
         );
     }
