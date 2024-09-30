@@ -40,6 +40,9 @@ return [
     Components\Coworker\Service\CoworkerService::class => function (ContainerInterface $c) {
         return new Components\Coworker\Service\CoworkerService(
             $c->get(EntityManager::class),
+            $c->get(Components\UserInvitation\Service\UserInvitationService::class),
+            $c->get(Mailing\MailingService::class),
+            $c->get(Components\UserPreference\Service\UserPreferenceService::class),
         );
     },
     Components\User\Repository\UserRepository::class => function (ContainerInterface $c) {

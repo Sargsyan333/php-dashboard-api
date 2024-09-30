@@ -21,4 +21,5 @@ $app->group('/coworkers', function (RouteCollectorProxy $group) {
     $group->post('', Controllers\CoworkerController::class . ':createOneAction');
     $group->delete('/{id}', Controllers\CoworkerController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\CoworkerController::class . ':updateOneAction');
+    $group->post('/{id}/invite', Controllers\CoworkerController::class . ':inviteOneAction');
 });

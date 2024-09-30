@@ -168,4 +168,22 @@ class CoworkerController extends BaseController
 
         return $response->withJson([], 204);
     }
+
+    public function inviteOneAction(ServerRequest $request, Response $response): Response
+    {
+        $coworkerId = $request->getAttribute('id');
+        $coworker = $this->coworkerRepository->findById($coworkerId);
+        if (is_null($coworker)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Coworker with supplied id could not be found',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->coworkerService->sendInvitation($coworker);
+
+        return $response->withJson([], 202);
+    }
 }

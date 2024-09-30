@@ -19,19 +19,30 @@ class UserInvitationService
         $this->userInvitationRepository = $userInvitationRepository;
     }
 
-    public function createInvitation(User $user): void
+    public function createInvitation(User $user): string
     {
         $userInvitation = $this->userInvitationRepository->findByUserId($user->getId());
         if (false === is_null($userInvitation)) {
-            return;
-        }
+            if ($userInvitation->getVerifiedAt()) {
+                throw new \RuntimeException('User has already accepted invitation.');
+            }
 
-        $userInvitation = new UserInvitation();
-        $userInvitation
-            ->setUserId($user->getId())
-            ->setCode(StringUtility::generateRandomString(32));
+            $userInvitation->setCode(StringUtility::generateRandomString(32));
+        } else {
+            $userInvitation = new UserInvitation();
+            $userInvitation
+                ->setUserId($user->getId())
+                ->setCode(StringUtility::generateRandomString(32));
+        }
 
         $this->entityManager->persist($userInvitation);
         $this->entityManager->flush();
+
+        return $this->buildInvitationLink($userInvitation->getCode());
+    }
+
+    private function buildInvitationLink(string $invitationCode): string
+    {
+        return "https://riconas-admin-dashboard.netlify.app/accept-invite?code={$invitationCode}";
     }
 }

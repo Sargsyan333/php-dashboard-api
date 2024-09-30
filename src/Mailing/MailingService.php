@@ -35,4 +35,25 @@ class MailingService
             ],
         );
     }
+
+    public function sendCoworkerInvitationEmail(
+        string $recipientEmailAddress,
+        string $languageCode,
+        string $invitationLink
+    ): void {
+        // TODO TMP replace recipient email address with hardcoded one. This will be removed with account upgrade
+        $recipientEmailAddress = 'developer.hovakimyan@gmail.com';
+
+        $dirPath = "{$this->mailTemplatesPath}/coworker_invitation/{$languageCode}";
+
+        $this->client->sendEmail(
+            $recipientEmailAddress,
+            'Invitation to collaborate on Riconas',
+            file_get_contents("{$dirPath}/template.txt"),
+            file_get_contents("{$dirPath}/template.html"),
+            [
+                'invitationLink' => $invitationLink,
+            ],
+        );
+    }
 }
