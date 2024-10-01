@@ -47,6 +47,8 @@ class ProjectController extends BaseController
                 'registration_date' => $project['createdAt']->format('Y-m-d H:i:s'),
                 'client_name' => $project['clientName'],
                 'client_id' => $project['clientId'],
+                'coworker_name' => $project['coworkerName'],
+                'coworker_id' => $project['coworkerId'],
             ];
         }
 
@@ -58,6 +60,7 @@ class ProjectController extends BaseController
         $name = $request->getParam('name');
         $code = $request->getParam('code');
         $clientId = $request->getParam('client_id');
+        $coworkerId = $request->getParam('coworker_id');
 
         if (empty($name) || empty($code) || empty($clientId)) {
             $result = [
@@ -88,7 +91,7 @@ class ProjectController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        $this->projectService->createProject($name, $code, $clientId);
+        $this->projectService->createProject($name, $code, $clientId, $coworkerId);
 
         return $response->withJson([], 201);
     }
@@ -98,6 +101,7 @@ class ProjectController extends BaseController
         $newName = $request->getParam('name');
         $newCode = $request->getParam('code');
         $newClientId = $request->getParam('client_id');
+        $newCoworkerId = $request->getParam('coworker_id');
 
         if (empty($newName) || empty($newCode) || empty($newClientId)) {
             $result = [
@@ -143,7 +147,7 @@ class ProjectController extends BaseController
             }
         }
 
-        $this->projectService->updateProject($project, $newName, $newCode, $newClientId);
+        $this->projectService->updateProject($project, $newName, $newCode, $newClientId, $newCoworkerId);
 
         return $response->withJson([], 204);
     }

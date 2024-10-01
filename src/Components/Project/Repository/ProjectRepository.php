@@ -32,9 +32,12 @@ class ProjectRepository extends EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('p.id, p.name, p.code, p.createdAt, c.id as clientId, c.name as clientName')
+            ->select(
+                'p.id, p.name, p.code, p.createdAt, c.id as clientId, c.name as clientName, cw.id as coworkerId, cw.name as coworkerName'
+            )
             ->from(Project::class, 'p')
             ->join('p.client', 'c')
+            ->join('p.coworker', 'cw')
             ->setFirstResult($offset)
             ->setMaxResults($limit)
         ;

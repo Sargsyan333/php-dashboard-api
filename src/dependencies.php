@@ -109,6 +109,7 @@ return [
         return new Components\Project\Service\ProjectService(
             $c->get(EntityManager::class),
             $c->get(Components\Client\Repository\ClientRepository::class),
+            $c->get(Components\Coworker\Repository\CoworkerRepository::class),
         );
     },
     Authentication\AuthenticationService::class => function (ContainerInterface $c) {

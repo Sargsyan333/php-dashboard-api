@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\Client\Client;
+use Riconas\RiconasApi\Components\Coworker\Coworker;
 
 #[Entity, Table(name: 'projects')]
 class Project
@@ -34,6 +35,10 @@ class Project
     #[ManyToOne(targetEntity: Client::class)]
     #[JoinColumn(name: 'client_id', referencedColumnName: 'id')]
     private Client $client;
+
+    #[ManyToOne(targetEntity: Coworker::class)]
+    #[JoinColumn(name: 'coworker_id', referencedColumnName: 'id')]
+    private ?Coworker $coworker;
 
     public function __construct()
     {
@@ -89,6 +94,18 @@ class Project
     public function setClient(Client $client): Project
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getCoworker(): ?Coworker
+    {
+        return $this->coworker;
+    }
+
+    public function setCoworker(?Coworker $coworker): self
+    {
+        $this->coworker = $coworker;
 
         return $this;
     }
