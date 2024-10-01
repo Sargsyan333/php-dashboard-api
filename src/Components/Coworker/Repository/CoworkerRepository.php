@@ -45,9 +45,9 @@ class CoworkerRepository extends EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('c.id, c.name')
+            ->select('c.id, c.companyName')
             ->from(Coworker::class, 'c')
-            ->where('c.name LIKE :searchedName')
+            ->where('c.companyName LIKE :searchedName')
             ->setParameter('searchedName', '%' . $searchedName . '%')
             ->setMaxResults($limit)
         ;

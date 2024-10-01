@@ -204,12 +204,12 @@ class CoworkerController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        $clients = $this->coworkerRepository->searchByName($searchedName, 20);
+        $coworkers = $this->coworkerRepository->searchByName($searchedName, 20);
         $searchData = [];
-        foreach ($clients as $client) {
+        foreach ($coworkers as $coworker) {
             $searchData[] = [
-                'name' => $client['name'],
-                'value' => $client['id'],
+                'name' => $coworker['companyName'],
+                'value' => $coworker['id'],
             ];
         }
 
