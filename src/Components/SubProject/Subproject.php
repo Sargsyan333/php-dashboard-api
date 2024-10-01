@@ -23,10 +23,6 @@ class Subproject
     #[Column(name: 'project_id', type: 'string', nullable: false)]
     private string $projectId;
 
-    #[ManyToOne(targetEntity: Project::class)]
-    #[JoinColumn(name: 'project_id', referencedColumnName: 'id')]
-    private ?Project $project;
-
     #[Column(name: 'code', type: 'string', length: 7, nullable: false)]
     private string $code;
 
@@ -55,18 +51,6 @@ class Subproject
     public function setProjectId(string $projectId): self
     {
         $this->projectId = $projectId;
-
-        return $this;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self
-    {
-        $this->project = $project;
 
         return $this;
     }

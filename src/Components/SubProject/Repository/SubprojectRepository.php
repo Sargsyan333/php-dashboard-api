@@ -32,7 +32,7 @@ class SubprojectRepository extends EntityRepository
                 's.id, s.code, s.createdAt, cw.id as coworkerId, cw.companyName as coworkerName'
             )
             ->from(Subproject::class, 's')
-            ->leftJoin('c.coworker', 'cw')
+            ->leftJoin('s.coworker', 'cw')
             ->where('s.projectId = :projectId')
             ->setParameter('projectId', $projectId)
             ->setFirstResult($offset)

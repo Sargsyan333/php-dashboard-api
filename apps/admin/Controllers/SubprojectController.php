@@ -3,11 +3,12 @@
 namespace Riconas\RiconasApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
+use Riconas\RiconasApi\Components\Project\Repository\ProjectRepository;
 use Riconas\RiconasApi\Components\SubProject\Repository\SubprojectRepository;
 use Riconas\RiconasApi\Components\SubProject\Service\SubprojectService;
 use Slim\Http\ServerRequest;
 
-class SubProjectController extends BaseController
+class SubprojectController extends BaseController
 {
     private const ERROR_DUPLICATE_CODE = 'duplicate_code';
 
@@ -17,10 +18,17 @@ class SubProjectController extends BaseController
 
     private SubprojectService $subprojectService;
 
-    public function __construct(SubprojectRepository $subprojectRepository, SubprojectService $subprojectService)
+    private ProjectRepository $projectRepository;
+
+    public function __construct(
+        SubprojectRepository $subprojectRepository,
+        SubprojectService $subprojectService,
+        ProjectRepository $projectRepository
+    )
     {
         $this->subprojectRepository = $subprojectRepository;
         $this->subprojectService = $subprojectService;
+        $this->projectRepository = $projectRepository;
     }
 
     public function listAction(ServerRequest $request, Response $response): Response
@@ -67,7 +75,7 @@ class SubProjectController extends BaseController
         $projectId = $request->getParam('project_id');
         $coworkerId = $request->getParam('coworker_id');
 
-        if (empty($projectId) || empty($code) || empty($clientId)) {
+        if (empty($code) || empty($projectId) || empty($coworkerId)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',

@@ -42,8 +42,8 @@ $app->group('/projects', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/subprojects', function (RouteCollectorProxy $group) {
-    $group->get('', Controllers\SubProjectController::class . ':listAction');
-    $group->post('', Controllers\SubProjectController::class . ':createOneAction');
-    $group->delete('/{id}', Controllers\SubProjectController::class . ':deleteOneAction');
-    $group->put('/{id}', Controllers\SubProjectController::class . ':updateOneAction');
+    $group->get('', Controllers\SubprojectController::class . ':listAction');
+    $group->post('', Controllers\SubprojectController::class . ':createOneAction');
+    $group->delete('/{id}', Controllers\SubprojectController::class . ':deleteOneAction');
+    $group->put('/{id}', Controllers\SubprojectController::class . ':updateOneAction');
 });

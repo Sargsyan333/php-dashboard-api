@@ -4,7 +4,6 @@ namespace Riconas\RiconasApi\Components\Project\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\Coworker\Coworker;
 use Riconas\RiconasApi\Components\Project\Project;
 
 class ProjectRepository extends EntityRepository
