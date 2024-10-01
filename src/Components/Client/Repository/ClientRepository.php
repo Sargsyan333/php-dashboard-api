@@ -50,4 +50,21 @@ class ClientRepository extends EntityRepository
 
         return $result;
     }
+
+    public function searchByName(string $searchedName, int $limit): array
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('c.id, c.name')
+            ->from(Client::class, 'c')
+            ->where('c.name LIKE :searchedName')
+            ->setParameter('searchedName', '%' . $searchedName . '%')
+            ->setMaxResults($limit)
+        ;
+        $query = $queryBuilder->getQuery();
+
+        $result = $query->getResult();
+
+        return $result;
+    }
 }

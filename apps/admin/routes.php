@@ -29,6 +29,7 @@ $app->group('/clients', function (RouteCollectorProxy $group) {
     $group->post('', Controllers\ClientController::class . ':createOneAction');
     $group->delete('/{id}', Controllers\ClientController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\ClientController::class . ':updateOneAction');
+    $group->get('/search', Controllers\ClientController::class . ':searchAction');
 });
 
 $app->group('/projects', function (RouteCollectorProxy $group) {
