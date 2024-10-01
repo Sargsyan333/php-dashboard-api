@@ -45,7 +45,8 @@ class ProjectController extends BaseController
                 'code' => $project['code'],
                 'name' => $project['name'],
                 'registration_date' => $project['createdAt']->format('Y-m-d H:i:s'),
-                'client' => $project['clientName'],
+                'client_name' => $project['clientName'],
+                'client_id' => $project['clientId'],
             ];
         }
 

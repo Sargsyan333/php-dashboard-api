@@ -32,7 +32,7 @@ class ProjectRepository extends EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select('p.id, p.name, p.code, p.createdAt, c.name as clientName')
+            ->select('p.id, p.name, p.code, p.createdAt, c.id as clientId, c.name as clientName')
             ->from(Project::class, 'p')
             ->join('p.client', 'c')
             ->setFirstResult($offset)

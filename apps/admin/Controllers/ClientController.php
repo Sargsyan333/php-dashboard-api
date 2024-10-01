@@ -10,7 +10,7 @@ use Slim\Http\ServerRequest;
 class ClientController extends BaseController
 {
     private const ERROR_DUPLICATE_CLIENT_NAME = 'duplicate_name';
-    protected const MAX_PER_PAGE = 20;
+    protected const MAX_PER_PAGE = 100;
 
     private ClientRepository $clientRepository;
 
