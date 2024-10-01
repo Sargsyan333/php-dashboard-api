@@ -13,6 +13,11 @@ class ProjectRepository extends EntityRepository
         parent::__construct($entityManager, new ClassMetadata(Project::class));
     }
 
+    public function findById(string $id): ?Project
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
     public function findByCode(string $code): ?Project
     {
         return $this->findOneBy(['code' => $code]);

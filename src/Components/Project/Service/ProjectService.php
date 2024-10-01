@@ -31,4 +31,23 @@ class ProjectService
         $this->entityManager->persist($project);
         $this->entityManager->flush();
     }
+
+    public function updateProject(Project $project, string $newName, string $newCode, string $newClientId): void
+    {
+        $client = $this->clientRepository->getById($newClientId);
+
+        $project
+            ->setCode($newCode)
+            ->setName($newName)
+            ->setClient($client);
+
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+    }
+
+    public function deleteProject(Project $project): void
+    {
+        $this->entityManager->remove($project);
+        $this->entityManager->flush();
+    }
 }
