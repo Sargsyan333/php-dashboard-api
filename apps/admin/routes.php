@@ -22,6 +22,7 @@ $app->group('/coworkers', function (RouteCollectorProxy $group) {
     $group->delete('/{id}', Controllers\CoworkerController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\CoworkerController::class . ':updateOneAction');
     $group->post('/{id}/invite', Controllers\CoworkerController::class . ':inviteOneAction');
+    $group->get('/search', Controllers\CoworkerController::class . ':searchAction');
 });
 
 $app->group('/clients', function (RouteCollectorProxy $group) {

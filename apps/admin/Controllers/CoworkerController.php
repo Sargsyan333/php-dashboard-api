@@ -191,4 +191,28 @@ class CoworkerController extends BaseController
 
         return $response->withJson([], 202);
     }
+
+    public function searchAction(ServerRequest $request, Response $response): Response
+    {
+        $searchedName = $request->getParam('name');
+        if (empty($searchedName)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $clients = $this->coworkerRepository->searchByName($searchedName, 20);
+        $searchData = [];
+        foreach ($clients as $client) {
+            $searchData[] = [
+                'name' => $client['name'],
+                'value' => $client['id'],
+            ];
+        }
+
+        return $response->withJson(['items' => $searchData], 200);
+    }
 }
