@@ -100,6 +100,17 @@ return [
             $c->get(Components\UserPreference\Service\UserPreferenceService::class),
         );
     },
+    Components\Project\Repository\ProjectRepository::class => function (ContainerInterface $c) {
+        return new Components\Project\Repository\ProjectRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\Project\Service\ProjectService::class => function (ContainerInterface $c) {
+        return new Components\Project\Service\ProjectService(
+            $c->get(EntityManager::class),
+            $c->get(Components\Client\Repository\ClientRepository::class),
+        );
+    },
     Authentication\AuthenticationService::class => function (ContainerInterface $c) {
         return new Authentication\AuthenticationService(
             $c->get(Integrations\Firebase\Jwt\JwtEncoder::class),

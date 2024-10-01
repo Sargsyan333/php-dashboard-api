@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Riconas\RiconasApi\Components\Client\Client;
-use Riconas\RiconasApi\Components\Coworker\Coworker;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
 class ClientRepository extends EntityRepository
 {
@@ -18,6 +18,16 @@ class ClientRepository extends EntityRepository
     public function findById(string $id): ?Client
     {
         return $this->findOneBy(['id' => $id]);
+    }
+
+    public function getById(string $id): ?Client
+    {
+        $client = $this->findById($id);
+        if (is_null($client)) {
+            throw new RecordNotFoundException('Client with supplied id could not be found.');
+        }
+
+        return $client;
     }
 
     public function findByName(string $name): ?Client

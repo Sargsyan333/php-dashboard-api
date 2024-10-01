@@ -30,3 +30,10 @@ $app->group('/clients', function (RouteCollectorProxy $group) {
     $group->delete('/{id}', Controllers\ClientController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\ClientController::class . ':updateOneAction');
 });
+
+$app->group('/projects', function (RouteCollectorProxy $group) {
+    $group->get('', Controllers\ProjectController::class . ':listAction');
+    $group->post('', Controllers\ProjectController::class . ':createOneAction');
+    $group->delete('/{id}', Controllers\ProjectController::class . ':deleteOneAction');
+    $group->put('/{id}', Controllers\ProjectController::class . ':updateOneAction');
+});
