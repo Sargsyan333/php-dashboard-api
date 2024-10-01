@@ -112,6 +112,17 @@ return [
             $c->get(Components\Coworker\Repository\CoworkerRepository::class),
         );
     },
+    Components\SubProject\Repository\SubprojectRepository::class => function (ContainerInterface $c) {
+        return new Components\SubProject\Repository\SubprojectRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\SubProject\Service\SubprojectService::class => function (ContainerInterface $c) {
+        return new Components\SubProject\Service\SubprojectService(
+            $c->get(EntityManager::class),
+            $c->get(Components\Coworker\Repository\CoworkerRepository::class),
+        );
+    },
     Authentication\AuthenticationService::class => function (ContainerInterface $c) {
         return new Authentication\AuthenticationService(
             $c->get(Integrations\Firebase\Jwt\JwtEncoder::class),

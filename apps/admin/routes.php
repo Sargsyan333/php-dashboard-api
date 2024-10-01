@@ -38,4 +38,12 @@ $app->group('/projects', function (RouteCollectorProxy $group) {
     $group->post('', Controllers\ProjectController::class . ':createOneAction');
     $group->delete('/{id}', Controllers\ProjectController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\ProjectController::class . ':updateOneAction');
+    $group->get('/search', Controllers\ProjectController::class . ':searchAction');
+});
+
+$app->group('/subprojects', function (RouteCollectorProxy $group) {
+    $group->get('', Controllers\SubProjectController::class . ':listAction');
+    $group->post('', Controllers\SubProjectController::class . ':createOneAction');
+    $group->delete('/{id}', Controllers\SubProjectController::class . ':deleteOneAction');
+    $group->put('/{id}', Controllers\SubProjectController::class . ':updateOneAction');
 });

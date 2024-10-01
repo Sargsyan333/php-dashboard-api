@@ -4,6 +4,7 @@ namespace Riconas\RiconasApi\Components\Project\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Riconas\RiconasApi\Components\Coworker\Coworker;
 use Riconas\RiconasApi\Components\Project\Project;
 
 class ProjectRepository extends EntityRepository
@@ -39,6 +40,23 @@ class ProjectRepository extends EntityRepository
             ->join('p.client', 'c')
             ->leftJoin('p.coworker', 'cw')
             ->setFirstResult($offset)
+            ->setMaxResults($limit)
+        ;
+        $query = $queryBuilder->getQuery();
+
+        $result = $query->getResult();
+
+        return $result;
+    }
+
+    public function searchByName(string $searchedName, int $limit): array
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('p.id, p.name')
+            ->from(Project::class, 'p')
+            ->where('p.name LIKE :searchedName')
+            ->setParameter('searchedName', '%' . $searchedName . '%')
             ->setMaxResults($limit)
         ;
         $query = $queryBuilder->getQuery();

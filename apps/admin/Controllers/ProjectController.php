@@ -169,4 +169,28 @@ class ProjectController extends BaseController
 
         return $response->withJson([], 204);
     }
+
+    public function searchAction(ServerRequest $request, Response $response): Response
+    {
+        $searchedName = $request->getParam('name');
+        if (empty($searchedName)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $projects = $this->projectRepository->searchByName($searchedName, 20);
+        $searchData = [];
+        foreach ($projects as $project) {
+            $searchData[] = [
+                'name' => $project['name'],
+                'value' => $project['id'],
+            ];
+        }
+
+        return $response->withJson(['items' => $searchData], 200);
+    }
 }
