@@ -42,6 +42,18 @@ return [
             $c->get(EntityManager::class),
         );
     },
+    Components\Nvt\Repository\NvtRepository::class => function (ContainerInterface $c) {
+        return new Components\Nvt\Repository\NvtRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\Nvt\Service\NvtService::class => function (ContainerInterface $c) {
+        return new Components\Nvt\Service\NvtService(
+            $c->get(EntityManager::class),
+            $c->get(Components\Coworker\Repository\CoworkerRepository::class),
+            $c->get(Components\Subproject\Repository\SubprojectRepository::class),
+        );
+    },
     Components\Coworker\Repository\CoworkerRepository::class => function (ContainerInterface $c) {
         return new Components\Coworker\Repository\CoworkerRepository(
             $c->get(EntityManager::class),

@@ -47,3 +47,10 @@ $app->group('/subprojects', function (RouteCollectorProxy $group) {
     $group->delete('/{id}', Controllers\SubprojectController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\SubprojectController::class . ':updateOneAction');
 });
+
+$app->group('/nvts', function (RouteCollectorProxy $group) {
+    $group->get('', Controllers\NvtController::class . ':listAction');
+    $group->post('', Controllers\NvtController::class . ':createOneAction');
+    $group->delete('/{id}', Controllers\NvtController::class . ':deleteOneAction');
+    $group->put('/{id}', Controllers\NvtController::class . ':updateOneAction');
+});
