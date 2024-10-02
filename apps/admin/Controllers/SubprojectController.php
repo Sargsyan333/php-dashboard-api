@@ -67,7 +67,7 @@ class SubprojectController extends BaseController
         $projectId = $request->getParam('project_id');
         $coworkerId = $request->getParam('coworker_id');
 
-        if (empty($code) || empty($projectId) || empty($coworkerId)) {
+        if (empty($code) || empty($projectId)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',
@@ -97,7 +97,7 @@ class SubprojectController extends BaseController
         $newProjectId = $request->getParam('project_id');
         $newCoworkerId = $request->getParam('coworker_id');
 
-        if (empty($newCode) || empty($newProjectId) || empty($newCoworkerId)) {
+        if (empty($newCode) || empty($newProjectId)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',

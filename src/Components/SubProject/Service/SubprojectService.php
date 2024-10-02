@@ -25,9 +25,13 @@ class SubprojectService
         $this->projectRepository = $projectRepository;
     }
 
-    public function createSubproject(string $code, string $projectId, string $coworkerId): void
+    public function createSubproject(string $code, string $projectId, ?string $coworkerId): void
     {
-        $coworker = $this->coworkerRepository->findById($coworkerId);
+        $coworker = null;
+        if (false === is_null($coworkerId)) {
+            $coworker = $this->coworkerRepository->findById($coworkerId);
+        }
+
         $project = $this->projectRepository->getById($projectId);
 
         $subproject = new Subproject();
@@ -43,12 +47,16 @@ class SubprojectService
 
     public function updateSubproject(
         Subproject $subproject,
-        string     $newCode,
-        string     $newProjectId,
-        string     $newCoworkerId,
-    ): void{
-        $newCoworker = $this->coworkerRepository->findById($newCoworkerId);
+        string $newCode,
+        string $newProjectId,
+        ?string $newCoworkerId,
+    ): void {
         $newProject = $this->projectRepository->getById($newProjectId);
+
+        $newCoworker = null;
+        if (false === is_null($newCoworkerId)) {
+            $newCoworker = $this->coworkerRepository->findById($newCoworkerId);
+        }
 
         $subproject
             ->setCode($newCode)
