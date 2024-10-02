@@ -3,7 +3,6 @@
 namespace Riconas\RiconasApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
-use Riconas\RiconasApi\Components\Project\Repository\ProjectRepository;
 use Riconas\RiconasApi\Components\SubProject\Repository\SubprojectRepository;
 use Riconas\RiconasApi\Components\SubProject\Service\SubprojectService;
 use Slim\Http\ServerRequest;
@@ -18,24 +17,19 @@ class SubprojectController extends BaseController
 
     private SubprojectService $subprojectService;
 
-    private ProjectRepository $projectRepository;
-
     public function __construct(
         SubprojectRepository $subprojectRepository,
-        SubprojectService $subprojectService,
-        ProjectRepository $projectRepository
-    )
-    {
+        SubprojectService $subprojectService
+    ) {
         $this->subprojectRepository = $subprojectRepository;
         $this->subprojectService = $subprojectService;
-        $this->projectRepository = $projectRepository;
     }
 
     public function listAction(ServerRequest $request, Response $response): Response
     {
         $projectId = $request->getParam('project_id');
 
-        $page = $request->getParam('page', 1);
+        $page = $request->getParam('page', self::DEFAULT_PAGE_VALUE);
         $perPage = $request->getParam('per_page', self::MAX_PER_PAGE);
 
         if (empty($projectId)) {
@@ -52,7 +46,7 @@ class SubprojectController extends BaseController
             return $response;
         }
 
-        $offset = ($page - 1) * $perPage;
+        $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
         $subprojects = $this->subprojectRepository->getListByProjectId($projectId, $offset, $perPage);
 
         $responseData = [];

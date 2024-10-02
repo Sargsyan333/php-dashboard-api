@@ -77,7 +77,7 @@ class CoworkerController extends BaseController
 
     public function listAction(ServerRequest $request, Response $response): Response
     {
-        $page = $request->getParam('page', 1);
+        $page = $request->getParam('page', self::DEFAULT_PAGE_VALUE);
         $perPage = $request->getParam('per_page', self::MAX_PER_PAGE);
 
         $response = $this->validatePagingParams($page, $perPage, $response);
@@ -85,7 +85,7 @@ class CoworkerController extends BaseController
             return $response;
         }
 
-        $offset = ($page - 1) * $perPage;
+        $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
         $coworkers = $this->coworkerRepository->getList($offset, $perPage);
 
         $responseData = [];
