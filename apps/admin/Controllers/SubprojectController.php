@@ -9,8 +9,6 @@ use Slim\Http\ServerRequest;
 
 class SubprojectController extends BaseController
 {
-    private const ERROR_DUPLICATE_CODE = 'duplicate_code';
-
     private SubprojectRepository $subprojectRepository;
 
     private SubprojectService $subprojectService;

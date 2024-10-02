@@ -12,9 +12,6 @@ use Slim\Http\ServerRequest;
 
 class CoworkerController extends BaseController
 {
-    private const ERROR_DUPLICATE_COWORKER_NAME = 'duplicate_name';
-    private const ERROR_DUPLICATE_COWORKER_EMAIL = 'duplicate_email';
-
     private CoworkerService $coworkerService;
 
     private CoworkerRepository $coworkerRepository;
@@ -52,7 +49,7 @@ class CoworkerController extends BaseController
         $coworkerWithSameName = $this->coworkerRepository->findByCompanyName($companyName);
         if (false === is_null($coworkerWithSameName)) {
             $result = [
-                'code' => self::ERROR_DUPLICATE_COWORKER_NAME,
+                'code' => self::ERROR_DUPLICATE_NAME,
                 'message' => 'Coworker with same name already exists',
             ];
 
@@ -62,7 +59,7 @@ class CoworkerController extends BaseController
         $coworkerWithSameEmail = $this->userRepository->findByEmailAndRole($email, UserRole::ROLE_COWORKER);
         if (false === is_null($coworkerWithSameEmail)) {
             $result = [
-                'code' => self::ERROR_DUPLICATE_COWORKER_EMAIL,
+                'code' => self::ERROR_DUPLICATE_EMAIL,
                 'message' => 'Coworker with same email already exists',
             ];
 
@@ -148,7 +145,7 @@ class CoworkerController extends BaseController
             $coworkerWithSameName = $this->coworkerRepository->findByCompanyName($newCompanyNewName);
             if (false === is_null($coworkerWithSameName)) {
                 $result = [
-                    'code' => self::ERROR_DUPLICATE_COWORKER_NAME,
+                    'code' => self::ERROR_DUPLICATE_NAME,
                     'message' => 'Coworker with same name already exists',
                 ];
 
@@ -160,7 +157,7 @@ class CoworkerController extends BaseController
             $coworkerWithSameEmail = $this->userRepository->findByEmailAndRole($newEmail, UserRole::ROLE_COWORKER);
             if (false === is_null($coworkerWithSameEmail)) {
                 $result = [
-                    'code' => self::ERROR_DUPLICATE_COWORKER_EMAIL,
+                    'code' => self::ERROR_DUPLICATE_EMAIL,
                     'message' => 'Coworker with same email already exists',
                 ];
 

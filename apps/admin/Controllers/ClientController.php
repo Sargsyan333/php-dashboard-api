@@ -9,8 +9,6 @@ use Slim\Http\ServerRequest;
 
 class ClientController extends BaseController
 {
-    private const ERROR_DUPLICATE_NAME = 'duplicate_name';
-
     private ClientRepository $clientRepository;
 
     private ClientService $clientService;
