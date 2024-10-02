@@ -24,20 +24,26 @@ class SubprojectRepository extends EntityRepository
         return $this->findOneBy(['code' => $code, 'projectId' => $projectId]);
     }
 
-    public function getListByProjectId(string $projectId, int $offset, int $limit): array
+    public function getListByProjectId(?string $projectId, int $offset, int $limit): array
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select(
-                's.id, s.code, s.createdAt, cw.id as coworkerId, cw.companyName as coworkerName'
+                's.id, s.code, s.createdAt, cw.id as coworkerId, cw.companyName as coworkerName, p.id as projectId, p.name as projectName'
             )
             ->from(Subproject::class, 's')
             ->leftJoin('s.coworker', 'cw')
-            ->where('s.projectId = :projectId')
-            ->setParameter('projectId', $projectId)
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
+            ->leftJoin('s.project', 'p')
         ;
+
+        if (false === is_null($projectId)) {
+            $queryBuilder
+                ->where('s.projectId = :projectId')
+                ->setParameter('projectId', $projectId);
+        }
+
+        $queryBuilder->setFirstResult($offset)->setMaxResults($limit);
+
         $query = $queryBuilder->getQuery();
 
         $result = $query->getResult();

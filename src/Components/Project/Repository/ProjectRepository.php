@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Riconas\RiconasApi\Components\Project\Project;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
 class ProjectRepository extends EntityRepository
 {
@@ -16,6 +17,16 @@ class ProjectRepository extends EntityRepository
     public function findById(string $id): ?Project
     {
         return $this->findOneBy(['id' => $id]);
+    }
+
+    public function getById(string $id): Project
+    {
+        $project = $this->findById($id);
+        if (is_null($project)) {
+            throw new RecordNotFoundException('Project not found');
+        }
+
+        return $project;
     }
 
     public function findByCode(string $code): ?Project

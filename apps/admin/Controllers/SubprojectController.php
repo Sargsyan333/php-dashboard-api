@@ -28,7 +28,7 @@ class SubprojectController extends BaseController
         $page = $request->getParam('page', self::DEFAULT_PAGE_VALUE);
         $perPage = $request->getParam('per_page', self::MAX_PER_PAGE);
 
-        if (empty($projectId)) {
+        if (!empty($projectId) && false === is_numeric($projectId)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',
@@ -53,6 +53,8 @@ class SubprojectController extends BaseController
                 'registration_date' => $subproject['createdAt']->format('Y-m-d H:i:s'),
                 'coworker_name' => $subproject['coworkerName'],
                 'coworker_id' => $subproject['coworkerId'],
+                'project_name' => $subproject['projectName'],
+                'project_id' => $subproject['projectId'],
             ];
         }
 

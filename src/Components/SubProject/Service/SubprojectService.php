@@ -4,6 +4,7 @@ namespace Riconas\RiconasApi\Components\SubProject\Service;
 
 use Doctrine\ORM\EntityManager;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
+use Riconas\RiconasApi\Components\Project\Repository\ProjectRepository;
 use Riconas\RiconasApi\Components\SubProject\Subproject;
 
 class SubprojectService
@@ -12,23 +13,28 @@ class SubprojectService
 
     private CoworkerRepository $coworkerRepository;
 
+    private ProjectRepository $projectRepository;
+
     public function __construct(
         EntityManager        $entityManager,
-        CoworkerRepository   $coworkerRepository
+        CoworkerRepository   $coworkerRepository,
+        ProjectRepository    $projectRepository
     ) {
         $this->entityManager = $entityManager;
         $this->coworkerRepository = $coworkerRepository;
+        $this->projectRepository = $projectRepository;
     }
 
     public function createSubproject(string $code, string $projectId, string $coworkerId): void
     {
         $coworker = $this->coworkerRepository->findById($coworkerId);
+        $project = $this->projectRepository->getById($projectId);
 
         $subproject = new Subproject();
         $subproject
             ->setCode($code)
             ->setCoworker($coworker)
-            ->setProjectId($projectId);
+            ->setProject($project);
         ;
 
         $this->entityManager->persist($subproject);
@@ -42,10 +48,11 @@ class SubprojectService
         string     $newCoworkerId,
     ): void{
         $newCoworker = $this->coworkerRepository->findById($newCoworkerId);
+        $newProject = $this->projectRepository->getById($newProjectId);
 
         $subproject
             ->setCode($newCode)
-            ->setProjectId($newProjectId)
+            ->setProject($newProject)
             ->setCoworker($newCoworker);
 
         $this->entityManager->persist($subproject);
