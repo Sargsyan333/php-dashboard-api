@@ -151,4 +151,28 @@ class SubprojectController extends BaseController
 
         return $response->withJson([], 204);
     }
+
+    public function searchAction(ServerRequest $request, Response $response): Response
+    {
+        $searchedCode = $request->getParam('code');
+        if (empty($searchedCode)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $subprojects = $this->subprojectRepository->searchByCode($searchedCode, 20);
+        $searchData = [];
+        foreach ($subprojects as $subproject) {
+            $searchData[] = [
+                'name' => $subproject['code'],
+                'value' => $subproject['id'],
+            ];
+        }
+
+        return $response->withJson(['items' => $searchData], 200);
+    }
 }
