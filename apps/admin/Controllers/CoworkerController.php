@@ -14,7 +14,6 @@ class CoworkerController extends BaseController
 {
     private const ERROR_DUPLICATE_COWORKER_NAME = 'duplicate_name';
     private const ERROR_DUPLICATE_COWORKER_EMAIL = 'duplicate_email';
-    protected const MAX_PER_PAGE = 100;
 
     private CoworkerService $coworkerService;
 

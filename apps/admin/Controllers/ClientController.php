@@ -9,8 +9,7 @@ use Slim\Http\ServerRequest;
 
 class ClientController extends BaseController
 {
-    private const ERROR_DUPLICATE_CLIENT_NAME = 'duplicate_name';
-    protected const MAX_PER_PAGE = 100;
+    private const ERROR_DUPLICATE_NAME = 'duplicate_name';
 
     private ClientRepository $clientRepository;
 
@@ -38,7 +37,7 @@ class ClientController extends BaseController
         $clientWithSameName = $this->clientRepository->findByName($name);
         if (false === is_null($clientWithSameName)) {
             $result = [
-                'code' => self::ERROR_DUPLICATE_CLIENT_NAME,
+                'code' => self::ERROR_DUPLICATE_NAME,
                 'message' => 'Client with same name already exists',
             ];
 
@@ -121,7 +120,7 @@ class ClientController extends BaseController
             $clientWithSameName = $this->clientRepository->findByName($newName);
             if (false === is_null($clientWithSameName)) {
                 $result = [
-                    'code' => self::ERROR_DUPLICATE_CLIENT_NAME,
+                    'code' => self::ERROR_DUPLICATE_NAME,
                     'message' => 'Client with same name already exists',
                 ];
 

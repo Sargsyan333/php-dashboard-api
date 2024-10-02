@@ -11,7 +11,6 @@ class ProjectController extends BaseController
 {
     private const ERROR_DUPLICATE_NAME = 'duplicate_name';
     private const ERROR_DUPLICATE_CODE = 'duplicate_code';
-    protected const MAX_PER_PAGE = 100;
 
     private ProjectService $projectService;
 
