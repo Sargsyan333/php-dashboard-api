@@ -24,10 +24,14 @@ class ProjectService
         $this->coworkerRepository = $coworkerRepository;
     }
 
-    public function createProject(string $name, string $code, string $clientId, string $coworkerId): void
+    public function createProject(string $name, string $code, string $clientId, ?string $coworkerId): void
     {
         $client = $this->clientRepository->getById($clientId);
-        $coworker = $this->coworkerRepository->findById($coworkerId);
+
+        $coworker = null;
+        if ($coworkerId) {
+            $coworker = $this->coworkerRepository->findById($coworkerId);
+        }
 
         $project = new Project();
         $project
@@ -46,10 +50,14 @@ class ProjectService
         string $newName,
         string $newCode,
         string $newClientId,
-        string $newCoworkerId,
-    ): void{
+        ?string $newCoworkerId,
+    ): void {
         $newClient = $this->clientRepository->getById($newClientId);
-        $newCoworker = $this->coworkerRepository->findById($newCoworkerId);
+
+        $newCoworker = null;
+        if ($newCoworkerId) {
+            $newCoworker = $this->coworkerRepository->findById($newCoworkerId);
+        }
 
         $project
             ->setCode($newCode)
