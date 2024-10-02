@@ -3,8 +3,8 @@
 namespace Riconas\RiconasApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
-use Riconas\RiconasApi\Components\SubProject\Repository\SubprojectRepository;
-use Riconas\RiconasApi\Components\SubProject\Service\SubprojectService;
+use Riconas\RiconasApi\Components\Subproject\Repository\SubprojectRepository;
+use Riconas\RiconasApi\Components\Subproject\Service\SubprojectService;
 use Slim\Http\ServerRequest;
 
 class SubprojectController extends BaseController

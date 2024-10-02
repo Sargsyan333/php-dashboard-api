@@ -29,7 +29,7 @@ class NvtRepository extends EntityRepository
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select(
-                'b.id, n.code, n.createdAt, cw.id as coworkerId, cw.companyName as coworkerName, sp.id as subprojectId, sp.code as subprojectCode'
+                'n.id, n.code, n.createdAt, cw.id as coworkerId, cw.companyName as coworkerName, sp.id as subprojectId, sp.code as subprojectCode'
             )
             ->from(Nvt::class, 'n')
             ->leftJoin('n.coworker', 'cw')
@@ -38,7 +38,7 @@ class NvtRepository extends EntityRepository
 
         if (false === is_null($subprojectId)) {
             $queryBuilder
-                ->where('s.subprojectId = :subprojectId')
+                ->where('n.subprojectId = :subprojectId')
                 ->setParameter('subprojectId', $subprojectId);
         }
 

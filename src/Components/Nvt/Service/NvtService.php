@@ -5,7 +5,7 @@ namespace Riconas\RiconasApi\Components\Nvt\Service;
 use Doctrine\ORM\EntityManager;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\Nvt\Nvt;
-use Riconas\RiconasApi\Components\SubProject\Repository\SubprojectRepository;
+use Riconas\RiconasApi\Components\Subproject\Repository\SubprojectRepository;
 
 class NvtService
 {

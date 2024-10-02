@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\Coworker\Coworker;
-use Riconas\RiconasApi\Components\SubProject\Subproject;
+use Riconas\RiconasApi\Components\Subproject\Subproject;
 
 #[Entity, Table(name: 'nvts')]
 class Nvt
@@ -21,7 +21,7 @@ class Nvt
     private string $id;
 
     #[Column(name: 'subproject_id', type: 'string', nullable: false)]
-    private string $subProjectId;
+    private string $subprojectId;
 
     #[ManyToOne(targetEntity: Subproject::class)]
     #[JoinColumn(name: 'subproject_id', referencedColumnName: 'id')]
@@ -40,6 +40,11 @@ class Nvt
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getSubproject(): Subproject

@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\SubProject;
+namespace Riconas\RiconasApi\Components\Subproject;
 
 use DateTimeImmutable;
 

@@ -1,11 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\SubProject\Repository;
+namespace Riconas\RiconasApi\Components\Subproject\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\SubProject\Subproject;
+use Riconas\RiconasApi\Components\Subproject\Subproject;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
 class SubprojectRepository extends EntityRepository
 {
@@ -17,6 +18,16 @@ class SubprojectRepository extends EntityRepository
     public function findById(string $id): ?Subproject
     {
         return $this->findOneBy(['id' => $id]);
+    }
+
+    public function getById(string $id): Subproject
+    {
+        $subproject = $this->findById($id);
+        if (is_null($subproject)) {
+            throw new RecordNotFoundException("Subproject not found");
+        }
+
+        return $subproject;
     }
 
     public function findByCodeAndProjectId(string $code, string $projectId): ?Subproject
