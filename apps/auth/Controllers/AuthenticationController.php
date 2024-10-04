@@ -22,9 +22,10 @@ class AuthenticationController extends BaseController
 
     public function authenticateAction(ServerRequest $request, Response $response): Response
     {
+        $appName = $this->getAppHeaderValue($request);
+
         $email = $request->getParam('email');
         $password = $request->getParam('password');
-        $appName = $request->getHeaderLine('App');
 
         if (empty($email) || empty($password) || empty($appName)) {
             $result = [
@@ -35,7 +36,7 @@ class AuthenticationController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        if (false === $this->validateAppName($appName)) {
+        if (false === $this->validateAppHeader($appName)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',

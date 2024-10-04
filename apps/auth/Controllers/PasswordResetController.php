@@ -23,8 +23,9 @@ class PasswordResetController extends BaseController
 
     public function requestPasswordResetAction(ServerRequest $request, Response $response): Response
     {
+        $appName = $this->getAppHeaderValue($request);
+
         $email = $request->getParam('email');
-        $appName = $request->getHeaderLine('App');
 
         if (empty($email) || empty($appName)) {
             $result = [
@@ -35,7 +36,7 @@ class PasswordResetController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        if (false === $this->validateAppName($appName)) {
+        if (false === $this->validateAppHeader($appName)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',
@@ -62,10 +63,10 @@ class PasswordResetController extends BaseController
 
     public function resetPasswordAction(ServerRequest $request, Response $response): Response
     {
+        $appName = $this->getAppHeaderValue($request);
+
         $passwordResetCode = $request->getParam('code');
         $newPassword = $request->getParam('new_password');
-
-        $appName = $request->getHeaderLine('App');
 
         if (empty($passwordResetCode) || empty($newPassword) || empty($appName)) {
             $result = [
@@ -76,7 +77,7 @@ class PasswordResetController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        if (false === $this->validateAppName($appName)) {
+        if (false === $this->validateAppHeader($appName)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',

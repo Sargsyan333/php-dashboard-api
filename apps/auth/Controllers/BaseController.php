@@ -3,6 +3,7 @@
 namespace Riconas\RiconasApi\Auth\Controllers;
 
 use Riconas\RiconasApi\Components\User\UserRole;
+use Slim\Http\ServerRequest;
 
 abstract class BaseController
 {
@@ -22,7 +23,12 @@ abstract class BaseController
         self::APP_NAME_COWORKER => UserRole::ROLE_COWORKER,
     ];
 
-    protected function validateAppName(string $appName): bool
+    protected function getAppHeaderValue(ServerRequest $request): string
+    {
+        return $request->getHeaderLine('App');
+    }
+
+    protected function validateAppHeader(string $appName): bool
     {
         return in_array($appName, self::APP_NAMES);
     }
