@@ -1,7 +1,8 @@
 /vendor/
-
+/cgi-bin/
 .idea/
-
 .env
-
 test.php
+.ftpquota
+.htaccess
+.well-known/
