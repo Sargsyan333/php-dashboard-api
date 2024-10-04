@@ -12,6 +12,7 @@
     "autoload": {
         "psr-4": {
             "Riconas\\RiconasApi\\Admin\\": "apps/admin/",
+            "Riconas\\RiconasApi\\Coworker\\": "apps/coworker/",
             "Riconas\\RiconasApi\\Auth\\": "apps/auth/",
             "Riconas\\RiconasApi\\": "src/"
         }

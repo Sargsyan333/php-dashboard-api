@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Admin;
+namespace Riconas\RiconasApi\Coworker;
 
 require_once __DIR__ . '/../../src/bootstrap.php';
 
@@ -13,7 +13,7 @@ $app = Bridge::create($container);
 $app->add(
     new \Riconas\RiconasApi\Integrations\Slim\Middleware\Authentication(
         $container->get(\Riconas\RiconasApi\Authentication\AuthenticationService::class),
-         BaseController::APP_NAME_ADMIN,
+        BaseController::APP_NAME_COWORKER,
     ),
 );
 
@@ -23,7 +23,6 @@ $errorMiddleware = $app->addErrorMiddleware($_ENV['APP_DEBUG'] === "true", true,
 
 // Error handler
 $errorHandler = $errorMiddleware->getDefaultErrorHandler();
-//$errorHandler->setLogErrorRenderer($container->get(CustomLogRenderer::class));
 $errorHandler->registerErrorRenderer('application/json', ApiErrorRenderer::class);
 
 require_once 'routes.php';
