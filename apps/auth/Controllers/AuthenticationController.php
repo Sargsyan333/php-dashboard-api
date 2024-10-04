@@ -5,7 +5,6 @@ namespace Riconas\RiconasApi\Auth\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Authentication\AuthenticationService;
 use Riconas\RiconasApi\Components\User\Repository\UserRepository;
-use Riconas\RiconasApi\Components\User\UserRole;
 use Slim\Http\ServerRequest;
 
 class AuthenticationController extends BaseController
@@ -30,13 +29,22 @@ class AuthenticationController extends BaseController
         if (empty($email) || empty($password) || empty($appName)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
-                'message' => 'Invalid request params'
+                'message' => 'Invalid request params',
             ];
 
             return $response->withJson($result, 400);
         }
 
-        $userRole = $appName === 'admin' ? UserRole::ROLE_ADMIN : UserRole::ROLE_COWORKER;
+        if (false === $this->validateAppName($appName)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $userRole = self::APP_NAME_USER_ROLE_MAP[$appName];
         $user = $this->userRepository->findByEmailAndRole($email, $userRole);
         if (is_null($user)) {
             $result = [

@@ -5,7 +5,6 @@ namespace Riconas\RiconasApi\Auth\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\PasswordResetRequest\Service\PasswordResetRequestService;
 use Riconas\RiconasApi\Components\User\Repository\UserRepository;
-use Riconas\RiconasApi\Components\User\UserRole;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Slim\Http\ServerRequest;
 
@@ -36,7 +35,16 @@ class PasswordResetController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        $userRole = $appName === 'admin' ? UserRole::ROLE_ADMIN : UserRole::ROLE_COWORKER;
+        if (false === $this->validateAppName($appName)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $userRole = self::APP_NAME_USER_ROLE_MAP[$appName];
         $user = $this->userRepository->findByEmailAndRole($email, $userRole);
         if (is_null($user)) {
             $result = [
@@ -60,6 +68,15 @@ class PasswordResetController extends BaseController
         $appName = $request->getHeaderLine('App');
 
         if (empty($passwordResetCode) || empty($newPassword) || empty($appName)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        if (false === $this->validateAppName($appName)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',
