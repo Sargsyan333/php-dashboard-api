@@ -10,7 +10,7 @@ abstract class BaseController
     protected const ERROR_INVALID_REQUEST_PARAMS = 'invalid_request_params';
     protected const ERROR_NOT_FOUND = 'not_found';
 
-    protected const APP_NAME_ADMIN = 'admin';
+    public const APP_NAME_ADMIN = 'admin';
     protected const APP_NAME_COWORKER = 'coworker';
 
     private const APP_NAMES = [

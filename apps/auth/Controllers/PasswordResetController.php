@@ -56,47 +56,8 @@ class PasswordResetController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        $this->passwordResetRequestService->requestPasswordReset($user);
+        $this->passwordResetRequestService->requestPasswordReset($user, $appName);
 
         return $response->withJson([], 202);
-    }
-
-    public function resetPasswordAction(ServerRequest $request, Response $response): Response
-    {
-        $appName = $this->getAppHeaderValue($request);
-
-        $passwordResetCode = $request->getParam('code');
-        $newPassword = $request->getParam('new_password');
-
-        if (empty($passwordResetCode) || empty($newPassword) || empty($appName)) {
-            $result = [
-                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
-                'message' => 'Invalid request params',
-            ];
-
-            return $response->withJson($result, 400);
-        }
-
-        if (false === $this->validateAppHeader($appName)) {
-            $result = [
-                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
-                'message' => 'Invalid request params',
-            ];
-
-            return $response->withJson($result, 400);
-        }
-
-        try {
-            $this->passwordResetRequestService->resetUserPassword($passwordResetCode, $newPassword);
-        } catch (RecordNotFoundException) {
-            $result = [
-                'code' => self::ERROR_NOT_FOUND,
-                'message' => 'Password reset code not found',
-            ];
-
-            return $response->withJson($result, 404);
-        }
-
-        return $response->withJson([], 204);
     }
 }

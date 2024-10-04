@@ -3,10 +3,12 @@
 namespace Riconas\RiconasApi\Components\PasswordResetRequest\Service;
 
 use Doctrine\ORM\EntityManager;
+use Riconas\RiconasApi\Auth\Controllers\BaseController;
 use Riconas\RiconasApi\Components\PasswordResetRequest\PasswordResetRequest;
 use Riconas\RiconasApi\Components\PasswordResetRequest\Repository\PasswordResetRequestRepository;
 use Riconas\RiconasApi\Components\User\Service\UserService;
 use Riconas\RiconasApi\Components\User\User;
+use Riconas\RiconasApi\Components\User\UserStatus;
 use Riconas\RiconasApi\Components\UserPreference\Service\UserPreferenceService;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Riconas\RiconasApi\Mailing\MailingService;
@@ -40,8 +42,12 @@ class PasswordResetRequestService
         $this->userPreferenceService = $userPreferenceService;
     }
 
-    public function requestPasswordReset(User $user): void
+    public function requestPasswordReset(User $user, string $app): void
     {
+        if ($user->getStatus() === UserStatus::STATUS_INACTIVE) {
+            return;
+        }
+
         $previousPasswordResetRequest = $this->passwordResetRequestRepository->findByUserId($user->getId());
         if ($previousPasswordResetRequest) {
             $previousPasswordRequestTime = $previousPasswordResetRequest->getCreatedAt()->getTimestamp();
@@ -62,7 +68,7 @@ class PasswordResetRequestService
         $this->entityManager->flush();
 
         $userPreferenceLang = $this->userPreferenceService->getLanguagePreference($user->getId());
-        $passwordResetLink = $this->buildResetPasswordLink($passwordResetRequest->getCode());
+        $passwordResetLink = $this->buildResetPasswordLink($passwordResetRequest->getCode(), $app);
         $this->mailingService->sendPasswordRecoveryEmail($user->getEmail(), $userPreferenceLang, $passwordResetLink);
     }
 
@@ -84,8 +90,13 @@ class PasswordResetRequestService
         $this->entityManager->flush();
     }
 
-    private function buildResetPasswordLink(string $passwordResetRequestCode): string
+    private function buildResetPasswordLink(string $passwordResetRequestCode, string $app): string
     {
-        return "{$_ENV['WEBSITE_DOMAIN']}/reset-password?code={$passwordResetRequestCode}";
+        $baseUrl = $_ENV['WEBSITE_DOMAIN'];
+        if ($app === BaseController::APP_NAME_ADMIN) {
+            $baseUrl = $_ENV['ADMIN_WEBSITE_DOMAIN'];
+        }
+
+        return "{$baseUrl}/reset-password?code={$passwordResetRequestCode}";
     }
 }
