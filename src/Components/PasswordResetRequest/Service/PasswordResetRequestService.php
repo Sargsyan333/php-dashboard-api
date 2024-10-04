@@ -45,7 +45,7 @@ class PasswordResetRequestService
     public function requestPasswordReset(User $user, string $app): void
     {
         if ($user->getStatus() === UserStatus::STATUS_INACTIVE) {
-            return;
+            throw new \RuntimeException('Inactive user encountered');
         }
 
         $previousPasswordResetRequest = $this->passwordResetRequestRepository->findByUserId($user->getId());

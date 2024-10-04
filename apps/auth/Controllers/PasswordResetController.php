@@ -5,7 +5,6 @@ namespace Riconas\RiconasApi\Auth\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\PasswordResetRequest\Service\PasswordResetRequestService;
 use Riconas\RiconasApi\Components\User\Repository\UserRepository;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Slim\Http\ServerRequest;
 
 class PasswordResetController extends BaseController
