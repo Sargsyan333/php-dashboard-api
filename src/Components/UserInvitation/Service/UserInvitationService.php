@@ -3,24 +3,39 @@
 namespace Riconas\RiconasApi\Components\UserInvitation\Service;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Riconas\RiconasApi\Auth\Controllers\BaseController;
+use Riconas\RiconasApi\Components\User\Service\UserService;
 use Riconas\RiconasApi\Components\User\User;
+use Riconas\RiconasApi\Components\User\UserStatus;
 use Riconas\RiconasApi\Components\UserInvitation\Repository\UserInvitationRepository;
 use Riconas\RiconasApi\Components\UserInvitation\UserInvitation;
 use Riconas\RiconasApi\Components\UserInvitation\UserInvitationStatus;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Riconas\RiconasApi\Utility\StringUtility;
 
 class UserInvitationService
 {
     private EntityManager $entityManager;
     private UserInvitationRepository $userInvitationRepository;
+    private UserService $userService;
 
-    public function __construct(EntityManager $entityManager, UserInvitationRepository $userInvitationRepository)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        UserInvitationRepository $userInvitationRepository,
+        UserService $userService
+    ) {
         $this->entityManager = $entityManager;
         $this->userInvitationRepository = $userInvitationRepository;
+        $this->userService = $userService;
     }
 
-    public function createInvitation(User $user): string
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function createInvitation(User $user, string $app): string
     {
         $userInvitation = $this->userInvitationRepository->findByUserId($user->getId());
         if (false === is_null($userInvitation)) {
@@ -32,14 +47,14 @@ class UserInvitationService
         } else {
             $userInvitation = new UserInvitation();
             $userInvitation
-                ->setUserId($user->getId())
+                ->setUser($user)
                 ->setCode(StringUtility::generateRandomString(32));
         }
 
         $this->entityManager->persist($userInvitation);
         $this->entityManager->flush();
 
-        return $this->buildInvitationLink($userInvitation->getCode());
+        return $this->buildInvitationLink($userInvitation->getCode(), $app);
     }
 
     public function getInvitationStatus(string $userId): UserInvitationStatus
@@ -56,8 +71,40 @@ class UserInvitationService
         return UserInvitationStatus::ACCEPTED;
     }
 
-    private function buildInvitationLink(string $invitationCode): string
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     * @throws RecordNotFoundException
+     */
+    public function acceptInvitation(string $invitationAcceptCode, string $password): void
     {
-        return "{$_ENV['WEBSITE_DOMAIN']}/accept-invite?code={$invitationCode}";
+        $userInvitation = $this->userInvitationRepository->getByCode($invitationAcceptCode);
+        if ($userInvitation->getVerifiedAt()) {
+            return;
+        }
+
+        $user = $userInvitation->getUser();
+
+        $newPasswordHash = $this->userService->hashPassword($password);
+        $user
+            ->setPassword($newPasswordHash)
+            ->setStatus(UserStatus::STATUS_ACTIVE);
+
+        $this->entityManager->persist($user);
+
+        $userInvitation->setVerifiedAt(new \DateTimeImmutable('now'));
+
+        $this->entityManager->persist($userInvitation);
+        $this->entityManager->flush();
+    }
+
+    private function buildInvitationLink(string $invitationCode, string $app): string
+    {
+        $baseUrl = $_ENV['WEBSITE_DOMAIN'];
+        if ($app === BaseController::APP_NAME_ADMIN) {
+            $baseUrl = $_ENV['ADMIN_WEBSITE_DOMAIN'];
+        }
+
+        return "{$baseUrl}/accept-invite?code={$invitationCode}";
     }
 }

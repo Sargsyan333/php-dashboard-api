@@ -11,7 +11,7 @@ abstract class BaseController
     protected const ERROR_NOT_FOUND = 'not_found';
 
     public const APP_NAME_ADMIN = 'admin';
-    protected const APP_NAME_COWORKER = 'coworker';
+    public const APP_NAME_COWORKER = 'coworker';
 
     private const APP_NAMES = [
         self::APP_NAME_ADMIN,

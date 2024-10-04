@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Riconas\RiconasApi\Components\UserInvitation\UserInvitation;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
 class UserInvitationRepository extends EntityRepository
 {
@@ -17,6 +18,16 @@ class UserInvitationRepository extends EntityRepository
     public function findByUserId(string $userId): ?UserInvitation
     {
         return $this->findOneBy(['userId' => $userId]);
+    }
+
+    public function getByCode(string $code): UserInvitation
+    {
+        $userInvitation = $this->findOneBy(['code' => $code]);
+        if (is_null($userInvitation)) {
+            throw new RecordNotFoundException('User invitation not found');
+        }
+
+        return $userInvitation;
     }
 
     public function deleteByUserId(string $userId): void

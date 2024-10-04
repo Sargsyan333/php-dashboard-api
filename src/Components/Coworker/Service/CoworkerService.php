@@ -2,6 +2,7 @@
 
 namespace Riconas\RiconasApi\Components\Coworker\Service;
 use Doctrine\ORM\EntityManager;
+use Riconas\RiconasApi\Auth\Controllers\BaseController;
 use Riconas\RiconasApi\Components\Coworker\Coworker;
 use Riconas\RiconasApi\Components\User\User;
 use Riconas\RiconasApi\Components\User\UserRole;
@@ -89,7 +90,7 @@ class CoworkerService
             return;
         }
 
-        $invitationLink = $this->userInvitationService->createInvitation($coworkerUser);
+        $invitationLink = $this->userInvitationService->createInvitation($coworkerUser, BaseController::APP_NAME_COWORKER);
 
         $userPreferenceLang = $this->userPreferenceService->getLanguagePreference($coworkerUser->getId());
         $this->mailingService->sendCoworkerInvitationEmail(

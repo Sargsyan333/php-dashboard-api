@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Riconas\RiconasApi\Components\User\User;
 
 #[Entity, Table(name: 'user_invitations')]
 class UserInvitation
@@ -27,6 +30,10 @@ class UserInvitation
 
     #[Column(name: 'verified_at', type: 'datetimetz_immutable', nullable: true)]
     private ?DateTimeImmutable $verifiedAt;
+
+    #[OneToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private User $user;
 
     public function __construct()
     {
@@ -75,6 +82,18 @@ class UserInvitation
     public function setVerifiedAt(DateTimeImmutable $verifiedAt): self
     {
         $this->verifiedAt = $verifiedAt;
+
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

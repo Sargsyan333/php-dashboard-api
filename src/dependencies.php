@@ -73,6 +73,7 @@ return [
         return new Components\UserInvitation\Service\UserInvitationService(
             $c->get(EntityManager::class),
             $c->get(Components\UserInvitation\Repository\UserInvitationRepository::class),
+            $c->get(Components\User\Service\UserService::class),
         );
     },
     Components\UserPreference\Repository\UserPreferenceRepository::class => function (ContainerInterface $c) {
