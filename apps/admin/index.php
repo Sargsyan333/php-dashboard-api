@@ -26,7 +26,7 @@ $errorHandler = $errorMiddleware->getDefaultErrorHandler();
 //$errorHandler->setLogErrorRenderer($container->get(CustomLogRenderer::class));
 $errorHandler->registerErrorRenderer('application/json', ApiErrorRenderer::class);
 
-require_once 'routes.php';
+require_once 'routes/index.php';
 
 // Run app
 $app->run();
