@@ -24,22 +24,37 @@ class NvtRepository extends EntityRepository
         return $this->findOneBy(['code' => $code, 'subprojectId' => $subprojectId]);
     }
 
-    public function getList(?string $subprojectId, int $offset, int $limit): array
+    public function getList(?string $projectId, ?string $subprojectId, int $offset, int $limit): array
     {
+        $fields = [
+            'n.id',
+            'n.code',
+            'n.createdAt',
+            'cw.id as coworkerId',
+            'cw.companyName as coworkerName',
+            'sp.id as subprojectId',
+            'sp.code as subprojectCode',
+            'sp.projectId as projectId',
+            'p.name as projectName',
+        ];
+
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select(
-                'n.id, n.code, n.createdAt, cw.id as coworkerId, cw.companyName as coworkerName, sp.id as subprojectId, sp.code as subprojectCode'
-            )
+            ->select(implode(', ', $fields))
             ->from(Nvt::class, 'n')
             ->leftJoin('n.coworker', 'cw')
-            ->leftJoin('n.subproject', 'sp')
+            ->join('n.subproject', 'sp')
+            ->join('sp.project', 'p')
         ;
 
         if (false === is_null($subprojectId)) {
             $queryBuilder
                 ->where('n.subprojectId = :subprojectId')
                 ->setParameter('subprojectId', $subprojectId);
+        } elseif (false === is_null($projectId)) {
+            $queryBuilder
+                ->where('sp.projectId = :projectId')
+                ->setParameter('projectId', $projectId);
         }
 
         $queryBuilder->setFirstResult($offset)->setMaxResults($limit);

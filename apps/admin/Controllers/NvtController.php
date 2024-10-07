@@ -21,6 +21,7 @@ class NvtController extends BaseController
 
     public function listAction(ServerRequest $request, Response $response): Response
     {
+        $projectId = $request->getParam('project_id');
         $subprojectId = $request->getParam('subproject_id');
 
         $page = $request->getParam('page', self::DEFAULT_PAGE_VALUE);
@@ -35,13 +36,22 @@ class NvtController extends BaseController
             return $response->withJson($result, 400);
         }
 
+        if (!empty($projectId) && false === is_numeric($projectId)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
         $response = $this->validatePagingParams($page, $perPage, $response);
         if (400 === $response->getStatusCode()) {
             return $response;
         }
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
-        $nvtItems = $this->nvtRepository->getList($subprojectId, $offset, $perPage);
+        $nvtItems = $this->nvtRepository->getList($projectId, $subprojectId, $offset, $perPage);
 
         $responseData = [];
         foreach ($nvtItems as $nvt) {
@@ -53,6 +63,8 @@ class NvtController extends BaseController
                 'coworker_id' => $nvt['coworkerId'],
                 'subproject_code' => $nvt['subprojectCode'],
                 'subproject_id' => $nvt['subprojectId'],
+                'project_name' => $nvt['projectName'],
+                'project_id' => $nvt['projectId'],
             ];
         }
 

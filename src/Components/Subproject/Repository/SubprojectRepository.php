@@ -62,15 +62,14 @@ class SubprojectRepository extends EntityRepository
         return $result;
     }
 
-    public function searchByCode(string $searchedCode, int $limit): array
+    public function searchByProjectId(string $searchedProjectId): array
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select('sp.id, sp.code')
             ->from(Subproject::class, 'sp')
-            ->where('sp.code LIKE :searchedCode')
-            ->setParameter('searchedCode', '%' . $searchedCode . '%')
-            ->setMaxResults($limit)
+            ->where('sp.projectId = :projectId')
+            ->setParameter('projectId', $searchedProjectId)
         ;
         $query = $queryBuilder->getQuery();
 
