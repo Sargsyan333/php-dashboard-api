@@ -60,6 +60,42 @@ return [
             $c->get(Components\UserInvitation\Repository\UserInvitationRepository::class),
         );
     },
+    Components\MontageJob\Repository\MontageJobRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageJob\Repository\MontageJobRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageJob\Service\MontageJobService::class => function (ContainerInterface $c) {
+        return new Components\MontageJob\Service\MontageJobService(
+            $c->get(EntityManager::class),
+            $c->get(Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class),
+        );
+    },
+    Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class => function (ContainerInterface $c) {
+        return new Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageJobCustomer\Repository\MontageJobCustomerRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageJobCustomer\Repository\MontageJobCustomerRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageHup\Repository\MontageHupRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageHup\Repository\MontageHupRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageJobOnt\Repository\MontageJobOntRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageJobOnt\Repository\MontageJobOntRepository(
+            $c->get(EntityManager::class),
+        );
+    },
     Components\User\Repository\UserRepository::class => function (ContainerInterface $c) {
         return new Components\User\Repository\UserRepository(
             $c->get(EntityManager::class),

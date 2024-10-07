@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-#[Entity, Table(name: 'montage_customers')]
+#[Entity, Table(name: 'montage_job_customers')]
 class MontageJobCustomer
 {
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
