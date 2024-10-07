@@ -6,3 +6,4 @@ test.php
 .ftpquota
 .htaccess
 .well-known/
+data/doctrine/proxies/

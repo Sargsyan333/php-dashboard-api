@@ -27,7 +27,11 @@ return [
             'dbname' => $dbConfigs['database'],
         ];
 
-        $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(['/'], $_ENV['APP_DEBUG'] === "true");
+        $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+            ['/'],
+            $_ENV['APP_DEBUG'] === "true",
+            __DIR__ . '/../data/doctrine/proxies',
+        );
         $connection = \Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
 
         return new EntityManager($connection, $config);
