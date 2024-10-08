@@ -16,6 +16,9 @@ class MontageJobCustomer
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
     private string $id;
 
+    #[Column(name: 'montage_job_id', type: 'string', nullable: false)]
+    private string $montageJobId;
+
     #[Column(name: 'name', type: 'string', nullable: false)]
     private string $name;
 
@@ -41,6 +44,18 @@ class MontageJobCustomer
         return $this->id;
     }
 
+    public function getMontageJobId(): string
+    {
+        return $this->montageJobId;
+    }
+
+    public function setMontageJobId(string $montageJobId): MontageJobCustomer
+    {
+        $this->montageJobId = $montageJobId;
+
+        return $this;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -60,7 +75,7 @@ class MontageJobCustomer
 
     public function setEmail(string $email): self
     {
-        $this->email = $email;
+        $this->email = mb_strtolower($email);
 
         return $this;
     }

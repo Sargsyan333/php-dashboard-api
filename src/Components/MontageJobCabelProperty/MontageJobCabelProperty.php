@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\Table;
 class MontageJobCabelProperty
 {
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
-    private string $id;
+    private readonly string $id;
 
     #[Column(name: 'montage_job_id', type: 'string', nullable: false)]
     private string $jobId;
@@ -22,13 +22,13 @@ class MontageJobCabelProperty
     #[Column(name: 'cabel_type_planned', type: 'string', nullable: false)]
     private string $cabelTypePlanned;
 
-    #[Column(name: 'cabel_type_planned', type: 'string', nullable: true)]
+    #[Column(name: 'cabel_type_edited', type: 'string', nullable: true)]
     private ?string $cabelTypeEdited;
 
     #[Column(name: 'cabel_code_planned', type: 'string', nullable: false)]
     private string $cabelCodePlanned;
 
-    #[Column(name: 'tube_color_planned', type: 'string', nullable: true)]
+    #[Column(name: 'cabel_code_edited', type: 'string', nullable: true)]
     private ?string $cabelCodeEdited;
 
     #[Column(name: 'tube_color_planned', type: 'string', nullable: false)]
@@ -40,10 +40,10 @@ class MontageJobCabelProperty
     #[Column(name: 'cable_position', type: 'string', nullable: true)]
     private ?string $cabelPosition;
 
-    #[Column(name: 'cabel_length', type: 'number', nullable: true)]
+    #[Column(name: 'cabel_length', type: 'integer', nullable: true)]
     private ?int $cabelLength;
 
-    #[Column(name: 'disability_length', type: 'number', nullable: true)]
+    #[Column(name: 'disability_length', type: 'integer', nullable: true)]
     private ?int $disabilityLength;
 
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
