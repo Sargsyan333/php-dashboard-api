@@ -69,6 +69,7 @@ return [
         return new Components\MontageJob\Service\MontageJobService(
             $c->get(EntityManager::class),
             $c->get(Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class),
+            $c->get(Components\MontageHup\Service\MontageHupService::class),
         );
     },
     Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository::class => function (ContainerInterface $c) {
