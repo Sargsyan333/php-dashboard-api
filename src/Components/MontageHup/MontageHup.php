@@ -31,7 +31,7 @@ class MontageHup
     #[Column(name: 'location', type: 'string', nullable: true)]
     private ?string $location;
 
-    #[Column(name: 'status', type: 'string', nullable: false)]
+    #[Column(name: 'status', type: 'string', nullable: false, enumType: HupStatus::class)]
     private HupStatus $status;
 
     #[Column(name: 'opened_hup_photo_path', type: 'string', nullable: true)]
@@ -45,6 +45,7 @@ class MontageHup
 
     public function __construct()
     {
+        $this->status = HupStatus::NOT_INSTALLED;
         $this->createdAt = new DateTimeImmutable('now');
     }
 
