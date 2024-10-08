@@ -11,4 +11,5 @@ $app->group('/nvt', function (RouteCollectorProxy $group) {
     $group->post('', Controllers\NvtController::class . ':createOneAction');
     $group->delete('/{id}', Controllers\NvtController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\NvtController::class . ':updateOneAction');
+    $group->get('/search', Controllers\NvtController::class . ':searchAction');
 });

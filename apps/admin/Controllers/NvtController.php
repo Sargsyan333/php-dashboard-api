@@ -161,4 +161,28 @@ class NvtController extends BaseController
 
         return $response->withJson([], 204);
     }
+
+    public function searchAction(ServerRequest $request, Response $response): Response
+    {
+        $searchedSubprojectId = $request->getParam('subproject_id');
+        if (empty($searchedSubprojectId)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $nvtItems = $this->nvtRepository->searchBySubprojectId($searchedSubprojectId);
+        $searchData = [];
+        foreach ($nvtItems as $nvt) {
+            $searchData[] = [
+                'name' => $nvt['code'],
+                'value' => $nvt['id'],
+            ];
+        }
+
+        return $response->withJson(['items' => $searchData], 200);
+    }
 }
