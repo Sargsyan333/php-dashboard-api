@@ -7,23 +7,25 @@ use Riconas\RiconasApi\Components\MontageHup\Service\MontageHupService;
 use Riconas\RiconasApi\Components\MontageJob\BuildingType;
 use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
+use Riconas\RiconasApi\Components\MontageJobOnt\Service\MontageJobOntService;
 
 class MontageJobService
 {
     private EntityManager $entityManager;
-
     private MontageJobCabelPropertyService $montageJobCabelPropertyService;
-
     private MontageHupService $montageHupService;
+    private MontageJobOntService $montageJobOntService;
 
     public function __construct(
         EntityManager $entityManager,
         MontageJobCabelPropertyService $montageJobCabelPropertyService,
-        MontageHupService $montageHupService
+        MontageHupService $montageHupService,
+        MontageJobOntService $montageJobOntService
     ) {
         $this->entityManager = $entityManager;
         $this->montageJobCabelPropertyService = $montageJobCabelPropertyService;
         $this->montageHupService = $montageHupService;
+        $this->montageJobOntService = $montageJobOntService;
     }
 
     public function createJob(
@@ -31,10 +33,10 @@ class MontageJobService
         string $addressLine1,
         string $addressLine2,
         BuildingType $buildingType,
-        string $coworkerId,
+        ?string $coworkerId,
         array $cabelData,
         array $hupData,
-        array $ontData = [],
+        array $ontData,
     ): void {
         $montageJob = new MontageJob();
         $montageJob
@@ -53,5 +55,10 @@ class MontageJobService
 
         // Create montage hup
         $this->montageHupService->createHup($montageJob->getId(), $hupData);
+
+        // Create ONTs
+        if (count($ontData) > 0) {
+            $this->montageJobOntService->createOnts($montageJob->getId(), $ontData);
+        }
     }
 }

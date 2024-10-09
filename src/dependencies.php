@@ -70,6 +70,7 @@ return [
             $c->get(EntityManager::class),
             $c->get(Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class),
             $c->get(Components\MontageHup\Service\MontageHupService::class),
+            $c->get(Components\MontageJobOnt\Service\MontageJobOntService::class),
         );
     },
     Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository::class => function (ContainerInterface $c) {
@@ -94,6 +95,11 @@ return [
     },
     Components\MontageJobOnt\Repository\MontageJobOntRepository::class => function (ContainerInterface $c) {
         return new Components\MontageJobOnt\Repository\MontageJobOntRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageJobOnt\Service\MontageJobOntService::class => function (ContainerInterface $c) {
+        return new Components\MontageJobOnt\Service\MontageJobOntService(
             $c->get(EntityManager::class),
         );
     },

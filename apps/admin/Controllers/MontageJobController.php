@@ -36,6 +36,8 @@ class MontageJobController extends BaseController
         $hupCustomerPhoneNumber1 = $request->getParam('hup_customer_phone_number1');
         $hupCustomerPhoneNumber2 = $request->getParam('hup_customer_phone_number2');
 
+        $ontData = $request->getParam('ont');
+
         $this->montageJobService->createJob(
             $nvtId,
             $addressLine1,
@@ -54,6 +56,7 @@ class MontageJobController extends BaseController
                 'customer_phone_number1' => $hupCustomerPhoneNumber1,
                 'customer_phone_number2' => $hupCustomerPhoneNumber2,
             ],
+            $ontData
         );
 
         return $response->withJson([], 201);

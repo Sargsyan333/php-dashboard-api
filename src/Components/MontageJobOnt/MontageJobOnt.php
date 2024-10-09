@@ -58,7 +58,7 @@ class MontageJobOnt
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
-        $this->activity = OntActivity::ACTIVITY_STATUS_DISABLED;
+        $this->activity = OntActivity::STATUS_DISABLED;
         $this->installationStatus = OntInstallationStatus::INSTALLATION_STATUS_NOT_INSTALLED;
     }
 
@@ -84,7 +84,7 @@ class MontageJobOnt
         return $this->customerId;
     }
 
-    public function setCustomerId(string $customerId): self
+    public function setCustomerId(?string $customerId): self
     {
         $this->customerId = $customerId;
 
@@ -192,7 +192,7 @@ class MontageJobOnt
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(?string $type): self
     {
         $this->type = $type;
 

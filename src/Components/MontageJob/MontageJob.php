@@ -97,7 +97,7 @@ class MontageJob
         return $this->coworkerId;
     }
 
-    public function setCoworkerId(string $coworkerId): self
+    public function setCoworkerId(?string $coworkerId): self
     {
         $this->coworkerId = $coworkerId;
 
