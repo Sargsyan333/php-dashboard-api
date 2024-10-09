@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 
 #[Entity, Table(name: 'montage_job_cabel_properties')]
 class MontageJobCabelProperty
@@ -48,6 +51,10 @@ class MontageJobCabelProperty
 
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
+
+    #[ManyToOne(targetEntity: MontageJob::class, inversedBy: 'cabelProperty')]
+    #[JoinColumn(name: 'montage_job_id', referencedColumnName: 'id')]
+    private MontageJob $job;
 
     public function __construct()
     {
@@ -182,5 +189,17 @@ class MontageJobCabelProperty
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getJob(): MontageJob
+    {
+        return $this->job;
+    }
+
+    public function setJob(MontageJob $job): self
+    {
+        $this->job = $job;
+
+        return $this;
     }
 }

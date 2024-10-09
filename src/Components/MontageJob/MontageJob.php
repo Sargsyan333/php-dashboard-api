@@ -8,7 +8,14 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Riconas\RiconasApi\Components\Coworker\Coworker;
+use Riconas\RiconasApi\Components\MontageHup\MontageHup;
+use Riconas\RiconasApi\Components\MontageJobCabelProperty\MontageJobCabelProperty;
+use Riconas\RiconasApi\Components\Nvt\Nvt;
 
 #[Entity, Table(name: 'montage_jobs')]
 class MontageJob
@@ -37,6 +44,20 @@ class MontageJob
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
+    #[ManyToOne(targetEntity: Nvt::class)]
+    #[JoinColumn(name: 'nvt_id', referencedColumnName: 'id')]
+    private Nvt $nvt;
+
+    #[ManyToOne(targetEntity: Coworker::class)]
+    #[JoinColumn(name: 'coworker_id', referencedColumnName: 'id')]
+    private ?Coworker $coworker;
+
+    #[OneToOne(targetEntity: MontageJobCabelProperty::class, mappedBy: 'job')]
+    private ?MontageJobCabelProperty $cabelProperty;
+
+    #[OneToOne(targetEntity: MontageHup::class, mappedBy: 'job')]
+    private ?MontageHup $hup;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
@@ -55,6 +76,18 @@ class MontageJob
     public function setNvtId(string $nvtId): self
     {
         $this->nvtId = $nvtId;
+
+        return $this;
+    }
+
+    public function getNvt(): Nvt
+    {
+        return $this->nvt;
+    }
+
+    public function setNvt(Nvt $nvt): self
+    {
+        $this->nvt = $nvt;
 
         return $this;
     }
@@ -122,5 +155,28 @@ class MontageJob
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+
+    public function getCoworker(): ?Coworker
+    {
+        return $this->coworker;
+    }
+
+    public function setCoworker(?Coworker $coworker): self
+    {
+        $this->coworker = $coworker;
+
+        return $this;
+    }
+
+    public function getCabelProperty(): ?MontageJobCabelProperty
+    {
+        return $this->cabelProperty;
+    }
+
+    public function getHup(): ?MontageHup
+    {
+        return $this->hup;
     }
 }

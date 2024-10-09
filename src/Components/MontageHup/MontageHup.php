@@ -8,7 +8,11 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Riconas\RiconasApi\Components\MontageJob\MontageJob;
+use Riconas\RiconasApi\Components\MontageJobCustomer\MontageJobCustomer;
 
 #[Entity, Table(name: 'montage_hups')]
 class MontageHup
@@ -42,6 +46,14 @@ class MontageHup
 
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
+
+    #[ManyToOne(targetEntity: MontageJobCustomer::class)]
+    #[JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+    private MontageJobCustomer $customer;
+
+    #[ManyToOne(targetEntity: MontageJob::class, inversedBy: 'hup')]
+    #[JoinColumn(name: 'montage_job_id', referencedColumnName: 'id')]
+    private MontageJob $job;
 
     public function __construct()
     {
@@ -152,5 +164,29 @@ class MontageHup
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getCustomer(): MontageJobCustomer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(MontageJobCustomer $customer): self
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getJob(): MontageJob
+    {
+        return $this->job;
+    }
+
+    public function setJob(MontageJob $job): self
+    {
+        $this->job = $job;
+
+        return $this;
     }
 }

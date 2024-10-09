@@ -4,6 +4,7 @@ namespace Riconas\RiconasApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageJob\BuildingType;
+use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJob\Service\MontageJobService;
 use Riconas\RiconasApi\Storage\StorageService;
 use Slim\Http\ServerRequest;
@@ -15,10 +16,16 @@ class MontageJobController extends BaseController
 
     private StorageService $storageService;
 
-    public function __construct(MontageJobService $montageJobService, StorageService $storageService)
-    {
+    private MontageJobRepository $montageJobRepository;
+
+    public function __construct(
+        MontageJobService $montageJobService,
+        StorageService $storageService,
+        MontageJobRepository $montageJobRepository
+    ) {
         $this->montageJobService = $montageJobService;
         $this->storageService = $storageService;
+        $this->montageJobRepository = $montageJobRepository;
     }
 
     public function createOneAction(ServerRequest $request, Response $response): Response
@@ -85,5 +92,48 @@ class MontageJobController extends BaseController
             ],
             200
         );
+    }
+
+    public function listAction(ServerRequest $request, Response $response): Response
+    {
+        $page = $request->getParam('page', self::DEFAULT_PAGE_VALUE);
+        $perPage = $request->getParam('per_page', self::MAX_PER_PAGE);
+
+        $response = $this->validatePagingParams($page, $perPage, $response);
+        if (400 === $response->getStatusCode()) {
+            return $response;
+        }
+
+        $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
+        $jobs = $this->montageJobRepository->getList($offset, $perPage);
+
+        $responseData = [];
+        foreach ($jobs as $job) {
+            $responseData[] = [
+                'id' => $job['id'],
+                'address_line1' => $job['addressLine1'],
+                'address_line2' => $job['addressLine2'],
+                'hb_file_path' => $job['hbFilePath'],
+                'registration_date' => $job['createdAt']->format('Y-m-d H:i:s'),
+                'nvt_id' => $job['nvtId'],
+                'nvt_code' => $job['nvtCode'],
+                'subproject_id' => $job['subprojectId'],
+                'subproject_code' => $job['subprojectCode'],
+                'project_id' => $job['projectId'],
+                'project_name' => $job['projectName'],
+                'coworker_id' => $job['coworkerId'],
+                'coworker_name' => $job['coworkerName'],
+                'cabel_type' => $job['cabelType'],
+                'cabel_code' => $job['cabelCode'],
+                'tube_color' => $job['tubeColor'],
+                'hup_code' => $job['hupCode'],
+                'hup_customer_name' => $job['hupCustomerName'],
+                'hup_customer_email' => $job['hupCustomerEmail'],
+                'hup_customer_phone_number1' => $job['hupCustomerPhoneNumber1'],
+                'hup_customer_phone_number2' => $job['hupCustomerPhoneNumber2'],
+            ];
+        }
+
+        return $response->withJson(['items' => $responseData], 200);
     }
 }

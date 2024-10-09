@@ -72,6 +72,8 @@ return [
             $c->get(Components\MontageHup\Service\MontageHupService::class),
             $c->get(Components\MontageJobOnt\Service\MontageJobOntService::class),
             $c->get(Components\MontageJob\Service\MontageJobStorageService::class),
+            $c->get(Components\Nvt\Repository\NvtRepository::class),
+            $c->get(Components\Coworker\Repository\CoworkerRepository::class),
         );
     },
     Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository::class => function (ContainerInterface $c) {

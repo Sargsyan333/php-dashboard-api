@@ -3,6 +3,7 @@
 namespace Riconas\RiconasApi\Components\MontageJobCabelProperty\Service;
 
 use Doctrine\ORM\EntityManager;
+use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\MontageJobCabelProperty;
 
 class MontageJobCabelPropertyService
@@ -14,11 +15,11 @@ class MontageJobCabelPropertyService
         $this->entityManager = $entityManager;
     }
 
-    public function createProperty(string $jobId, array $propertyData): void
+    public function createProperty(MontageJob $job, array $propertyData): void
     {
         $montageCabelProperty = new MontageJobCabelProperty();
         $montageCabelProperty
-            ->setJobId($jobId)
+            ->setJob($job)
             ->setCabelCodePlanned($propertyData['code'])
             ->setCabelTypePlanned($propertyData['type'])
             ->setTubeColorPlanned($propertyData['tube_color'])

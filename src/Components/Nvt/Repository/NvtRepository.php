@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Riconas\RiconasApi\Components\Nvt\Nvt;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
 class NvtRepository extends EntityRepository
 {
@@ -17,6 +18,16 @@ class NvtRepository extends EntityRepository
     public function findById(string $id): ?Nvt
     {
         return $this->findOneBy(['id' => $id]);
+    }
+
+    public function getById(string $id): Nvt
+    {
+        $nvt = $this->findById($id);
+        if (is_null($nvt)) {
+            throw new RecordNotFoundException('NVT not found');
+        }
+
+        return $nvt;
     }
 
     public function findByCodeAndSubprojectId(string $code, string $subprojectId): ?Nvt
