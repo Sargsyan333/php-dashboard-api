@@ -5,15 +5,20 @@ namespace Riconas\RiconasApi\Admin\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageJob\BuildingType;
 use Riconas\RiconasApi\Components\MontageJob\Service\MontageJobService;
+use Riconas\RiconasApi\Storage\StorageService;
 use Slim\Http\ServerRequest;
+use Slim\Psr7\UploadedFile;
 
 class MontageJobController extends BaseController
 {
     private MontageJobService $montageJobService;
 
-    public function __construct(MontageJobService $montageJobService)
+    private StorageService $storageService;
+
+    public function __construct(MontageJobService $montageJobService, StorageService $storageService)
     {
         $this->montageJobService = $montageJobService;
+        $this->storageService = $storageService;
     }
 
     public function createOneAction(ServerRequest $request, Response $response): Response
@@ -60,5 +65,23 @@ class MontageJobController extends BaseController
         );
 
         return $response->withJson([], 201);
+    }
+
+    public function uploadHubFileAction(ServerRequest $request, Response $response): Response
+    {
+        $uploadedFiles = $request->getUploadedFiles();
+
+        /** @var UploadedFile $uploadedHubFile */
+        $uploadedHubFile = $uploadedFiles['file'];
+        $targetFilePath = $this->storageService->getTmpFileUploadAbsolutePath($uploadedHubFile->getClientFilename());
+
+        $uploadedHubFile->moveTo($targetFilePath);
+
+        return $response->withJson(
+            [
+                'uploaded_file_name' => pathinfo($targetFilePath, PATHINFO_BASENAME),
+            ],
+            200
+        );
     }
 }

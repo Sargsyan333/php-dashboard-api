@@ -8,4 +8,5 @@ global $app;
 
 $app->group('/montage-jobs', function (RouteCollectorProxy $group) {
     $group->post('', Controllers\MontageJobController::class . ':createOneAction');
+    $group->post('/hub-file-upload', Controllers\MontageJobController::class . ':uploadHubFileAction');
 });
