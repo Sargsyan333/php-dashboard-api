@@ -7,3 +7,5 @@ test.php
 .htaccess
 .well-known/
 data/doctrine/proxies/
+data/uploads/tmp/
+data/uploads/montage_jobs/

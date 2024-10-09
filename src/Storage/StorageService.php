@@ -6,7 +6,7 @@ use Riconas\RiconasApi\Utility\StringUtility;
 
 class StorageService
 {
-    private const TMP_FILE_UPLOAD_ABSOLUTE_BASE_PATH = __DIR__ . '/../../data/uploads/tmp';
+    private const TMP_FILE_UPLOAD_BASE_PATH = 'data/uploads/tmp';
 
     public function getTmpFileUploadAbsolutePath(string $uploadedFileName): string
     {
@@ -15,11 +15,16 @@ class StorageService
         $randomString = StringUtility::generateRandomString(20);
         $targetFileName = "t{$randomString}.{$uploadedFileExt}";
 
-        return self::TMP_FILE_UPLOAD_ABSOLUTE_BASE_PATH . '/' . $targetFileName;
+        return $this->getAbsoluteBasePath() . '/' . $targetFileName;
     }
 
     public function getTmpFileAbsolutePath(string $targetFileName): string
     {
-        return self::TMP_FILE_UPLOAD_ABSOLUTE_BASE_PATH . '/' . $targetFileName;
+        return $this->getAbsoluteBasePath() . '/' . $targetFileName;
+    }
+
+    private function getAbsoluteBasePath(): string
+    {
+        return $_ENV['ROOT_FILESYSTEM_PATH'] . '/' . self::TMP_FILE_UPLOAD_BASE_PATH;
     }
 }

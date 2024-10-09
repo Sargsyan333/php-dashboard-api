@@ -71,6 +71,7 @@ return [
             $c->get(Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class),
             $c->get(Components\MontageHup\Service\MontageHupService::class),
             $c->get(Components\MontageJobOnt\Service\MontageJobOntService::class),
+            $c->get(Components\MontageJob\Service\MontageJobStorageService::class),
         );
     },
     Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository::class => function (ContainerInterface $c) {
@@ -102,6 +103,9 @@ return [
         return new Components\MontageJobOnt\Service\MontageJobOntService(
             $c->get(EntityManager::class),
         );
+    },
+    Components\MontageJob\Service\MontageJobStorageService::class => function (ContainerInterface $c) {
+        return new Components\MontageJob\Service\MontageJobStorageService();
     },
     Components\User\Repository\UserRepository::class => function (ContainerInterface $c) {
         return new Components\User\Repository\UserRepository(

@@ -28,6 +28,7 @@ class MontageJobController extends BaseController
         $addressLine2 = $request->getParam('address_line2');
         $buildingType = $request->getParam('building_type');
         $coworkerId = $request->getParam('coworker_id');
+        $hbFile = $request->getParam('hb_file');
 
         // Cabel properties
         $cabelType = $request->getParam('cabel_type');
@@ -49,6 +50,7 @@ class MontageJobController extends BaseController
             $addressLine2,
             BuildingType::from($buildingType),
             $coworkerId,
+            $hbFile,
             [
                 'type' => $cabelType,
                 'code' => $cabelCode,

@@ -15,28 +15,32 @@ class MontageJobService
     private MontageJobCabelPropertyService $montageJobCabelPropertyService;
     private MontageHupService $montageHupService;
     private MontageJobOntService $montageJobOntService;
+    private MontageJobStorageService $storageService;
 
     public function __construct(
         EntityManager $entityManager,
         MontageJobCabelPropertyService $montageJobCabelPropertyService,
         MontageHupService $montageHupService,
-        MontageJobOntService $montageJobOntService
+        MontageJobOntService $montageJobOntService,
+        MontageJobStorageService $storageService
     ) {
         $this->entityManager = $entityManager;
         $this->montageJobCabelPropertyService = $montageJobCabelPropertyService;
         $this->montageHupService = $montageHupService;
         $this->montageJobOntService = $montageJobOntService;
+        $this->storageService = $storageService;
     }
 
     public function createJob(
-        string $nvtId,
-        string $addressLine1,
-        string $addressLine2,
+        string       $nvtId,
+        string       $addressLine1,
+        string       $addressLine2,
         BuildingType $buildingType,
-        ?string $coworkerId,
-        array $cabelData,
-        array $hupData,
-        array $ontData,
+        ?string      $coworkerId,
+        ?string      $hbTmpFileName,
+        array        $cabelData,
+        array        $hupData,
+        array        $ontData,
     ): void {
         $montageJob = new MontageJob();
         $montageJob
@@ -46,6 +50,11 @@ class MontageJobService
             ->setBuildingType($buildingType)
             ->setCoworkerId($coworkerId)
         ;
+
+        if (!empty($hbTmpFileName)) {
+            $hbFileName = $this->storageService->storeTmpHbFile($hbTmpFileName);
+            $montageJob->setHbFilePath($hbFileName);
+        }
 
         $this->entityManager->persist($montageJob);
         $this->entityManager->flush();

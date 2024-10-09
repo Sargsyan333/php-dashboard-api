@@ -28,6 +28,9 @@ class MontageJob
     #[Column(name: 'building_type', type: 'string', nullable: false, enumType: BuildingType::class)]
     private BuildingType $buildingType;
 
+    #[Column(name: 'hb_file_path', type: 'string', nullable: true)]
+    private ?string $hbFilePath;
+
     #[Column(name: 'coworker_id', type: 'string', nullable: true)]
     private ?string $coworkerId;
 
@@ -88,6 +91,18 @@ class MontageJob
     public function setBuildingType(BuildingType $buildingType): self
     {
         $this->buildingType = $buildingType;
+
+        return $this;
+    }
+
+    public function getHbFilePath(): ?string
+    {
+        return $this->hbFilePath;
+    }
+
+    public function setHbFilePath(?string $hbFilePath): self
+    {
+        $this->hbFilePath = $hbFilePath;
 
         return $this;
     }
