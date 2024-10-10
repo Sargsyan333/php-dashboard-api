@@ -35,6 +35,9 @@ class MontageJob
     #[Column(name: 'building_type', type: 'string', nullable: false, enumType: BuildingType::class)]
     private BuildingType $buildingType;
 
+    #[Column(name: 'status', type: 'string', nullable: false, enumType: JobStatus::class)]
+    private JobStatus $status;
+
     #[Column(name: 'hb_file_path', type: 'string', nullable: true)]
     private ?string $hbFilePath;
 
@@ -61,6 +64,7 @@ class MontageJob
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
+        $this->status = JobStatus::STATUS_DRAFT;
     }
 
     public function getId(): string
@@ -131,6 +135,18 @@ class MontageJob
     public function getHbFilePath(): ?string
     {
         return $this->hbFilePath;
+    }
+
+    public function getStatus(): JobStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(JobStatus $status): MontageJob
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     public function setHbFilePath(?string $hbFilePath): self

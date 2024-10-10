@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\MontageHup\Service\MontageHupService;
 use Riconas\RiconasApi\Components\MontageJob\BuildingType;
+use Riconas\RiconasApi\Components\MontageJob\JobStatus;
 use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
 use Riconas\RiconasApi\Components\MontageJobOnt\Service\MontageJobOntService;
@@ -90,6 +91,22 @@ class MontageJobService
     public function deleteJob(MontageJob $montageJob): void
     {
         $this->entityManager->remove($montageJob);
+        $this->entityManager->flush();
+    }
+
+    public function publishJob(MontageJob $montageJob): void
+    {
+        $montageJob->setStatus(JobStatus::STATUS_PUBLISHED);
+
+        $this->entityManager->persist($montageJob);
+        $this->entityManager->flush();
+    }
+
+    public function unpublishJob(MontageJob $montageJob): void
+    {
+        $montageJob->setStatus(JobStatus::STATUS_DRAFT);
+
+        $this->entityManager->persist($montageJob);
         $this->entityManager->flush();
     }
 }

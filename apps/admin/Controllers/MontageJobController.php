@@ -125,6 +125,8 @@ class MontageJobController extends BaseController
                 'id' => $job['id'],
                 'address_line1' => $job['addressLine1'],
                 'address_line2' => $job['addressLine2'],
+                'building_type' => $job['buildingType']->value,
+                'status' => $job['status']->value,
                 'hb_file_path' => $job['hbFilePath'],
                 'registration_date' => $job['createdAt']->format('Y-m-d H:i:s'),
                 'nvt_code' => $job['nvtCode'],
@@ -165,6 +167,42 @@ class MontageJobController extends BaseController
         }
 
         $this->montageJobService->deleteJob($montageJob);
+
+        return $response->withJson([], 204);
+    }
+
+    public function publishOneAction(ServerRequest $request, Response $response): Response
+    {
+        $jobId = $request->getAttribute('id');
+        $montageJob = $this->montageJobRepository->findById($jobId);
+        if (is_null($montageJob)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Job with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->montageJobService->publishJob($montageJob);
+
+        return $response->withJson([], 204);
+    }
+
+    public function unpublishOneAction(ServerRequest $request, Response $response): Response
+    {
+        $jobId = $request->getAttribute('id');
+        $montageJob = $this->montageJobRepository->findById($jobId);
+        if (is_null($montageJob)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Job with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->montageJobService->unpublishJob($montageJob);
 
         return $response->withJson([], 204);
     }
