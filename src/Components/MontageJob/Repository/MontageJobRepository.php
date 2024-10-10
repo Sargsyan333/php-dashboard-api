@@ -14,6 +14,11 @@ class MontageJobRepository extends EntityRepository
         parent::__construct($entityManager, new ClassMetadata(MontageJob::class));
     }
 
+    public function findById(string $id): ?MontageJob
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
     public function getList(?string $projectId, int $offset, int $limit): array
     {
         $fields = [

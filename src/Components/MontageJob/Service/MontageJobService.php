@@ -86,4 +86,10 @@ class MontageJobService
             $this->montageJobOntService->createOnts($montageJob->getId(), $ontData);
         }
     }
+
+    public function deleteJob(MontageJob $montageJob): void
+    {
+        $this->entityManager->remove($montageJob);
+        $this->entityManager->flush();
+    }
 }

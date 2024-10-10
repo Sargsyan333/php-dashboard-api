@@ -150,4 +150,22 @@ class MontageJobController extends BaseController
             200
         );
     }
+
+    public function deleteOneAction(ServerRequest $request, Response $response)
+    {
+        $jobId = $request->getAttribute('id');
+        $montageJob = $this->montageJobRepository->findById($jobId);
+        if (is_null($montageJob)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Job with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->montageJobService->deleteJob($montageJob);
+
+        return $response->withJson([], 204);
+    }
 }
