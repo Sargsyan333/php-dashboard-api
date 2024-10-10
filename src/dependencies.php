@@ -104,6 +104,7 @@ return [
     Components\MontageJobOnt\Service\MontageJobOntService::class => function (ContainerInterface $c) {
         return new Components\MontageJobOnt\Service\MontageJobOntService(
             $c->get(EntityManager::class),
+            $c->get(Components\MontageJobOnt\Repository\MontageJobOntRepository::class),
         );
     },
     Components\MontageJob\Service\MontageJobStorageService::class => function (ContainerInterface $c) {

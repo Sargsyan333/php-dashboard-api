@@ -28,4 +28,16 @@ class MontageJobCabelPropertyService
         $this->entityManager->persist($montageCabelProperty);
         $this->entityManager->flush();
     }
+
+    public function updateProperty(MontageJobCabelProperty $montageCabelProperty, array $propertyData): void
+    {
+        $montageCabelProperty
+            ->setCabelCodePlanned($propertyData['code'])
+            ->setCabelTypePlanned($propertyData['type'])
+            ->setTubeColorPlanned($propertyData['tube_color'])
+        ;
+
+        $this->entityManager->persist($montageCabelProperty);
+        $this->entityManager->flush();
+    }
 }

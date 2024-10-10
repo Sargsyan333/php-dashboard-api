@@ -2,12 +2,15 @@
 
 namespace Riconas\RiconasApi\Admin\Controllers;
 
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageJob\BuildingType;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJob\Service\MontageJobService;
 use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
 use Riconas\RiconasApi\Components\MontageJobOnt\OntActivity;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Riconas\RiconasApi\Storage\StorageService;
 use Slim\Http\ServerRequest;
 use Slim\Psr7\UploadedFile;
@@ -270,5 +273,70 @@ class MontageJobController extends BaseController
         ];
 
         return $response->withJson(['item' => $details], 200);
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws RecordNotFoundException
+     * @throws ORMException
+     */
+    public function updateOneAction(ServerRequest $request, Response $response): Response
+    {
+        $jobId = $request->getAttribute('id');
+        $montageJob = $this->montageJobRepository->findById($jobId);
+        if (is_null($montageJob)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Job with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $nvtId = $request->getParam('nvt_id');
+        $addressLine1 = $request->getParam('address_line1');
+        $addressLine2 = $request->getParam('address_line2');
+        $buildingType = $request->getParam('building_type');
+        $coworkerId = $request->getParam('coworker_id');
+        $hbFile = $request->getParam('hb_file');
+
+        // Cabel properties
+        $cabelType = $request->getParam('cabel_type');
+        $cabelCode = $request->getParam('cabel_code');
+        $tubeColor = $request->getParam('tube_color');
+
+        // HUP properties
+        $hupCode = $request->getParam('hup_code');
+        $hupCustomerName = $request->getParam('hup_customer_name');
+        $hupCustomerEmail = $request->getParam('hup_customer_email');
+        $hupCustomerPhoneNumber1 = $request->getParam('hup_customer_phone_number1');
+        $hupCustomerPhoneNumber2 = $request->getParam('hup_customer_phone_number2');
+
+        $ontData = $request->getParam('ont');
+
+        $this->montageJobService->updateJob(
+            $montageJob,
+            $nvtId,
+            $addressLine1,
+            $addressLine2,
+            BuildingType::from($buildingType),
+            $coworkerId,
+            $hbFile,
+            [
+                'type' => $cabelType,
+                'code' => $cabelCode,
+                'tube_color' => $tubeColor,
+            ],
+            [
+                'code' => $hupCode,
+                'customer_name' => $hupCustomerName,
+                'customer_email' => $hupCustomerEmail,
+                'customer_phone_number1' => $hupCustomerPhoneNumber1,
+                'customer_phone_number2' => $hupCustomerPhoneNumber2,
+            ],
+            $ontData
+        );
+
+        return $response->withJson([], 204);
     }
 }

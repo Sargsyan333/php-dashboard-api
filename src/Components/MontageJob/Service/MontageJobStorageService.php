@@ -22,4 +22,15 @@ class MontageJobStorageService extends StorageService
 
         return null;
     }
+
+    public function deleteHbFile(string $hbFileName): bool
+    {
+        $fileAbsolutePath = $_ENV['ROOT_FILESYSTEM_PATH'] . '/' . self::STORAGE_BASE_PATH . '/' . $hbFileName;
+
+        if (unlink($fileAbsolutePath)) {
+            return true;
+        }
+
+        return false;
+    }
 }

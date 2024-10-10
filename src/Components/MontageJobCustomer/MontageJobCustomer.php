@@ -97,7 +97,7 @@ class MontageJobCustomer
         return $this->phoneNumber2;
     }
 
-    public function setPhoneNumber2(string $phoneNumber2): self
+    public function setPhoneNumber2(?string $phoneNumber2): self
     {
         $this->phoneNumber2 = $phoneNumber2;
         
