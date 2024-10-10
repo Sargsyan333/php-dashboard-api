@@ -96,6 +96,8 @@ class MontageJobController extends BaseController
 
     public function listAction(ServerRequest $request, Response $response): Response
     {
+        $projectId = $request->getParam('project_id');
+
         $page = $request->getParam('page', self::DEFAULT_PAGE_VALUE);
         $perPage = $request->getParam('per_page', self::MAX_PER_PAGE);
 
@@ -104,8 +106,17 @@ class MontageJobController extends BaseController
             return $response;
         }
 
+        if (!empty($projectId) && false === is_numeric($projectId)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
-        $jobs = $this->montageJobRepository->getList($offset, $perPage);
+        $jobs = $this->montageJobRepository->getList($projectId, $offset, $perPage);
 
         $responseData = [];
         foreach ($jobs as $job) {

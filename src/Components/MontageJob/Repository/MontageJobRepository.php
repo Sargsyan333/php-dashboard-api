@@ -14,7 +14,7 @@ class MontageJobRepository extends EntityRepository
         parent::__construct($entityManager, new ClassMetadata(MontageJob::class));
     }
 
-    public function getList(int $offset, int $limit): array
+    public function getList(?string $projectId, int $offset, int $limit): array
     {
         $fields = [
             'm.id',
@@ -56,6 +56,14 @@ class MontageJobRepository extends EntityRepository
             ->setFirstResult($offset)
             ->setMaxResults($limit)
         ;
+
+        if (false === is_null($projectId)) {
+            $queryBuilder
+                ->where('s.projectId = :projectId')
+                ->setParameter('projectId', $projectId)
+            ;
+        }
+
         $query = $queryBuilder->getQuery();
 
         $result = $query->getResult();
