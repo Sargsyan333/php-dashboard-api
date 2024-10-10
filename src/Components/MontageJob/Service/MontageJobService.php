@@ -52,7 +52,11 @@ class MontageJobService
         array        $ontData,
     ): void {
         $nvt = $this->nvtRepository->getById($nvtId);
-        $coworker = $this->coworkerRepository->findById($coworkerId);
+
+        $coworker = null;
+        if (false === is_null($coworkerId)) {
+            $coworker = $this->coworkerRepository->findById($coworkerId);
+        }
 
         $montageJob = new MontageJob();
         $montageJob

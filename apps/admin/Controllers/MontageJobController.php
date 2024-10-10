@@ -117,6 +117,7 @@ class MontageJobController extends BaseController
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
         $jobs = $this->montageJobRepository->getList($projectId, $offset, $perPage);
+        $totalCount = $this->montageJobRepository->getTotalCount($projectId);
 
         $responseData = [];
         foreach ($jobs as $job) {
@@ -126,13 +127,9 @@ class MontageJobController extends BaseController
                 'address_line2' => $job['addressLine2'],
                 'hb_file_path' => $job['hbFilePath'],
                 'registration_date' => $job['createdAt']->format('Y-m-d H:i:s'),
-                'nvt_id' => $job['nvtId'],
                 'nvt_code' => $job['nvtCode'],
-                'subproject_id' => $job['subprojectId'],
                 'subproject_code' => $job['subprojectCode'],
-                'project_id' => $job['projectId'],
                 'project_name' => $job['projectName'],
-                'coworker_id' => $job['coworkerId'],
                 'coworker_name' => $job['coworkerName'],
                 'cabel_type' => $job['cabelType'],
                 'cabel_code' => $job['cabelCode'],
@@ -145,6 +142,12 @@ class MontageJobController extends BaseController
             ];
         }
 
-        return $response->withJson(['items' => $responseData], 200);
+        return $response->withJson(
+            [
+                'items' => $responseData,
+                'total_count' => $totalCount,
+            ],
+            200
+        );
     }
 }

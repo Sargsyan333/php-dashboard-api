@@ -18,24 +18,18 @@ class MontageJobRepository extends EntityRepository
     {
         $fields = [
             'm.id',
-            'm.nvtId',
             'm.addressLine1',
             'm.addressLine2',
             'm.hbFilePath',
             'm.createdAt',
             'n.code as nvtCode',
-            's.id as subprojectId',
             's.code as subprojectCode',
-            'p.id as projectId',
             'p.name as projectName',
-            'c.id as coworkerId',
             'c.companyName as coworkerName',
             'cbl.cabelTypePlanned as cabelType',
             'cbl.cabelCodePlanned as cabelCode',
             'cbl.tubeColorPlanned as tubeColor',
             'h.code as hupCode',
-            'h.id as hupId',
-            'hc.id as hcId',
             'hc.name as hupCustomerName',
             'hc.email as hupCustomerEmail',
             'hc.phoneNumber1 as hupCustomerPhoneNumber1',
@@ -69,5 +63,30 @@ class MontageJobRepository extends EntityRepository
         $result = $query->getResult();
 
         return $result;
+    }
+
+    public function getTotalCount(?string $projectId): int
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('COUNT(m.id)')
+            ->from(MontageJob::class, 'm')
+            ->join('m.nvt', 'n')
+            ->join('n.subproject', 's')
+            ->join('s.project', 'p')
+        ;
+
+        if (false === is_null($projectId)) {
+            $queryBuilder
+                ->where('s.projectId = :projectId')
+                ->setParameter('projectId', $projectId)
+            ;
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        $totalCount = $query->getSingleScalarResult();
+
+        return $totalCount;
     }
 }
