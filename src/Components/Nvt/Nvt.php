@@ -47,6 +47,11 @@ class Nvt
         return $this->id;
     }
 
+    public function getSubprojectId(): string
+    {
+        return $this->subprojectId;
+    }
+
     public function getSubproject(): Subproject
     {
         return $this->subproject;

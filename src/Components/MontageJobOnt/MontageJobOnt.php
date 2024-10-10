@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 
 #[Entity, Table(name: 'montage_onts')]
 class MontageJobOnt
@@ -55,6 +58,10 @@ class MontageJobOnt
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
+    #[ManyToOne(targetEntity: MontageJob::class, inversedBy: 'onts')]
+    #[JoinColumn(name: 'montage_job_id', referencedColumnName: 'id')]
+    private MontageJob $job;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
@@ -75,6 +82,18 @@ class MontageJobOnt
     public function setJobId(string $jobId): self
     {
         $this->jobId = $jobId;
+
+        return $this;
+    }
+
+    public function getJob(): MontageJob
+    {
+        return $this->job;
+    }
+
+    public function setJob(MontageJob $job): self
+    {
+        $this->job = $job;
 
         return $this;
     }

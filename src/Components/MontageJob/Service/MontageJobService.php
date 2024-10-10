@@ -84,7 +84,7 @@ class MontageJobService
 
         // Create ONTs
         if (count($ontData) > 0) {
-            $this->montageJobOntService->createOnts($montageJob->getId(), $ontData);
+            $this->montageJobOntService->createOnts($montageJob, $ontData);
         }
     }
 

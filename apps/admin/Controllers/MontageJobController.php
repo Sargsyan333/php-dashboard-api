@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageJob\BuildingType;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJob\Service\MontageJobService;
+use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
+use Riconas\RiconasApi\Components\MontageJobOnt\OntActivity;
 use Riconas\RiconasApi\Storage\StorageService;
 use Slim\Http\ServerRequest;
 use Slim\Psr7\UploadedFile;
@@ -205,5 +207,64 @@ class MontageJobController extends BaseController
         $this->montageJobService->unpublishJob($montageJob);
 
         return $response->withJson([], 204);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getOneAction(ServerRequest $request, Response $response): Response
+    {
+        $jobId = $request->getAttribute('id');
+        $montageJob = $this->montageJobRepository->findById($jobId);
+        if (is_null($montageJob)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Job with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $ontCollection = $montageJob->getOnts()->getIterator();
+
+        $ontData = [];
+        /** @var MontageJobOnt $ontItem */
+        foreach ($ontCollection as $ontItem) {
+            $ontData[] = [
+                'id' => $ontItem->getId(),
+                'code' => $ontItem->getCode(),
+                'splitter_code' => $ontItem->getSplitterCode(),
+                'splitter_fiber' => $ontItem->getSplitterFiber(),
+                'odf_code' => $ontItem->getOdfCodePlanned(),
+                'odf_pos' => $ontItem->getOdfPosPlanned(),
+                'is_active' => $ontItem->getActivity() === OntActivity::STATUS_ACTIVE,
+                'type' => $ontItem->getType(),
+            ];
+        }
+
+        $details = [
+            'id' => $montageJob->getId(),
+            'nvt_id' => $montageJob->getNvtId(),
+            'subproject_id' => $montageJob->getNvt()->getSubprojectId(),
+            'project_id' => $montageJob->getNvt()->getSubproject()->getProjectId(),
+            'project_name' => $montageJob->getNvt()->getSubproject()->getProject()->getName(),
+            'address_line1' => $montageJob->getAddressLine1(),
+            'address_line2' => $montageJob->getAddressLine2(),
+            'building_type' => $montageJob->getBuildingType()->value,
+            'coworker_id' => $montageJob->getCoworkerId(),
+            'coworker_name' => $montageJob->getCoworker()?->getCompanyName(),
+            'hup_code' => $montageJob->getHup()->getCode(),
+            'hup_customer_name' => $montageJob->getHup()->getCustomer()->getName(),
+            'hup_customer_email' => $montageJob->getHup()->getCustomer()->getEmail(),
+            'hup_customer_phone1' => $montageJob->getHup()->getCustomer()->getPhoneNumber1(),
+            'hup_customer_phone2' => $montageJob->getHup()->getCustomer()->getPhoneNumber2(),
+            'cabel_type' => $montageJob->getCabelProperty()->getCabelTypePlanned(),
+            'cabel_code' => $montageJob->getCabelProperty()->getCabelCodePlanned(),
+            'tube_color' => $montageJob->getCabelProperty()->getTubeColorPlanned(),
+            'hb_file_path' => $montageJob->getHbFilePath(),
+            'ont' => $ontData,
+        ];
+
+        return $response->withJson(['item' => $details], 200);
     }
 }

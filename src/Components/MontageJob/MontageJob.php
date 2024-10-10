@@ -4,17 +4,21 @@ namespace Riconas\RiconasApi\Components\MontageJob;
 
 use DateTimeImmutable;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\Coworker\Coworker;
 use Riconas\RiconasApi\Components\MontageHup\MontageHup;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\MontageJobCabelProperty;
+use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
 use Riconas\RiconasApi\Components\Nvt\Nvt;
 
 #[Entity, Table(name: 'montage_jobs')]
@@ -61,10 +65,14 @@ class MontageJob
     #[OneToOne(targetEntity: MontageHup::class, mappedBy: 'job')]
     private ?MontageHup $hup;
 
+    #[OneToMany(targetEntity: MontageJobOnt::class, mappedBy: 'job')]
+    private Collection $onts;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
         $this->status = JobStatus::STATUS_DRAFT;
+        $this->onts = new ArrayCollection();
     }
 
     public function getId(): string
@@ -194,5 +202,10 @@ class MontageJob
     public function getHup(): ?MontageHup
     {
         return $this->hup;
+    }
+
+    public function getOnts(): Collection
+    {
+        return $this->onts;
     }
 }

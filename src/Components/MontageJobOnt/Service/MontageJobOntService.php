@@ -3,6 +3,7 @@
 namespace Riconas\RiconasApi\Components\MontageJobOnt\Service;
 
 use Doctrine\ORM\EntityManager;
+use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCustomer\MontageJobCustomer;
 use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
 use Riconas\RiconasApi\Components\MontageJobOnt\OntActivity;
@@ -16,14 +17,14 @@ class MontageJobOntService
         $this->entityManager = $entityManager;
     }
 
-    public function createOnts(string $montageJobId, array $ontData): void
+    public function createOnts(MontageJob $montageJob, array $ontData): void
     {
         foreach ($ontData as $ontDatum) {
             $montageOntCustomerId = null;
             if (!empty($ontDatum['customer_name'] && $ontDatum['customer_email'] && $ontDatum['customer_phone_number1'])) {
                 $montageOntCustomer = new MontageJobCustomer();
                 $montageOntCustomer
-                    ->setMontageJobId($montageJobId)
+                    ->setMontageJobId($montageJob->getId())
                     ->setName($ontDatum['customer_name'])
                     ->setEmail($ontDatum['customer_email'])
                     ->setPhoneNumber1($ontDatum['customer_phone_number1'])
@@ -41,7 +42,7 @@ class MontageJobOntService
 
             $montageJobOnt = new MontageJobOnt();
             $montageJobOnt
-                ->setJobId($montageJobId)
+                ->setJob($montageJob)
                 ->setCustomerId($montageOntCustomerId)
                 ->setCode($ontDatum['code'])
                 ->setType($ontType)
