@@ -52,6 +52,7 @@ class NvtController extends BaseController
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
         $nvtItems = $this->nvtRepository->getList($projectId, $subprojectId, $offset, $perPage);
+        $nvtItemsTotalCount = $this->nvtRepository->getTotalCount($projectId, $subprojectId);
 
         $responseData = [];
         foreach ($nvtItems as $nvt) {
@@ -68,7 +69,13 @@ class NvtController extends BaseController
             ];
         }
 
-        return $response->withJson(['items' => $responseData], 200);
+        return $response->withJson(
+            [
+                'items' => $responseData,
+                'total_count' => $nvtItemsTotalCount,
+            ],
+            200
+        );
     }
 
     public function createOneAction(ServerRequest $request, Response $response): Response

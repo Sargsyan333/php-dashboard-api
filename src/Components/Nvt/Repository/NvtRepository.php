@@ -77,6 +77,33 @@ class NvtRepository extends EntityRepository
         return $result;
     }
 
+    public function getTotalCount(?string $projectId, ?string $subprojectId): int
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('COUNT(n.id)')
+            ->from(Nvt::class, 'n')
+            ->join('n.subproject', 'sp')
+            ->join('sp.project', 'p')
+        ;
+
+        if (false === is_null($subprojectId)) {
+            $queryBuilder
+                ->where('n.subprojectId = :subprojectId')
+                ->setParameter('subprojectId', $subprojectId);
+        } elseif (false === is_null($projectId)) {
+            $queryBuilder
+                ->where('sp.projectId = :projectId')
+                ->setParameter('projectId', $projectId);
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
     public function searchBySubprojectId(string $searchedSubprojectId): array
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();

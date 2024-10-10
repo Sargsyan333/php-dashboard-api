@@ -43,7 +43,8 @@ class SubprojectController extends BaseController
         }
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
-        $subprojects = $this->subprojectRepository->getListByProjectId($projectId, $offset, $perPage);
+        $subprojects = $this->subprojectRepository->getList($projectId, $offset, $perPage);
+        $subprojectsTotalCount = $this->subprojectRepository->getTotalCount($projectId);
 
         $responseData = [];
         foreach ($subprojects as $subproject) {
@@ -58,7 +59,13 @@ class SubprojectController extends BaseController
             ];
         }
 
-        return $response->withJson(['items' => $responseData], 200);
+        return $response->withJson(
+            [
+                'items' => $responseData,
+                'total_count' => $subprojectsTotalCount,
+            ],
+            200
+        );
     }
 
     public function createOneAction(ServerRequest $request, Response $response): Response

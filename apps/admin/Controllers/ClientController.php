@@ -59,6 +59,7 @@ class ClientController extends BaseController
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
         $clients = $this->clientRepository->getList($offset, $perPage);
+        $clientsTotalCount = $this->clientRepository->getTotalCount();
 
         $responseData = [];
         foreach ($clients as $client) {
@@ -69,7 +70,13 @@ class ClientController extends BaseController
             ];
         }
 
-        return $response->withJson(['items' => $responseData], 200);
+        return $response->withJson(
+            [
+                'items' => $responseData,
+                'total_count' => $clientsTotalCount,
+            ],
+            200
+        );
     }
 
     public function deleteOneAction(ServerRequest $request, Response $response)

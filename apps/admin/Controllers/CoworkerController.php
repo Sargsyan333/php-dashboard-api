@@ -83,6 +83,7 @@ class CoworkerController extends BaseController
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
         $coworkers = $this->coworkerRepository->getList($offset, $perPage);
+        $coworkersTotalCount = $this->coworkerRepository->getTotalCount();
 
         $responseData = [];
         foreach ($coworkers as $coworker) {
@@ -95,7 +96,13 @@ class CoworkerController extends BaseController
             ];
         }
 
-        return $response->withJson(['items' => $responseData], 200);
+        return $response->withJson(
+            [
+                'items' => $responseData,
+                'total_count' => $coworkersTotalCount,
+            ],
+            200
+        );
     }
 
     public function deleteOneAction(ServerRequest $request, Response $response)

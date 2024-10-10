@@ -51,6 +51,20 @@ class ClientRepository extends EntityRepository
         return $result;
     }
 
+    public function getTotalCount(): int
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('COUNT(c.id)')
+            ->from(Client::class, 'c')
+        ;
+        $query = $queryBuilder->getQuery();
+
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
     public function searchByName(string $searchedName, int $limit): array
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();

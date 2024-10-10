@@ -33,6 +33,7 @@ class ProjectController extends BaseController
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
         $projects = $this->projectRepository->getList($offset, $perPage);
+        $projectsTotalCount = $this->projectRepository->getTotalCount();
 
         $responseData = [];
         foreach ($projects as $project) {
@@ -48,7 +49,13 @@ class ProjectController extends BaseController
             ];
         }
 
-        return $response->withJson(['items' => $responseData], 200);
+        return $response->withJson(
+            [
+                'items' => $responseData,
+                'total_count' => $projectsTotalCount,
+            ],
+            200
+        );
     }
 
     public function createOneAction(ServerRequest $request, Response $response): Response

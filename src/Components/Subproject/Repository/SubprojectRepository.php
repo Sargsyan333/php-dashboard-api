@@ -35,7 +35,7 @@ class SubprojectRepository extends EntityRepository
         return $this->findOneBy(['code' => $code, 'projectId' => $projectId]);
     }
 
-    public function getListByProjectId(?string $projectId, int $offset, int $limit): array
+    public function getList(?string $projectId, int $offset, int $limit): array
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
@@ -58,6 +58,28 @@ class SubprojectRepository extends EntityRepository
         $query = $queryBuilder->getQuery();
 
         $result = $query->getResult();
+
+        return $result;
+    }
+
+    public function getTotalCount(?string $projectId): int
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('COUNT(s.id)')
+            ->from(Subproject::class, 's')
+            ->leftJoin('s.project', 'p')
+        ;
+
+        if (false === is_null($projectId)) {
+            $queryBuilder
+                ->where('s.projectId = :projectId')
+                ->setParameter('projectId', $projectId);
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        $result = $query->getSingleScalarResult();
 
         return $result;
     }
