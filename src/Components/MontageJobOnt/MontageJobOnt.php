@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\MontageJob\MontageJob;
+use Riconas\RiconasApi\Components\MontageJobCustomer\MontageJobCustomer;
 
 #[Entity, Table(name: 'montage_onts')]
 class MontageJobOnt
@@ -62,6 +63,10 @@ class MontageJobOnt
     #[JoinColumn(name: 'montage_job_id', referencedColumnName: 'id')]
     private MontageJob $job;
 
+    #[ManyToOne(targetEntity: MontageJobCustomer::class)]
+    #[JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+    private ?MontageJobCustomer $customer;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
@@ -94,6 +99,18 @@ class MontageJobOnt
     public function setJob(MontageJob $job): self
     {
         $this->job = $job;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?MontageJobCustomer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?MontageJobCustomer $customer): self
+    {
+        $this->customer = $customer;
 
         return $this;
     }

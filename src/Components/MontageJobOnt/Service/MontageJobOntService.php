@@ -20,7 +20,7 @@ class MontageJobOntService
     public function createOnts(MontageJob $montageJob, array $ontData): void
     {
         foreach ($ontData as $ontDatum) {
-            $montageOntCustomerId = null;
+            $montageOntCustomer = null;
             if (!empty($ontDatum['customer_name'] && $ontDatum['customer_email'] && $ontDatum['customer_phone_number1'])) {
                 $montageOntCustomer = new MontageJobCustomer();
                 $montageOntCustomer
@@ -33,8 +33,6 @@ class MontageJobOntService
 
                 $this->entityManager->persist($montageOntCustomer);
                 $this->entityManager->flush();
-
-                $montageOntCustomerId = $montageOntCustomer->getId();
             }
 
             $ontType = $ontDatum['type'] === 'none' ? null : $ontDatum['type'];
@@ -43,7 +41,7 @@ class MontageJobOntService
             $montageJobOnt = new MontageJobOnt();
             $montageJobOnt
                 ->setJob($montageJob)
-                ->setCustomerId($montageOntCustomerId)
+                ->setCustomer($montageOntCustomer)
                 ->setCode($ontDatum['code'])
                 ->setType($ontType)
                 ->setSplitterCode($ontDatum['splitter_code'])

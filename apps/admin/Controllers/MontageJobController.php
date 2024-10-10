@@ -239,6 +239,10 @@ class MontageJobController extends BaseController
                 'odf_pos' => $ontItem->getOdfPosPlanned(),
                 'is_active' => $ontItem->getActivity() === OntActivity::STATUS_ACTIVE,
                 'type' => $ontItem->getType(),
+                'customer_name' => $ontItem->getCustomer()?->getName(),
+                'customer_email' => $ontItem->getCustomer()?->getEmail(),
+                'customer_phone1' => $ontItem->getCustomer()?->getPhoneNumber1(),
+                'customer_phone2' => $ontItem->getCustomer()?->getPhoneNumber2(),
             ];
         }
 
@@ -254,10 +258,10 @@ class MontageJobController extends BaseController
             'coworker_id' => $montageJob->getCoworkerId(),
             'coworker_name' => $montageJob->getCoworker()?->getCompanyName(),
             'hup_code' => $montageJob->getHup()->getCode(),
-            'hup_customer_name' => $montageJob->getHup()->getCustomer()->getName(),
-            'hup_customer_email' => $montageJob->getHup()->getCustomer()->getEmail(),
-            'hup_customer_phone1' => $montageJob->getHup()->getCustomer()->getPhoneNumber1(),
-            'hup_customer_phone2' => $montageJob->getHup()->getCustomer()->getPhoneNumber2(),
+            'hup_customer_name' => $montageJob->getHup()->getCustomer()?->getName(),
+            'hup_customer_email' => $montageJob->getHup()->getCustomer()?->getEmail(),
+            'hup_customer_phone1' => $montageJob->getHup()->getCustomer()?->getPhoneNumber1(),
+            'hup_customer_phone2' => $montageJob->getHup()->getCustomer()?->getPhoneNumber2(),
             'cabel_type' => $montageJob->getCabelProperty()->getCabelTypePlanned(),
             'cabel_code' => $montageJob->getCabelProperty()->getCabelCodePlanned(),
             'tube_color' => $montageJob->getCabelProperty()->getTubeColorPlanned(),
