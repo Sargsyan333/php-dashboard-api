@@ -116,7 +116,9 @@ return [
         );
     },
     Components\User\Service\UserService::class => function (ContainerInterface $c) {
-        return new Components\User\Service\UserService();
+        return new Components\User\Service\UserService(
+            $c->get(EntityManager::class),
+        );
     },
     Components\UserInvitation\Repository\UserInvitationRepository::class => function (ContainerInterface $c) {
         return new Components\UserInvitation\Repository\UserInvitationRepository(
