@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Coworker\Controller;
+namespace Riconas\RiconasApi\Coworker\Controllers;
 
 class BaseController
 {
