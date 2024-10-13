@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Riconas\RiconasApi\Components\Client\Repository\ClientRepository;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\Project\Project;
+use Riconas\RiconasApi\Components\Project\ProjectStatus;
 
 class ProjectService
 {
@@ -72,6 +73,22 @@ class ProjectService
     public function deleteProject(Project $project): void
     {
         $this->entityManager->remove($project);
+        $this->entityManager->flush();
+    }
+
+    public function publishProject(Project $montageJob): void
+    {
+        $montageJob->setStatus(ProjectStatus::STATUS_PUBLISHED);
+
+        $this->entityManager->persist($montageJob);
+        $this->entityManager->flush();
+    }
+
+    public function unpublishProject(Project $montageJob): void
+    {
+        $montageJob->setStatus(ProjectStatus::STATUS_DRAFT);
+
+        $this->entityManager->persist($montageJob);
         $this->entityManager->flush();
     }
 }

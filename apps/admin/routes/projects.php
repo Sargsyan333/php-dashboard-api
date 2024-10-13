@@ -12,4 +12,6 @@ $app->group('/projects', function (RouteCollectorProxy $group) {
     $group->delete('/{id}', Controllers\ProjectController::class . ':deleteOneAction');
     $group->put('/{id}', Controllers\ProjectController::class . ':updateOneAction');
     $group->get('/search', Controllers\ProjectController::class . ':searchAction');
+    $group->patch('/{id}/publish', Controllers\ProjectController::class . ':publishOneAction');
+    $group->patch('/{id}/unpublish', Controllers\ProjectController::class . ':unpublishOneAction');
 });

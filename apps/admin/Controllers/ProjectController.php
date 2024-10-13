@@ -197,4 +197,40 @@ class ProjectController extends BaseController
 
         return $response->withJson(['items' => $searchData], 200);
     }
+
+    public function publishOneAction(ServerRequest $request, Response $response): Response
+    {
+        $projectId = $request->getAttribute('id');
+        $project = $this->projectRepository->findById($projectId);
+        if (is_null($project)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Project with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->projectService->publishProject($project);
+
+        return $response->withJson([], 204);
+    }
+
+    public function unpublishOneAction(ServerRequest $request, Response $response): Response
+    {
+        $projectId = $request->getAttribute('id');
+        $project = $this->projectRepository->findById($projectId);
+        if (is_null($project)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Project with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $this->projectService->unpublishProject($project);
+
+        return $response->withJson([], 204);
+    }
 }
