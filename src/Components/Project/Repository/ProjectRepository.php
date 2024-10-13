@@ -1,10 +1,13 @@
 <?php
 
 namespace Riconas\RiconasApi\Components\Project\Repository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query\Parameter;
 use Riconas\RiconasApi\Components\Project\Project;
+use Riconas\RiconasApi\Components\Project\ProjectStatus;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
 class ProjectRepository extends EntityRepository
@@ -92,6 +95,39 @@ class ProjectRepository extends EntityRepository
             ->where('p.name LIKE :searchedName')
             ->setParameter('searchedName', '%' . $searchedName . '%')
             ->setMaxResults($limit)
+        ;
+        $query = $queryBuilder->getQuery();
+
+        $result = $query->getResult();
+
+        return $result;
+    }
+
+    public function getListByCoworkerId(string $coworkerId): array
+    {
+        $fields = [
+            'p.id',
+            'p.name',
+            'p.code',
+            'c.id as clientId',
+            'c.name as clientName',
+        ];
+
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select(implode(', ', $fields))
+            ->from(Project::class, 'p')
+            ->join('p.client', 'c')
+            ->where('p.coworkerId = :coworkerId')
+            ->andWhere('p.status = :status')
+            ->setParameters(
+                new ArrayCollection(
+                    [
+                        new Parameter('coworkerId', $coworkerId),
+                        new Parameter('status', ProjectStatus::STATUS_PUBLISHED->value),
+                    ]
+                )
+            )
         ;
         $query = $queryBuilder->getQuery();
 

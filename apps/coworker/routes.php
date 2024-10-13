@@ -11,3 +11,7 @@ $app->group('/user', function (RouteCollectorProxy $group) {
     $group->post('/change-password', Controllers\UserController::class . ':changePasswordAction');
     $group->get('/me', Controllers\UserController::class . ':getDetailsAction');
 });
+
+$app->group('/projects', function (RouteCollectorProxy $group) {
+    $group->get('', Controllers\ProjectController::class . ':getListAction');
+});

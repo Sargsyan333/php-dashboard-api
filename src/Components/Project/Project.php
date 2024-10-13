@@ -32,6 +32,9 @@ class Project
     #[Column(name: 'client_id', type: 'string', nullable: false)]
     private string $clientId;
 
+    #[Column(name: 'coworker_id', type: 'string', nullable: true)]
+    private ?string $coworkerId;
+
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
