@@ -41,11 +41,21 @@ class ProjectRepository extends EntityRepository
 
     public function getList(int $offset, int $limit): array
     {
+        $fields = [
+            'p.id',
+            'p.name',
+            'p.code',
+            'p.status',
+            'p.createdAt',
+            'c.id as clientId',
+            'c.name as clientName',
+            'cw.id as coworkerId',
+            'cw.companyName as coworkerName',
+        ];
+
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
-            ->select(
-                'p.id, p.name, p.code, p.createdAt, c.id as clientId, c.name as clientName, cw.id as coworkerId, cw.companyName as coworkerName'
-            )
+            ->select(implode(', ', $fields))
             ->from(Project::class, 'p')
             ->join('p.client', 'c')
             ->leftJoin('p.coworker', 'cw')

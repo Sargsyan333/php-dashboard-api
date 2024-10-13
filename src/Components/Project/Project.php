@@ -26,6 +26,9 @@ class Project
     #[Column(name: 'name', type: 'string', length: 255, nullable: false)]
     private string $name;
 
+    #[Column(name: 'status', type: 'string', nullable: false, enumType: ProjectStatus::class)]
+    private ProjectStatus $status;
+
     #[Column(name: 'client_id', type: 'string', nullable: false)]
     private string $clientId;
 
@@ -42,6 +45,7 @@ class Project
 
     public function __construct()
     {
+        $this->status = ProjectStatus::STATUS_DRAFT;
         $this->createdAt = new DateTimeImmutable('now');
     }
 
@@ -58,6 +62,18 @@ class Project
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getStatus(): ProjectStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(ProjectStatus $status): Project
+    {
+        $this->status = $status;
 
         return $this;
     }
