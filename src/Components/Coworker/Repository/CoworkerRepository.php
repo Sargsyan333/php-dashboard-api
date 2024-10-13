@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Riconas\RiconasApi\Components\Coworker\Coworker;
+use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
 class CoworkerRepository extends EntityRepository
 {
@@ -22,6 +23,16 @@ class CoworkerRepository extends EntityRepository
     public function findById(string $id): ?Coworker
     {
         return $this->findOneBy(['id' => $id]);
+    }
+
+    public function getByUserId(string $userId): Coworker
+    {
+        $coworker = $this->findOneBy(['userId' => $userId]);
+        if (is_null($coworker)) {
+            throw new RecordNotFoundException('Coworker not found');
+        }
+
+        return $coworker;
     }
 
     public function getList(int $offset, int $limit): array

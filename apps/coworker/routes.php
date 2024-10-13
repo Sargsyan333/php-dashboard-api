@@ -9,4 +9,5 @@ global $app;
 $app->group('/user', function (RouteCollectorProxy $group) {
     $group->post('/language', Controllers\UserController::class . ':setLanguageAction');
     $group->post('/change-password', Controllers\UserController::class . ':changePasswordAction');
+    $group->get('/me', Controllers\UserController::class . ':getDetailsAction');
 });
