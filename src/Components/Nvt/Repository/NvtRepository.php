@@ -119,26 +119,4 @@ class NvtRepository extends EntityRepository
 
         return $result;
     }
-
-    public function getAllBySubprojectId(string $subprojectId): array
-    {
-        $fields = [
-            'n.id',
-            'n.code',
-        ];
-
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder
-            ->select(implode(', ', $fields))
-            ->from(Nvt::class, 'n')
-            ->where('n.subprojectId = :subprojectId')
-            ->setParameter('subprojectId', $subprojectId);
-        ;
-
-        $query = $queryBuilder->getQuery();
-
-        $result = $query->getResult();
-
-        return $result;
-    }
 }

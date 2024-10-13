@@ -4,15 +4,19 @@ namespace Riconas\RiconasApi\Components\Project;
 
 use DateTimeImmutable;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\Client\Client;
 use Riconas\RiconasApi\Components\Coworker\Coworker;
+use Riconas\RiconasApi\Components\Subproject\Subproject;
 
 #[Entity, Table(name: 'projects')]
 class Project
@@ -46,10 +50,14 @@ class Project
     #[JoinColumn(name: 'coworker_id', referencedColumnName: 'id')]
     private ?Coworker $coworker;
 
+    #[OneToMany(targetEntity: Subproject::class, mappedBy: 'project')]
+    private Collection $subprojects;
+
     public function __construct()
     {
         $this->status = ProjectStatus::STATUS_DRAFT;
         $this->createdAt = new DateTimeImmutable('now');
+        $this->subprojects = new ArrayCollection();
     }
 
     public function getId(): string
@@ -132,5 +140,10 @@ class Project
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getSubprojects(): Collection
+    {
+        return $this->subprojects;
     }
 }

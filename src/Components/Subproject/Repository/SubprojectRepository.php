@@ -62,23 +62,6 @@ class SubprojectRepository extends EntityRepository
         return $result;
     }
 
-    public function getAllByProjectId(string $projectId): array
-    {
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('s.id, s.code')
-            ->from(Subproject::class, 's')
-            ->andWhere('s.projectId = :projectId')
-            ->setParameter('projectId', $projectId)
-        ;
-
-        $query = $queryBuilder->getQuery();
-
-        $result = $query->getResult();
-
-        return $result;
-    }
-
     public function getTotalCount(?string $projectId): int
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();

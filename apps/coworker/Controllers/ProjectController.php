@@ -3,10 +3,11 @@
 namespace Riconas\RiconasApi\Coworker\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
+use Riconas\RiconasApi\Components\Client\Client;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
-use Riconas\RiconasApi\Components\Nvt\Repository\NvtRepository;
+use Riconas\RiconasApi\Components\Project\Project;
 use Riconas\RiconasApi\Components\Project\Repository\ProjectRepository;
-use Riconas\RiconasApi\Components\Subproject\Repository\SubprojectRepository;
+use Riconas\RiconasApi\Components\Subproject\Subproject;
 use Riconas\RiconasApi\Components\User\User;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Slim\Http\ServerRequest;
@@ -15,19 +16,13 @@ class ProjectController extends BaseController
 {
     private CoworkerRepository $coworkerRepository;
     private ProjectRepository $projectRepository;
-    private SubprojectRepository $subprojectRepository;
-    private NvtRepository $nvtRepository;
 
     public function __construct(
         CoworkerRepository $coworkerRepository,
-        ProjectRepository $projectRepository,
-        SubprojectRepository $subprojectRepository,
-        NvtRepository $nvtRepository
+        ProjectRepository $projectRepository
     ) {
         $this->coworkerRepository = $coworkerRepository;
         $this->projectRepository = $projectRepository;
-        $this->subprojectRepository = $subprojectRepository;
-        $this->nvtRepository = $nvtRepository;
     }
 
     /**
@@ -39,34 +34,46 @@ class ProjectController extends BaseController
         $authenticatedUser = $request->getAttribute('AuthUser');
         $coworker = $this->coworkerRepository->getByUserId($authenticatedUser->getId());
 
-        $projects = $this->projectRepository->getListByCoworkerId($coworker->getId());
-
+        /** @var Client[] $clientsWithProjects */
+        $clientsWithProjects = $this->projectRepository->getListByCoworkerId($coworker->getId());
         $responseData = [];
-        foreach ($projects as $project) {
-            $subprojectData = [];
-            $subprojects = $this->subprojectRepository->getAllByProjectId($project['id']);
-            foreach ($subprojects as $subproject) {
-                $nvtData = [];
-                $nvts = $this->nvtRepository->getAllBySubprojectId($subproject['id']);
-                foreach ($nvts as $nvt) {
-                    $nvtData[] = [
-                        'id' => $nvt['id'],
-                        'code' => $nvt['code'],
+        foreach ($clientsWithProjects as $client) {
+            /** @var Project[] $projects */
+            $projects = $client->getProjects();
+            $projectData = [];
+            foreach ($projects as $project) {
+                $subprojectData = [];
+                /** @var Subproject[] $subprojects */
+                $subprojects = $project->getSubprojects();
+                foreach ($subprojects as $subproject) {
+                    $nvtData = [];
+                    $nvts = $subproject->getNvts();
+                    foreach ($nvts as $nvt) {
+                        $nvtData[] = [
+                            'id' => $nvt->getId(),
+                            'code' => $nvt->getCode(),
+                        ];
+                    }
+
+                    $subprojectData[] = [
+                        'id' => $subproject->getId(),
+                        'code' => $subproject->getCode(),
+                        'nvt' => $nvtData,
                     ];
                 }
 
-                $subprojectData[] = [
-                    'id' => $subproject['id'],
-                    'code' => $subproject['code'],
-                    'nvt' => $nvtData,
+                $projectData[] = [
+                    'id' => $project->getId(),
+                    'name' => $project->getName(),
+                    'code' => $project->getCode(),
+                    'subprojects' => $subprojectData,
                 ];
             }
 
             $responseData[] = [
-                'id' => $project['id'],
-                'name' => $project['name'],
-                'code' => $project['code'],
-                'subprojects' => $subprojectData,
+                'client_id' => $client->getId(),
+                'client_name' => $client->getName(),
+                'projects' => $projectData,
             ];
         }
 
