@@ -71,8 +71,8 @@ class ProjectController extends BaseController
             }
 
             $responseData[] = [
-                'client_id' => $client->getId(),
-                'client_name' => $client->getName(),
+                'id' => $client->getId(),
+                'name' => $client->getName(),
                 'projects' => $projectData,
             ];
         }

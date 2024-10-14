@@ -15,3 +15,5 @@ $app->group('/user', function (RouteCollectorProxy $group) {
 $app->group('/projects', function (RouteCollectorProxy $group) {
     $group->get('', Controllers\ProjectController::class . ':getListAction');
 });
+
+require_once 'routes/montage_jobs.php';
