@@ -259,7 +259,7 @@ class MontageJobController extends BaseController
             'address_line2' => $montageJob->getAddressLine2(),
             'building_type' => $montageJob->getBuildingType()->value,
             'coworker_id' => $montageJob->getCoworkerId(),
-            'coworker_name' => $montageJob->getCoworker()?->getCompanyName(),
+            'coworker_name' => $montageJob->getCoworker()->getCompanyName(),
             'hup_code' => $montageJob->getHup()->getCode(),
             'hup_customer_name' => $montageJob->getHup()->getCustomer()?->getName(),
             'hup_customer_email' => $montageJob->getHup()->getCustomer()?->getEmail(),

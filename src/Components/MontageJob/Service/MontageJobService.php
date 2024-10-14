@@ -48,7 +48,7 @@ class MontageJobService
         string       $addressLine1,
         string       $addressLine2,
         BuildingType $buildingType,
-        ?string      $coworkerId,
+        string       $coworkerId,
         ?string      $hbTmpFileName,
         array        $cabelData,
         array        $hupData,
@@ -56,10 +56,7 @@ class MontageJobService
     ): void {
         $nvt = $this->nvtRepository->getById($nvtId);
 
-        $coworker = null;
-        if (false === is_null($coworkerId)) {
-            $coworker = $this->coworkerRepository->findById($coworkerId);
-        }
+        $coworker = $this->coworkerRepository->getById($coworkerId);
 
         $montageJob = new MontageJob();
         $montageJob
@@ -123,7 +120,7 @@ class MontageJobService
         string       $addressLine1,
         string       $addressLine2,
         BuildingType $buildingType,
-        ?string      $coworkerId,
+        string       $coworkerId,
         ?string      $hbTmpFileName,
         array        $cabelData,
         array        $hupData,
@@ -131,10 +128,7 @@ class MontageJobService
     ): void {
         $nvt = $this->nvtRepository->getById($nvtId);
 
-        $coworker = null;
-        if (false === is_null($coworkerId)) {
-            $coworker = $this->coworkerRepository->findById($coworkerId);
-        }
+        $coworker = $this->coworkerRepository->getById($coworkerId);
 
         $montageJob
             ->setAddressLine1($addressLine1)

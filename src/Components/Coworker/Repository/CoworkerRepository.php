@@ -25,6 +25,16 @@ class CoworkerRepository extends EntityRepository
         return $this->findOneBy(['id' => $id]);
     }
 
+    public function getById(string $id): Coworker
+    {
+        $coworker = $this->findById($id);
+        if (is_null($coworker)) {
+            throw new RecordNotFoundException('Coworker not found');
+        }
+
+        return $coworker;
+    }
+
     public function getByUserId(string $userId): Coworker
     {
         $coworker = $this->findOneBy(['userId' => $userId]);

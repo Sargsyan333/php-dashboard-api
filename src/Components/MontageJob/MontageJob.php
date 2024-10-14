@@ -45,8 +45,8 @@ class MontageJob
     #[Column(name: 'hb_file_path', type: 'string', nullable: true)]
     private ?string $hbFilePath;
 
-    #[Column(name: 'coworker_id', type: 'string', nullable: true)]
-    private ?string $coworkerId;
+    #[Column(name: 'coworker_id', type: 'string', nullable: false)]
+    private string $coworkerId;
 
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
@@ -57,7 +57,7 @@ class MontageJob
 
     #[ManyToOne(targetEntity: Coworker::class)]
     #[JoinColumn(name: 'coworker_id', referencedColumnName: 'id')]
-    private ?Coworker $coworker;
+    private Coworker $coworker;
 
     #[OneToOne(targetEntity: MontageJobCabelProperty::class, mappedBy: 'job')]
     private ?MontageJobCabelProperty $cabelProperty;
@@ -164,12 +164,12 @@ class MontageJob
         return $this;
     }
 
-    public function getCoworkerId(): ?string
+    public function getCoworkerId(): string
     {
         return $this->coworkerId;
     }
 
-    public function setCoworkerId(?string $coworkerId): self
+    public function setCoworkerId(string $coworkerId): self
     {
         $this->coworkerId = $coworkerId;
 
@@ -182,12 +182,12 @@ class MontageJob
     }
 
 
-    public function getCoworker(): ?Coworker
+    public function getCoworker(): Coworker
     {
         return $this->coworker;
     }
 
-    public function setCoworker(?Coworker $coworker): self
+    public function setCoworker(Coworker $coworker): self
     {
         $this->coworker = $coworker;
 
