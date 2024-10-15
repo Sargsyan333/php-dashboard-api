@@ -47,6 +47,12 @@ class MontageHup
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
+    #[Column(name: 'preinstalled_at', type: 'datetimetz_immutable', nullable: true)]
+    private ?DateTimeImmutable $preInstalledAt;
+
+    #[Column(name: 'installed_at', type: 'datetimetz_immutable', nullable: true)]
+    private ?DateTimeImmutable $installedAt;
+
     #[ManyToOne(targetEntity: MontageJobCustomer::class)]
     #[JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
     private MontageJobCustomer $customer;
@@ -107,7 +113,7 @@ class MontageHup
         return $this->hupType;
     }
 
-    public function setHupType(HupType $hupType): self
+    public function setHupType(?HupType $hupType): self
     {
         $this->hupType = $hupType;
 
@@ -119,7 +125,7 @@ class MontageHup
         return $this->location;
     }
 
-    public function setLocation(string $location): self
+    public function setLocation(?string $location): self
     {
         $this->location = $location;
 
@@ -164,6 +170,30 @@ class MontageHup
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getPreInstalledAt(): ?DateTimeImmutable
+    {
+        return $this->preInstalledAt;
+    }
+
+    public function setPreInstalledAt(?DateTimeImmutable $preInstalledAt): self
+    {
+        $this->preInstalledAt = $preInstalledAt;
+
+        return $this;
+    }
+
+    public function getInstalledAt(): ?DateTimeImmutable
+    {
+        return $this->installedAt;
+    }
+
+    public function setInstalledAt(?DateTimeImmutable $installedAt): self
+    {
+        $this->installedAt = $installedAt;
+
+        return $this;
     }
 
     public function getCustomer(): MontageJobCustomer
