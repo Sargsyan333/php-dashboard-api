@@ -63,7 +63,7 @@ class MontageJob
     private ?MontageJobCabelProperty $cabelProperty;
 
     #[OneToOne(targetEntity: MontageHup::class, mappedBy: 'job')]
-    private ?MontageHup $hup;
+    private MontageHup $hup;
 
     #[OneToMany(targetEntity: MontageJobOnt::class, mappedBy: 'job')]
     private Collection $onts;
@@ -199,7 +199,7 @@ class MontageJob
         return $this->cabelProperty;
     }
 
-    public function getHup(): ?MontageHup
+    public function getHup(): MontageHup
     {
         return $this->hup;
     }
