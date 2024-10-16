@@ -19,6 +19,7 @@ use Riconas\RiconasApi\Components\Coworker\Coworker;
 use Riconas\RiconasApi\Components\MontageHup\MontageHup;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\MontageJobCabelProperty;
 use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
+use Riconas\RiconasApi\Components\MontageJobPhoto\MontageJobPhoto;
 use Riconas\RiconasApi\Components\Nvt\Nvt;
 
 #[Entity, Table(name: 'montage_jobs')]
@@ -68,11 +69,15 @@ class MontageJob
     #[OneToMany(targetEntity: MontageJobOnt::class, mappedBy: 'job')]
     private Collection $onts;
 
+    #[OneToMany(targetEntity: MontageJobPhoto::class, mappedBy: 'job')]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
         $this->status = JobStatus::STATUS_DRAFT;
         $this->onts = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): string
@@ -207,5 +212,10 @@ class MontageJob
     public function getOnts(): Collection
     {
         return $this->onts;
+    }
+
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
     }
 }
