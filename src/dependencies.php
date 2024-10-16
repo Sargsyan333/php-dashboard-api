@@ -81,6 +81,17 @@ return [
             $c->get(EntityManager::class),
         );
     },
+    Components\MontageJobComment\Repository\MontageJobCommentRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageJobComment\Repository\MontageJobCommentRepository(
+            $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageJobComment\Service\MontageJobCommentService::class => function (ContainerInterface $c) {
+        return new Components\MontageJobComment\Service\MontageJobCommentService(
+            $c->get(EntityManager::class),
+            $c->get(Components\MontageJobComment\Repository\MontageJobCommentRepository::class),
+        );
+    },
     Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class => function (ContainerInterface $c) {
         return new Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService(
             $c->get(EntityManager::class),
