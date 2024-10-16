@@ -29,4 +29,12 @@ class MontageJobOntRepository extends EntityRepository
 
         return $ont;
     }
+
+    /**
+     * @return MontageJobOnt[]
+     */
+    public function findAllByJobId(string $jobId): array
+    {
+        return $this->findBy(['jobId' => $jobId]);
+    }
 }
