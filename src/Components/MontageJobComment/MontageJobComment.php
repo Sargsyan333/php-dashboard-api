@@ -23,7 +23,7 @@ class MontageJobComment
     private string $coworkerId;
 
     #[Column(name: 'comment', type: 'string', nullable: false)]
-    private string $comment;
+    private string $commentText;
 
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
@@ -65,14 +65,14 @@ class MontageJobComment
         return $this;
     }
 
-    public function getComment(): string
+    public function getCommentText(): string
     {
-        return $this->comment;
+        return $this->commentText;
     }
 
-    public function setComment(string $comment): self
+    public function setCommentText(string $commentText): self
     {
-        $this->comment = $comment;
+        $this->commentText = $commentText;
 
         return $this;
     }

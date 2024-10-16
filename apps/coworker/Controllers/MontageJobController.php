@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
+use Riconas\RiconasApi\Components\MontageJobComment\Repository\MontageJobCommentRepository;
 use Riconas\RiconasApi\Components\MontageJobComment\Service\MontageJobCommentService;
 use Riconas\RiconasApi\Components\User\User;
 use Slim\Http\ServerRequest;
@@ -15,18 +16,20 @@ class MontageJobController extends BaseController
     private MontageJobRepository $montageJobRepository;
     private CoworkerRepository $coworkerRepository;
     private MontageJobCabelPropertyService $montageJobCabelPropertyService;
-
+    private MontageJobCommentRepository $montageJobCommentRepository;
     private MontageJobCommentService $montageJobCommentService;
 
     public function __construct(
         MontageJobRepository $montageJobRepository,
         CoworkerRepository $coworkerRepository,
         MontageJobCabelPropertyService $montageJobCabelPropertyService,
+        MontageJobCommentRepository $montageJobCommentRepository,
         MontageJobCommentService $montageJobCommentService
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->coworkerRepository = $coworkerRepository;
         $this->montageJobCabelPropertyService = $montageJobCabelPropertyService;
+        $this->montageJobCommentRepository = $montageJobCommentRepository;
         $this->montageJobCommentService = $montageJobCommentService;
     }
 
@@ -61,6 +64,8 @@ class MontageJobController extends BaseController
 
         $responseData = [];
         foreach ($jobs as $job) {
+            $comment = $this->montageJobCommentRepository->findByJobIdAndCoworkerId($job['id'], $coworker->getId());
+
             $responseData[] = [
                 'id' => $job['id'],
                 'address_line1' => $job['addressLine1'],
@@ -84,6 +89,7 @@ class MontageJobController extends BaseController
                 'hup_customer_email' => $job['hupCustomerEmail'],
                 'hup_customer_phone_number1' => $job['hupCustomerPhoneNumber1'],
                 'hup_customer_phone_number2' => $job['hupCustomerPhoneNumber2'],
+                'comment' => $comment ? $comment->getCommentText() : '',
             ];
         }
 

@@ -27,7 +27,7 @@ class MontageJobCommentService
         }
 
         $jobComment
-            ->setComment($commentText)
+            ->setCommentText($commentText)
             ->setUpdatedAt(new \DateTimeImmutable('now'));
         ;
 
