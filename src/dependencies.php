@@ -118,6 +118,11 @@ return [
             $c->get(Components\MontageJobOnt\Repository\MontageJobOntRepository::class),
         );
     },
+    Components\MontageJobPhoto\Repository\MontageJobPhotoRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageJobPhoto\Repository\MontageJobPhotoRepository(
+            $c->get(EntityManager::class),
+        );
+    },
     Components\MontageJob\Service\MontageJobStorageService::class => function (ContainerInterface $c) {
         return new Components\MontageJob\Service\MontageJobStorageService();
     },

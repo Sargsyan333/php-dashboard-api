@@ -9,6 +9,7 @@ use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabe
 use Riconas\RiconasApi\Components\MontageJobComment\Repository\MontageJobCommentRepository;
 use Riconas\RiconasApi\Components\MontageJobComment\Service\MontageJobCommentService;
 use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageJobOntRepository;
+use Riconas\RiconasApi\Components\MontageJobPhoto\Repository\MontageJobPhotoRepository;
 use Riconas\RiconasApi\Components\User\User;
 use Slim\Http\ServerRequest;
 
@@ -20,6 +21,7 @@ class MontageJobController extends BaseController
     private MontageJobCommentRepository $montageJobCommentRepository;
     private MontageJobCommentService $montageJobCommentService;
     private MontageJobOntRepository $montageJobOntRepository;
+    private MontageJobPhotoRepository $montageJobPhotoRepository;
 
     public function __construct(
         MontageJobRepository $montageJobRepository,
@@ -27,7 +29,8 @@ class MontageJobController extends BaseController
         MontageJobCabelPropertyService $montageJobCabelPropertyService,
         MontageJobCommentRepository $montageJobCommentRepository,
         MontageJobCommentService $montageJobCommentService,
-        MontageJobOntRepository $montageJobOntRepository
+        MontageJobOntRepository $montageJobOntRepository,
+        MontageJobPhotoRepository $montageJobPhotoRepository
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->coworkerRepository = $coworkerRepository;
@@ -35,6 +38,7 @@ class MontageJobController extends BaseController
         $this->montageJobCommentRepository = $montageJobCommentRepository;
         $this->montageJobCommentService = $montageJobCommentService;
         $this->montageJobOntRepository = $montageJobOntRepository;
+        $this->montageJobPhotoRepository = $montageJobPhotoRepository;
     }
 
     public function listAction(ServerRequest $request, Response $response): Response
@@ -70,10 +74,13 @@ class MontageJobController extends BaseController
         foreach ($jobs as $job) {
             $comment = $this->montageJobCommentRepository->findByJobIdAndCoworkerId($job['id'], $coworker->getId());
             $jobOnts = $this->montageJobOntRepository->findAllByJobId($job['id']);
+            $photosCount = $this->montageJobPhotoRepository->getCountByJobId($job['id']);
+
             $ondData = [];
             foreach ($jobOnts as $jobOnt) {
                 $ondData[] = [
                     'id' => $jobOnt->getId(),
+                    'code' => $jobOnt->getCode(),
                     'status' => $jobOnt->getInstallationStatus()->value,
                     'customer_name' => $jobOnt->getCustomer()?->getName(),
                     'customer_email' => $jobOnt->getCustomer()?->getEmail(),
@@ -107,6 +114,7 @@ class MontageJobController extends BaseController
                 'hup_customer_phone_number2' => $job['hupCustomerPhoneNumber2'],
                 'comment' => $comment ? $comment->getCommentText() : '',
                 'ont' => $ondData,
+                'photos_count' => $photosCount,
             ];
         }
 
