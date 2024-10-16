@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
+use Riconas\RiconasApi\Components\MontageJobComment\Service\MontageJobCommentService;
 use Riconas\RiconasApi\Components\User\User;
 use Slim\Http\ServerRequest;
 
@@ -15,14 +16,18 @@ class MontageJobController extends BaseController
     private CoworkerRepository $coworkerRepository;
     private MontageJobCabelPropertyService $montageJobCabelPropertyService;
 
+    private MontageJobCommentService $montageJobCommentService;
+
     public function __construct(
         MontageJobRepository $montageJobRepository,
         CoworkerRepository $coworkerRepository,
-        MontageJobCabelPropertyService $montageJobCabelPropertyService
+        MontageJobCabelPropertyService $montageJobCabelPropertyService,
+        MontageJobCommentService $montageJobCommentService
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->coworkerRepository = $coworkerRepository;
         $this->montageJobCabelPropertyService = $montageJobCabelPropertyService;
+        $this->montageJobCommentService = $montageJobCommentService;
     }
 
     public function listAction(ServerRequest $request, Response $response): Response
@@ -122,6 +127,38 @@ class MontageJobController extends BaseController
             $job->getCabelProperty(),
             $request->getParams()
         );
+
+        return $response->withJson([], 204);
+    }
+
+    public function commentAction(ServerRequest $request, Response $response): Response
+    {
+        $jobId = $request->getAttribute('id');
+        $job = $this->montageJobRepository->findById($jobId);
+        if (is_null($job)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Job with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $commentText = $request->getParam('comment');
+        if (is_null($commentText)) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        /** @var User $authenticatedUser */
+        $authenticatedUser = $request->getAttribute('AuthUser');
+        $coworker = $this->coworkerRepository->getByUserId($authenticatedUser->getId());
+
+        $this->montageJobCommentService->saveComment($job->getId(), $coworker->getId(), $commentText);
 
         return $response->withJson([], 204);
     }
