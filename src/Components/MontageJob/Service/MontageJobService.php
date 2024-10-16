@@ -150,7 +150,7 @@ class MontageJobService
         $this->entityManager->flush();
 
         // Update cabel property data
-        $this->montageJobCabelPropertyService->updateProperty($montageJob->getCabelProperty(), $cabelData);
+        $this->montageJobCabelPropertyService->updatePropertyPlannedData($montageJob->getCabelProperty(), $cabelData);
 
         // Update montage hup
         $this->montageHupService->updateHup($montageJob->getHup(), $hupData);

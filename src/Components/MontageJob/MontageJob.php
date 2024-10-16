@@ -60,7 +60,7 @@ class MontageJob
     private Coworker $coworker;
 
     #[OneToOne(targetEntity: MontageJobCabelProperty::class, mappedBy: 'job')]
-    private ?MontageJobCabelProperty $cabelProperty;
+    private MontageJobCabelProperty $cabelProperty;
 
     #[OneToOne(targetEntity: MontageHup::class, mappedBy: 'job')]
     private MontageHup $hup;
@@ -194,7 +194,7 @@ class MontageJob
         return $this;
     }
 
-    public function getCabelProperty(): ?MontageJobCabelProperty
+    public function getCabelProperty(): MontageJobCabelProperty
     {
         return $this->cabelProperty;
     }

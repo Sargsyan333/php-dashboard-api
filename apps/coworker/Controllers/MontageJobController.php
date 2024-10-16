@@ -5,6 +5,7 @@ namespace Riconas\RiconasApi\Coworker\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
+use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
 use Riconas\RiconasApi\Components\User\User;
 use Slim\Http\ServerRequest;
 
@@ -12,13 +13,16 @@ class MontageJobController extends BaseController
 {
     private MontageJobRepository $montageJobRepository;
     private CoworkerRepository $coworkerRepository;
+    private MontageJobCabelPropertyService $montageJobCabelPropertyService;
 
     public function __construct(
         MontageJobRepository $montageJobRepository,
-        CoworkerRepository $coworkerRepository
+        CoworkerRepository $coworkerRepository,
+        MontageJobCabelPropertyService $montageJobCabelPropertyService
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->coworkerRepository = $coworkerRepository;
+        $this->montageJobCabelPropertyService = $montageJobCabelPropertyService;
     }
 
     public function listAction(ServerRequest $request, Response $response): Response
@@ -85,5 +89,40 @@ class MontageJobController extends BaseController
             ],
             200
         );
+    }
+
+    public function updateCabelPropsAction(ServerRequest $request, Response $response): Response
+    {
+        $jobId = $request->getAttribute('id');
+        $job = $this->montageJobRepository->findById($jobId);
+        if (is_null($job)) {
+            $result = [
+                'code' => self::ERROR_NOT_FOUND,
+                'message' => 'Job with supplied id could not be found.',
+            ];
+
+            return $response->withJson($result, 404);
+        }
+
+        $cabelLength = $request->getParam('cabel_length');
+        $disabilityLength = $request->getParam('disability_length');
+        if (
+            (false === is_null($cabelLength) && false === is_numeric($cabelLength)) ||
+            (false === is_null($disabilityLength) && false === is_numeric($disabilityLength))
+        ) {
+            $result = [
+                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
+                'message' => 'Invalid request params',
+            ];
+
+            return $response->withJson($result, 400);
+        }
+
+        $this->montageJobCabelPropertyService->updatePropertyCustomizableData(
+            $job->getCabelProperty(),
+            $request->getParams()
+        );
+
+        return $response->withJson([], 204);
     }
 }
