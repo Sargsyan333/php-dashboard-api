@@ -4,15 +4,21 @@ namespace Riconas\RiconasApi\Coworker\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
+use Riconas\RiconasApi\Components\MontageJob\Service\MontageJobStorageService;
 use Slim\Http\ServerRequest;
 
 class JobPhotoController extends BaseController
 {
     private MontageJobRepository $montageJobRepository;
 
-    public function __construct(MontageJobRepository $montageJobRepository)
-    {
+    private MontageJobStorageService $storageService;
+
+    public function __construct(
+        MontageJobRepository $montageJobRepository,
+        MontageJobStorageService $storageService
+    ) {
         $this->montageJobRepository = $montageJobRepository;
+        $this->storageService = $storageService;
     }
 
     public function getListAction(ServerRequest $request, Response $response): Response
@@ -33,10 +39,16 @@ class JobPhotoController extends BaseController
         foreach ($jobPhotos as $photo) {
             $responseData[] = [
                 'id' => $photo->getId(),
-                'path' => $photo->getPath(),
+                'path' => $this->storageService->getPhotoUrl($photo->getPhotoPath()),
             ];
         }
 
-        return $response->withJson(['items' => $responseData], 200);
+        return $response->withJson(
+            [
+                'items' => $responseData,
+                'total_count' => count($responseData),
+            ],
+            200
+        );
     }
 }

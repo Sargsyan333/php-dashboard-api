@@ -8,4 +8,5 @@ test.php
 .well-known/
 data/doctrine/proxies/
 data/uploads/tmp/
-data/uploads/montage_jobs/
+data/uploads/montage_jobs/*.pdf
+data/uploads/montage_jobs/photos/*
