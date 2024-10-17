@@ -123,6 +123,13 @@ return [
             $c->get(EntityManager::class),
         );
     },
+    Components\MontageJobPhoto\Service\MontageJobPhotoService::class => function (ContainerInterface $c) {
+        return new Components\MontageJobPhoto\Service\MontageJobPhotoService(
+            $c->get(EntityManager::class),
+            $c->get(Components\MontageJobPhoto\Repository\MontageJobPhotoRepository::class),
+            $c->get(Components\MontageJob\Service\MontageJobStorageService::class),
+        );
+    },
     Components\MontageJob\Service\MontageJobStorageService::class => function (ContainerInterface $c) {
         return new Components\MontageJob\Service\MontageJobStorageService();
     },

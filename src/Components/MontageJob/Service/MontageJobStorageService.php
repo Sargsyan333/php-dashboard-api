@@ -8,7 +8,7 @@ use Riconas\RiconasApi\Utility\StringUtility;
 class MontageJobStorageService extends StorageService
 {
     private const STORAGE_BASE_PATH = 'data/uploads/montage_jobs';
-    private const PHOTOS_BASE_URL = 'montage_jobs/photos';
+    private const PHOTOS_BASE_PATH = 'montage_jobs/photos';
 
     public function storeTmpHbFile(string $tmpUploadedFile): ?string
     {
@@ -39,10 +39,21 @@ class MontageJobStorageService extends StorageService
     {
         $photoUrlParts = [
             $_ENV['UPLOADS_DOMAIN'],
-            self::PHOTOS_BASE_URL,
+            self::PHOTOS_BASE_PATH,
             $photoFileName,
         ];
 
         return implode('/', $photoUrlParts);
+    }
+
+    public function deletePhotoFile(string $photoFileName): bool
+    {
+        $fileAbsolutePath = $_ENV['ROOT_FILESYSTEM_PATH'] . '/' . self::PHOTOS_BASE_PATH . '/' . $photoFileName;
+
+        if (unlink($fileAbsolutePath)) {
+            return true;
+        }
+
+        return false;
     }
 }

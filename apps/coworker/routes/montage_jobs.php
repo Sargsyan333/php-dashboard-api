@@ -16,5 +16,8 @@ $app->group('/montage-jobs', function (RouteCollectorProxy $group) {
 
     $group->post('/{id}/comment', Controllers\MontageJobController::class . ':commentAction');
 
-    $group->get('/{id}/photos', Controllers\JobPhotoController::class . ':getListAction');
+    $group->group('/{id}/photos', function (RouteCollectorProxy $group) {
+        $group->get('', Controllers\JobPhotoController::class . ':getListAction');
+        $group->delete('/{photoId}', Controllers\JobPhotoController::class . ':deleteOneAction');
+    });
 });

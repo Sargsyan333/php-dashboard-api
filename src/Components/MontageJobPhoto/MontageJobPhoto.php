@@ -17,7 +17,7 @@ use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 class MontageJobPhoto
 {
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
-    private readonly string $id;
+    private string $id;
 
     #[Column(name: 'montage_job_id', type: 'string', nullable: false)]
     private string $jobId;
