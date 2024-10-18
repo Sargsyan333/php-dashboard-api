@@ -10,9 +10,9 @@ class MontageJobStorageService extends StorageService
     private const STORAGE_BASE_PATH = 'data/uploads/montage_jobs';
     private const PHOTOS_BASE_PATH = 'montage_jobs/photos';
 
-    public function storeTmpHbFile(string $tmpUploadedFile): ?string
+    public function storeTmpHbFile(string $tmpUploadedFileName): ?string
     {
-        $hbFilePath = $this->getTmpFileAbsolutePath($tmpUploadedFile);
+        $hbFilePath = $this->getTmpFileAbsolutePath($tmpUploadedFileName);
         $hbFileNewName = StringUtility::generateRandomString() . '_hb_file.pdf';
 
         $targetFilePath = $_ENV['ROOT_FILESYSTEM_PATH'] . '/' . self::STORAGE_BASE_PATH . '/' . $hbFileNewName;
@@ -27,28 +27,6 @@ class MontageJobStorageService extends StorageService
     public function deleteHbFile(string $hbFileName): bool
     {
         $fileAbsolutePath = $_ENV['ROOT_FILESYSTEM_PATH'] . '/' . self::STORAGE_BASE_PATH . '/' . $hbFileName;
-
-        if (unlink($fileAbsolutePath)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function getPhotoUrl(string $photoFileName): string
-    {
-        $photoUrlParts = [
-            $_ENV['UPLOADS_DOMAIN'],
-            self::PHOTOS_BASE_PATH,
-            $photoFileName,
-        ];
-
-        return implode('/', $photoUrlParts);
-    }
-
-    public function deletePhotoFile(string $photoFileName): bool
-    {
-        $fileAbsolutePath = $_ENV['ROOT_FILESYSTEM_PATH'] . '/' . self::PHOTOS_BASE_PATH . '/' . $photoFileName;
 
         if (unlink($fileAbsolutePath)) {
             return true;
