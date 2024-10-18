@@ -8,6 +8,7 @@ use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
 use Riconas\RiconasApi\Components\MontageJobComment\Repository\MontageJobCommentRepository;
 use Riconas\RiconasApi\Components\MontageJobComment\Service\MontageJobCommentService;
+use Riconas\RiconasApi\Components\MontageJobOnt\OntActivity;
 use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageOntRepository;
 use Riconas\RiconasApi\Components\MontageJobPhoto\Repository\MontageJobPhotoRepository;
 use Riconas\RiconasApi\Components\User\User;
@@ -76,12 +77,13 @@ class MontageJobController extends BaseController
             $jobOnts = $this->montageJobOntRepository->findAllByJobId($job['id']);
             $photosCount = $this->montageJobPhotoRepository->getCountByJobId($job['id']);
 
-            $ondData = [];
+            $ontData = [];
             foreach ($jobOnts as $jobOnt) {
-                $ondData[] = [
+                $ontData[] = [
                     'id' => $jobOnt->getId(),
                     'code' => $jobOnt->getCode(),
                     'status' => $jobOnt->getInstallationStatus()->value,
+                    'is_active' => $jobOnt->getActivity() === OntActivity::STATUS_ACTIVE,
                     'customer_name' => $jobOnt->getCustomer()?->getName(),
                     'customer_email' => $jobOnt->getCustomer()?->getEmail(),
                     'customer_phone1' => $jobOnt->getCustomer()?->getPhoneNumber1(),
@@ -113,7 +115,7 @@ class MontageJobController extends BaseController
                 'hup_customer_phone_number1' => $job['hupCustomerPhoneNumber1'],
                 'hup_customer_phone_number2' => $job['hupCustomerPhoneNumber2'],
                 'comment' => $comment ? $comment->getCommentText() : '',
-                'ont' => $ondData,
+                'ont' => $ontData,
                 'photos_count' => $photosCount,
             ];
         }

@@ -2,9 +2,9 @@
 
 namespace Riconas\RiconasApi\Components\MontageHupPhoto\Service;
 
-use Riconas\RiconasApi\Components\MontageJobPhoto\Service\MontageJobPhotoStorageService;
+use Riconas\RiconasApi\Components\MontageJob\Service\MontagePhotoStorageService;
 
-class MontageHupPhotoStorageService extends MontageJobPhotoStorageService
+class MontageHupPhotoStorageService extends MontagePhotoStorageService
 {
     private const BASE_RELATIVE_PATH = 'montage_jobs/hup_photos';
 
