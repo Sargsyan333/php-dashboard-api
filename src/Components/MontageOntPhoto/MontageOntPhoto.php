@@ -70,6 +70,13 @@ class MontageOntPhoto
         return $this->createdAt;
     }
 
+    public function setOnt(MontageOnt $ont): self
+    {
+        $this->ont = $ont;
+
+        return $this;
+    }
+
     public function getOnt(): MontageOnt
     {
         return $this->ont;

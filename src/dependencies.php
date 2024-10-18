@@ -112,8 +112,8 @@ return [
             $c->get(EntityManager::class),
         );
     },
-    Components\MontageHupPhoto\Service\MontageHupPhotoStorageService::class => function (ContainerInterface $c) {
-        return new Components\MontageHupPhoto\Service\MontageHupPhotoStorageService();
+    Components\MontageHupPhoto\Service\MontageOntPhotoStorageService::class => function (ContainerInterface $c) {
+        return new Components\MontageHupPhoto\Service\MontageOntPhotoStorageService();
     },
     Components\MontageHupPhoto\Service\MontageHupPhotoService::class => function (ContainerInterface $c) {
         return new Components\MontageHupPhoto\Service\MontageHupPhotoService(
@@ -130,6 +130,16 @@ return [
     Components\MontageOntPhoto\Repository\MontageOntPhotoRepository::class => function (ContainerInterface $c) {
         return new Components\MontageOntPhoto\Repository\MontageOntPhotoRepository(
             $c->get(EntityManager::class),
+        );
+    },
+    Components\MontageOntPhoto\Service\MontageOntPhotoStorageService::class => function (ContainerInterface $c) {
+        return new Components\MontageOntPhoto\Service\MontageOntPhotoStorageService();
+    },
+    Components\MontageOntPhoto\Service\MontageOntPhotoService::class => function (ContainerInterface $c) {
+        return new Components\MontageOntPhoto\Service\MontageOntPhotoService(
+            $c->get(EntityManager::class),
+            $c->get(Components\MontageOntPhoto\Repository\MontageOntPhotoRepository::class),
+            $c->get(Components\MontageOntPhoto\Service\MontageOntPhotoStorageService::class),
         );
     },
     Components\MontageJobOnt\Service\MontageOntService::class => function (ContainerInterface $c) {
