@@ -4,6 +4,8 @@ namespace Riconas\RiconasApi\Coworker\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageHup\Service\MontageHupService;
+use Riconas\RiconasApi\Components\MontageHupPhoto\HupPhotoState;
+use Riconas\RiconasApi\Components\MontageHupPhoto\Repository\MontageHupPhotoRepository;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Slim\Http\ServerRequest;
 
@@ -11,13 +13,16 @@ class HupController extends BaseController
 {
     private MontageJobRepository $montageJobRepository;
     private MontageHupService $montageHupService;
+    private MontageHupPhotoRepository $montageHupPhotoRepository;
 
     public function __construct(
         MontageJobRepository $montageJobRepository,
-        MontageHupService $montageHupService
+        MontageHupService $montageHupService,
+        MontageHupPhotoRepository $montageHupPhotoRepository
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->montageHupService = $montageHupService;
+        $this->montageHupPhotoRepository = $montageHupPhotoRepository;
     }
 
     public function getOneDetailsAction(ServerRequest $request, Response $response): Response
@@ -35,13 +40,39 @@ class HupController extends BaseController
 
         $hup = $job->getHup();
 
+        $openedPhotos = $this->montageHupPhotoRepository->findAllByHupIdAndState(
+            $hup->getId(),
+            HupPhotoState::OPENED
+        );
+
+        $closedPhotos = $this->montageHupPhotoRepository->findAllByHupIdAndState(
+            $hup->getId(),
+            HupPhotoState::CLOSED
+        );
+
         $hupData = [
             'id' => $hup->getId(),
             'hup_type' => $hup->getHupType(),
             'location' => $hup->getLocation(),
             'status' => $hup->getStatus(),
-            'opened_hup_photo_path' => $hup->getOpenedHupPhotoPath(),
-            'closed_hup_photo_path' => $hup->getClosedHupPhotoPath(),
+            'opened_photos' => array_map(
+                function ($photo) {
+                    return [
+                        'id' => $photo->getId(),
+                        'path' => $photo->getPath(),
+                    ];
+                },
+                $openedPhotos
+            ),
+            'closed_photos' => array_map(
+                function ($photo) {
+                    return [
+                        'id' => $photo->getId(),
+                        'path' => $photo->getPath(),
+                    ];
+                },
+                $closedPhotos
+            ),
         ];
 
         return $response->withJson(['data' => $hupData], 200);
@@ -53,8 +84,6 @@ class HupController extends BaseController
         $hupLocation = $request->getParam('location');
         $isPreInstalled = $request->getParam('is_pre_installed');
         $isInstalled = $request->getParam('is_installed');
-//        $openedHupPhotoPath = $request->getParam('opened_hup_photo_path');
-//        $closedHupPhotoPath = $request->getParam('closed_hup_photo_path');
 
         $jobId = $request->getAttribute('id');
         $job = $this->montageJobRepository->findById($jobId);

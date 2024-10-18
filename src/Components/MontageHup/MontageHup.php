@@ -38,12 +38,6 @@ class MontageHup
     #[Column(name: 'status', type: 'string', nullable: false, enumType: HupStatus::class)]
     private HupStatus $status;
 
-    #[Column(name: 'opened_hup_photo_path', type: 'string', nullable: true)]
-    private ?string $openedHupPhotoPath;
-
-    #[Column(name: 'closed_hup_photo_path', type: 'string', nullable: true)]
-    private ?string $closedHupPhotoPath;
-
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
@@ -141,29 +135,6 @@ class MontageHup
     {
         $this->status = $status;
 
-        return $this;
-    }
-
-    public function getOpenedHupPhotoPath(): ?string
-    {
-        return $this->openedHupPhotoPath;
-    }
-
-    public function setOpenedHupPhotoPath(?string $openedHupPhotoPath): self
-    {
-        $this->openedHupPhotoPath = $openedHupPhotoPath;
-
-        return $this;
-    }
-
-    public function getClosedHupPhotoPath(): ?string
-    {
-        return $this->closedHupPhotoPath;
-    }
-
-    public function setClosedHupPhotoPath(?string $closedHupPhotoPath): self
-    {
-        $this->closedHupPhotoPath = $closedHupPhotoPath;
         return $this;
     }
 
