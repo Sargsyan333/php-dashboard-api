@@ -127,6 +127,11 @@ return [
             $c->get(EntityManager::class),
         );
     },
+    Components\MontageOntPhoto\Repository\MontageOntPhotoRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageOntPhoto\Repository\MontageOntPhotoRepository(
+            $c->get(EntityManager::class),
+        );
+    },
     Components\MontageJobOnt\Service\MontageJobOntService::class => function (ContainerInterface $c) {
         return new Components\MontageJobOnt\Service\MontageJobOntService(
             $c->get(EntityManager::class),
