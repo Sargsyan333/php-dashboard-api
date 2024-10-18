@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 
@@ -27,6 +28,7 @@ class MontageJobPhoto
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
+    #[ManyToOne(targetEntity: MontageJob::class, inversedBy: 'photos')]
     #[JoinColumn(name: 'montage_job_id', referencedColumnName: 'id')]
     private MontageJob $job;
 

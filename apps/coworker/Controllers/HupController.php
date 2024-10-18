@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageHup\Service\MontageHupService;
 use Riconas\RiconasApi\Components\MontageHupPhoto\HupPhotoState;
 use Riconas\RiconasApi\Components\MontageHupPhoto\Repository\MontageHupPhotoRepository;
+use Riconas\RiconasApi\Components\MontageHupPhoto\Service\MontageHupPhotoStorageService;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Slim\Http\ServerRequest;
 
@@ -14,15 +15,18 @@ class HupController extends BaseController
     private MontageJobRepository $montageJobRepository;
     private MontageHupService $montageHupService;
     private MontageHupPhotoRepository $montageHupPhotoRepository;
+    private MontageHupPhotoStorageService $montageHupPhotoStorageService;
 
     public function __construct(
         MontageJobRepository $montageJobRepository,
         MontageHupService $montageHupService,
-        MontageHupPhotoRepository $montageHupPhotoRepository
+        MontageHupPhotoRepository $montageHupPhotoRepository,
+        MontageHupPhotoStorageService $montageHupPhotoStorageService
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->montageHupService = $montageHupService;
         $this->montageHupPhotoRepository = $montageHupPhotoRepository;
+        $this->montageHupPhotoStorageService = $montageHupPhotoStorageService;
     }
 
     public function getOneDetailsAction(ServerRequest $request, Response $response): Response
@@ -59,7 +63,7 @@ class HupController extends BaseController
                 function ($photo) {
                     return [
                         'id' => $photo->getId(),
-                        'path' => $photo->getPath(),
+                        'path' => $this->montageHupPhotoStorageService->getPhotoUrl($photo->getPhotoPath()),
                     ];
                 },
                 $openedPhotos
@@ -68,7 +72,7 @@ class HupController extends BaseController
                 function ($photo) {
                     return [
                         'id' => $photo->getId(),
-                        'path' => $photo->getPath(),
+                        'path' => $this->montageHupPhotoStorageService->getPhotoUrl($photo->getPhotoPath()),
                     ];
                 },
                 $closedPhotos

@@ -12,6 +12,11 @@ $app->group('/montage-jobs', function (RouteCollectorProxy $group) {
     $group->get('/{id}/hup', Controllers\HupController::class . ':getOneDetailsAction');
     $group->put('/{id}/hup', Controllers\HupController::class . ':updateOneAction');
 
+    $group->group('/{id}/hup/photos', function (RouteCollectorProxy $group) {
+        $group->post('', Controllers\HupPhotoController::class . ':uploadAction');
+        $group->delete('/{photoId}', Controllers\HupPhotoController::class . ':deleteOneAction');
+    });
+
     $group->put('/{id}/cabel-props', Controllers\MontageJobController::class . ':updateCabelPropsAction');
 
     $group->post('/{id}/comment', Controllers\MontageJobController::class . ':commentAction');

@@ -112,6 +112,16 @@ return [
             $c->get(EntityManager::class),
         );
     },
+    Components\MontageHupPhoto\Service\MontageHupPhotoStorageService::class => function (ContainerInterface $c) {
+        return new Components\MontageHupPhoto\Service\MontageHupPhotoStorageService();
+    },
+    Components\MontageHupPhoto\Service\MontageHupPhotoService::class => function (ContainerInterface $c) {
+        return new Components\MontageHupPhoto\Service\MontageHupPhotoService(
+            $c->get(EntityManager::class),
+            $c->get(Components\MontageHupPhoto\Repository\MontageHupPhotoRepository::class),
+            $c->get(Components\MontageHupPhoto\Service\MontageHupPhotoStorageService::class)
+        );
+    },
     Components\MontageJobOnt\Repository\MontageJobOntRepository::class => function (ContainerInterface $c) {
         return new Components\MontageJobOnt\Repository\MontageJobOntRepository(
             $c->get(EntityManager::class),
