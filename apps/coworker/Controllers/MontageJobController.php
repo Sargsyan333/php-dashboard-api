@@ -8,7 +8,7 @@ use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
 use Riconas\RiconasApi\Components\MontageJobComment\Repository\MontageJobCommentRepository;
 use Riconas\RiconasApi\Components\MontageJobComment\Service\MontageJobCommentService;
-use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageJobOntRepository;
+use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageOntRepository;
 use Riconas\RiconasApi\Components\MontageJobPhoto\Repository\MontageJobPhotoRepository;
 use Riconas\RiconasApi\Components\User\User;
 use Slim\Http\ServerRequest;
@@ -20,17 +20,17 @@ class MontageJobController extends BaseController
     private MontageJobCabelPropertyService $montageJobCabelPropertyService;
     private MontageJobCommentRepository $montageJobCommentRepository;
     private MontageJobCommentService $montageJobCommentService;
-    private MontageJobOntRepository $montageJobOntRepository;
+    private MontageOntRepository $montageJobOntRepository;
     private MontageJobPhotoRepository $montageJobPhotoRepository;
 
     public function __construct(
-        MontageJobRepository $montageJobRepository,
-        CoworkerRepository $coworkerRepository,
+        MontageJobRepository           $montageJobRepository,
+        CoworkerRepository             $coworkerRepository,
         MontageJobCabelPropertyService $montageJobCabelPropertyService,
-        MontageJobCommentRepository $montageJobCommentRepository,
-        MontageJobCommentService $montageJobCommentService,
-        MontageJobOntRepository $montageJobOntRepository,
-        MontageJobPhotoRepository $montageJobPhotoRepository
+        MontageJobCommentRepository    $montageJobCommentRepository,
+        MontageJobCommentService       $montageJobCommentService,
+        MontageOntRepository           $montageJobOntRepository,
+        MontageJobPhotoRepository      $montageJobPhotoRepository
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->coworkerRepository = $coworkerRepository;

@@ -4,21 +4,25 @@ namespace Riconas\RiconasApi\Components\MontageJobOnt;
 
 use DateTimeImmutable;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCustomer\MontageJobCustomer;
+use Riconas\RiconasApi\Components\MontageOntPhoto\MontageOntPhoto;
 
 #[Entity, Table(name: 'montage_onts')]
-class MontageJobOnt
+class MontageOnt
 {
     #[Id, Column(type: 'string'), GeneratedValue(strategy: 'AUTO')]
-    private readonly string $id;
+    private string $id;
 
     #[Column(name: 'montage_job_id', type: 'string', nullable: false)]
     private string $jobId;
@@ -67,11 +71,15 @@ class MontageJobOnt
     #[JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
     private ?MontageJobCustomer $customer;
 
+    #[OneToMany(targetEntity: MontageOntPhoto::class, mappedBy: 'ont')]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable('now');
         $this->activity = OntActivity::STATUS_DISABLED;
         $this->installationStatus = OntInstallationStatus::INSTALLATION_STATUS_NOT_INSTALLED;
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): string
@@ -250,5 +258,10 @@ class MontageJobOnt
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
     }
 }

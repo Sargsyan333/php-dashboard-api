@@ -70,7 +70,7 @@ return [
             $c->get(EntityManager::class),
             $c->get(Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class),
             $c->get(Components\MontageHup\Service\MontageHupService::class),
-            $c->get(Components\MontageJobOnt\Service\MontageJobOntService::class),
+            $c->get(Components\MontageJobOnt\Service\MontageOntService::class),
             $c->get(Components\MontageJob\Service\MontageJobStorageService::class),
             $c->get(Components\Nvt\Repository\NvtRepository::class),
             $c->get(Components\Coworker\Repository\CoworkerRepository::class),
@@ -122,8 +122,8 @@ return [
             $c->get(Components\MontageHupPhoto\Service\MontageHupPhotoStorageService::class)
         );
     },
-    Components\MontageJobOnt\Repository\MontageJobOntRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageJobOnt\Repository\MontageJobOntRepository(
+    Components\MontageJobOnt\Repository\MontageOntRepository::class => function (ContainerInterface $c) {
+        return new Components\MontageJobOnt\Repository\MontageOntRepository(
             $c->get(EntityManager::class),
         );
     },
@@ -132,10 +132,10 @@ return [
             $c->get(EntityManager::class),
         );
     },
-    Components\MontageJobOnt\Service\MontageJobOntService::class => function (ContainerInterface $c) {
-        return new Components\MontageJobOnt\Service\MontageJobOntService(
+    Components\MontageJobOnt\Service\MontageOntService::class => function (ContainerInterface $c) {
+        return new Components\MontageJobOnt\Service\MontageOntService(
             $c->get(EntityManager::class),
-            $c->get(Components\MontageJobOnt\Repository\MontageJobOntRepository::class),
+            $c->get(Components\MontageJobOnt\Repository\MontageOntRepository::class),
         );
     },
     Components\MontageJobPhoto\Repository\MontageJobPhotoRepository::class => function (ContainerInterface $c) {

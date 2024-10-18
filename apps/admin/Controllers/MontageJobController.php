@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageJob\BuildingType;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
 use Riconas\RiconasApi\Components\MontageJob\Service\MontageJobService;
-use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
+use Riconas\RiconasApi\Components\MontageJobOnt\MontageOnt;
 use Riconas\RiconasApi\Components\MontageJobOnt\OntActivity;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 use Riconas\RiconasApi\Storage\StorageService;
@@ -231,7 +231,7 @@ class MontageJobController extends BaseController
         $ontCollection = $montageJob->getOnts()->getIterator();
 
         $ontData = [];
-        /** @var MontageJobOnt $ontItem */
+        /** @var MontageOnt $ontItem */
         foreach ($ontCollection as $ontItem) {
             $ontData[] = [
                 'id' => $ontItem->getId(),

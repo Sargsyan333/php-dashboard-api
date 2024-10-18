@@ -5,17 +5,17 @@ namespace Riconas\RiconasApi\Components\MontageJobOnt\Service;
 use Doctrine\ORM\EntityManager;
 use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCustomer\MontageJobCustomer;
-use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
+use Riconas\RiconasApi\Components\MontageJobOnt\MontageOnt;
 use Riconas\RiconasApi\Components\MontageJobOnt\OntActivity;
-use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageJobOntRepository;
+use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageOntRepository;
 
-class MontageJobOntService
+class MontageOntService
 {
     private EntityManager $entityManager;
 
-    private MontageJobOntRepository $montageJobOntRepository;
+    private MontageOntRepository $montageJobOntRepository;
 
-    public function __construct(EntityManager $entityManager, MontageJobOntRepository $montageJobOntRepository)
+    public function __construct(EntityManager $entityManager, MontageOntRepository $montageJobOntRepository)
     {
         $this->entityManager = $entityManager;
         $this->montageJobOntRepository = $montageJobOntRepository;
@@ -30,7 +30,7 @@ class MontageJobOntService
         $this->entityManager->flush();
     }
 
-    public function updateOnts(MontageJob $montageJob, array $ontData): void
+    public function updateOntsPlannedData(MontageJob $montageJob, array $ontData): void
     {
         $currentOnts = $montageJob->getOnts()->getIterator();
         $currentOntIds = [];
@@ -130,7 +130,7 @@ class MontageJobOntService
         $ontType = $ontData['type'] === 'none' ? null : $ontData['type'];
         $ontActivity = $ontData['is_active'] ? OntActivity::STATUS_ACTIVE : OntActivity::STATUS_DISABLED;
 
-        $montageJobOnt = new MontageJobOnt();
+        $montageJobOnt = new MontageOnt();
         $montageJobOnt
             ->setJob($montageJob)
             ->setCustomer($montageOntCustomer)
@@ -144,6 +144,11 @@ class MontageJobOntService
         ;
 
         $this->entityManager->persist($montageJobOnt);
+    }
+
+    public function updateOntCustomizableData(MontageOnt $ont, array $data)
+    {
+
     }
 
     private function areCustomerMainFieldsEmpty(array $data): bool

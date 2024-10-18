@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use DateTimeImmutable;
-use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
+use Riconas\RiconasApi\Components\MontageJobOnt\MontageOnt;
 
 #[Entity, Table(name: 'montage_ont_photos')]
 class MontageOntPhoto
@@ -27,9 +27,9 @@ class MontageOntPhoto
     #[Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
 
-    #[ManyToOne(targetEntity: MontageJobOnt::class, inversedBy: 'photos')]
+    #[ManyToOne(targetEntity: MontageOnt::class, inversedBy: 'photos')]
     #[JoinColumn(name: 'montage_ont_id', referencedColumnName: 'id')]
-    private MontageJobOnt $ont;
+    private MontageOnt $ont;
 
     public function __construct()
     {
@@ -70,7 +70,7 @@ class MontageOntPhoto
         return $this->createdAt;
     }
 
-    public function getOnt(): MontageJobOnt
+    public function getOnt(): MontageOnt
     {
         return $this->ont;
     }

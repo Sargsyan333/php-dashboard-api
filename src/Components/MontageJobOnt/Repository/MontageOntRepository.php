@@ -5,22 +5,22 @@ namespace Riconas\RiconasApi\Components\MontageJobOnt\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
+use Riconas\RiconasApi\Components\MontageJobOnt\MontageOnt;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
-class MontageJobOntRepository extends EntityRepository
+class MontageOntRepository extends EntityRepository
 {
     public function __construct(EntityManager $entityManager)
     {
-        parent::__construct($entityManager, new ClassMetadata(MontageJobOnt::class));
+        parent::__construct($entityManager, new ClassMetadata(MontageOnt::class));
     }
 
-    public function findById(string $id): ?MontageJobOnt
+    public function findById(string $id): ?MontageOnt
     {
         return $this->findOneBy(['id' => $id]);
     }
 
-    public function getById(string $id): ?MontageJobOnt
+    public function getById(string $id): MontageOnt
     {
         $ont = $this->findById($id);
         if (is_null($ont)) {
@@ -31,7 +31,7 @@ class MontageJobOntRepository extends EntityRepository
     }
 
     /**
-     * @return MontageJobOnt[]
+     * @return MontageOnt[]
      */
     public function findAllByJobId(string $jobId): array
     {

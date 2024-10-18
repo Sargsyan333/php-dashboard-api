@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 use Riconas\RiconasApi\Components\Coworker\Coworker;
 use Riconas\RiconasApi\Components\MontageHup\MontageHup;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\MontageJobCabelProperty;
-use Riconas\RiconasApi\Components\MontageJobOnt\MontageJobOnt;
+use Riconas\RiconasApi\Components\MontageJobOnt\MontageOnt;
 use Riconas\RiconasApi\Components\MontageJobPhoto\MontageJobPhoto;
 use Riconas\RiconasApi\Components\Nvt\Nvt;
 
@@ -66,7 +66,7 @@ class MontageJob
     #[OneToOne(targetEntity: MontageHup::class, mappedBy: 'job')]
     private MontageHup $hup;
 
-    #[OneToMany(targetEntity: MontageJobOnt::class, mappedBy: 'job')]
+    #[OneToMany(targetEntity: MontageOnt::class, mappedBy: 'job')]
     private Collection $onts;
 
     #[OneToMany(targetEntity: MontageJobPhoto::class, mappedBy: 'job')]

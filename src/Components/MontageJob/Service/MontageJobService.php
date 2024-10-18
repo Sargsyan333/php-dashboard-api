@@ -11,7 +11,7 @@ use Riconas\RiconasApi\Components\MontageJob\BuildingType;
 use Riconas\RiconasApi\Components\MontageJob\JobStatus;
 use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
-use Riconas\RiconasApi\Components\MontageJobOnt\Service\MontageJobOntService;
+use Riconas\RiconasApi\Components\MontageJobOnt\Service\MontageOntService;
 use Riconas\RiconasApi\Components\Nvt\Repository\NvtRepository;
 use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
 
@@ -20,7 +20,7 @@ class MontageJobService
     private EntityManager $entityManager;
     private MontageJobCabelPropertyService $montageJobCabelPropertyService;
     private MontageHupService $montageHupService;
-    private MontageJobOntService $montageJobOntService;
+    private MontageOntService $montageJobOntService;
     private MontageJobStorageService $montageJobStorageService;
     private NvtRepository $nvtRepository;
     private CoworkerRepository $coworkerRepository;
@@ -29,7 +29,7 @@ class MontageJobService
         EntityManager                  $entityManager,
         MontageJobCabelPropertyService $montageJobCabelPropertyService,
         MontageHupService              $montageHupService,
-        MontageJobOntService           $montageJobOntService,
+        MontageOntService              $montageJobOntService,
         MontageJobStorageService       $montageJobStorageService,
         NvtRepository                  $nvtRepository,
         CoworkerRepository             $coworkerRepository
@@ -156,6 +156,6 @@ class MontageJobService
         $this->montageHupService->updateHup($montageJob->getHup(), $hupData);
 
         // Update ONTs
-        $this->montageJobOntService->updateOnts($montageJob, $ontData);
+        $this->montageJobOntService->updateOntsPlannedData($montageJob, $ontData);
     }
 }
