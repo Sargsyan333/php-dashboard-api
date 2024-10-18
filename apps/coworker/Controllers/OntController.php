@@ -5,19 +5,24 @@ namespace Riconas\RiconasApi\Coworker\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageOntRepository;
 use Riconas\RiconasApi\Components\MontageJobOnt\Service\MontageOntService;
+use Riconas\RiconasApi\Components\MontageOntPhoto\MontageOntPhoto;
+use Riconas\RiconasApi\Components\MontageOntPhoto\Service\MontageOntPhotoStorageService;
 use Slim\Http\ServerRequest;
 
 class OntController extends BaseController
 {
     private MontageOntRepository $montageOntRepository;
     private MontageOntService $montageOntService;
+    private MontageOntPhotoStorageService $montageOntPhotoStorageService;
 
     public function __construct(
         MontageOntRepository $montageOntRepository,
-        MontageOntService $montageOntService
+        MontageOntService $montageOntService,
+        MontageOntPhotoStorageService $montageOntPhotoStorageService
     ) {
         $this->montageOntRepository = $montageOntRepository;
         $this->montageOntService = $montageOntService;
+        $this->montageOntPhotoStorageService = $montageOntPhotoStorageService;
     }
 
     public function getOneDetailsAction(ServerRequest $request, Response $response): Response
@@ -25,10 +30,14 @@ class OntController extends BaseController
         $ontId = $request->getAttribute('id');
         $ont = $this->montageOntRepository->getById($ontId);
 
-        $ontPhotosCount = $ont->getPhotos()->count();
         $ontPhotosData = [];
-        if ($ontPhotosCount > 0) {
-            $ontPhotosData = $ont->getPhotos()->getIterator()->toArray();
+        $ontPhotos = $ont->getPhotos();
+        /** @var MontageOntPhoto[] $ontPhotos */
+        foreach ($ontPhotos as $ontPhoto) {
+            $ontPhotosData[] = [
+                'id' => $ontPhoto->getId(),
+                'path' => $this->montageOntPhotoStorageService->getPhotoUrl($ontPhoto->getPhotoPath()),
+            ];
         }
 
         $ontData = [
