@@ -26,4 +26,8 @@ $app->group('/montage-jobs', function (RouteCollectorProxy $group) {
         $group->delete('/{photoId}', Controllers\JobPhotoController::class . ':deleteOneAction');
         $group->post('', Controllers\JobPhotoController::class . ':uploadAction');
     });
+
+    $group->group('/ont', function (RouteCollectorProxy $group) {
+        $group->get('/{id}', Controllers\OntController::class . ':getOneDetailsAction');
+    });
 });
