@@ -7,6 +7,7 @@ use Riconas\RiconasApi\Components\MontageJob\MontageJob;
 use Riconas\RiconasApi\Components\MontageJobCustomer\MontageJobCustomer;
 use Riconas\RiconasApi\Components\MontageJobOnt\MontageOnt;
 use Riconas\RiconasApi\Components\MontageJobOnt\OntActivity;
+use Riconas\RiconasApi\Components\MontageJobOnt\OntInstallationStatus;
 use Riconas\RiconasApi\Components\MontageJobOnt\Repository\MontageOntRepository;
 
 class MontageOntService
@@ -146,9 +147,29 @@ class MontageOntService
         $this->entityManager->persist($montageJobOnt);
     }
 
-    public function updateOntCustomizableData(MontageOnt $ont, array $data)
+    public function updateOntCustomizableData(MontageOnt $ont, array $data): void
     {
+        $ontType = empty($data['ont_type']) || $data['ont_type'] === "none" ? null : $data['ont_type'];
+        $odfCode = empty($data['odf_code']) || $data['odf_code'] === "none" ? null : $data['odf_code'];
+        $odfPos = empty($data['odf_pos']) || $data['odf_pos'] === "none" ? null : $data['odf_pos'];
+        $isHupPreInstalled = $data['is_pre_installed'];
+        $isHupInstalled = $data['is_installed'];
 
+        $ontStatus = $isHupPreInstalled ?
+            OntInstallationStatus::STATUS_PREINSTALLED :
+            (
+            $isHupInstalled ? OntInstallationStatus::STATUS_INSTALLED : OntInstallationStatus::STATUS_NOT_INSTALLED
+            );
+
+        $ont
+            ->setType($ontType)
+            ->setOdfCodeEdited($odfCode)
+            ->setOdfPosEdited($odfPos)
+            ->setInstallationStatus($ontStatus)
+        ;
+
+        $this->entityManager->persist($ont);
+        $this->entityManager->flush();
     }
 
     private function areCustomerMainFieldsEmpty(array $data): bool

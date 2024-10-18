@@ -78,7 +78,7 @@ class MontageOnt
     {
         $this->createdAt = new DateTimeImmutable('now');
         $this->activity = OntActivity::STATUS_DISABLED;
-        $this->installationStatus = OntInstallationStatus::INSTALLATION_STATUS_NOT_INSTALLED;
+        $this->installationStatus = OntInstallationStatus::STATUS_NOT_INSTALLED;
         $this->photos = new ArrayCollection();
     }
 
@@ -200,7 +200,7 @@ class MontageOnt
         return $this->odfCodeEdited;
     }
 
-    public function setOdfCodeEdited(string $odfCodeEdited): self
+    public function setOdfCodeEdited(?string $odfCodeEdited): self
     {
         $this->odfCodeEdited = $odfCodeEdited;
 
@@ -212,7 +212,7 @@ class MontageOnt
         return $this->odfPosEdited;
     }
 
-    public function setOdfPosEdited(string $odfPosEdited): self
+    public function setOdfPosEdited(?string $odfPosEdited): self
     {
         $this->odfPosEdited = $odfPosEdited;
 

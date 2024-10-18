@@ -29,5 +29,6 @@ $app->group('/montage-jobs', function (RouteCollectorProxy $group) {
 
     $group->group('/ont', function (RouteCollectorProxy $group) {
         $group->get('/{id}', Controllers\OntController::class . ':getOneDetailsAction');
+        $group->put('/{id}', Controllers\OntController::class . ':updateOneAction');
     });
 });
