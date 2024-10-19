@@ -152,13 +152,13 @@ class MontageOntService
         $ontType = empty($data['ont_type']) || $data['ont_type'] === "none" ? null : $data['ont_type'];
         $odfCode = empty($data['odf_code']) || $data['odf_code'] === "none" ? null : $data['odf_code'];
         $odfPos = empty($data['odf_pos']) || $data['odf_pos'] === "none" ? null : $data['odf_pos'];
-        $isHupPreInstalled = $data['is_pre_installed'];
-        $isHupInstalled = $data['is_installed'];
+        $isPreInstalled = $data['is_pre_installed'];
+        $isInstalled = $data['is_installed'];
 
-        $ontStatus = $isHupPreInstalled ?
+        $ontStatus = $isPreInstalled ?
             OntInstallationStatus::STATUS_PREINSTALLED :
             (
-            $isHupInstalled ? OntInstallationStatus::STATUS_INSTALLED : OntInstallationStatus::STATUS_NOT_INSTALLED
+            $isInstalled ? OntInstallationStatus::STATUS_INSTALLED : OntInstallationStatus::STATUS_NOT_INSTALLED
             );
 
         $ont
@@ -167,6 +167,18 @@ class MontageOntService
             ->setOdfPosEdited($odfPos)
             ->setInstallationStatus($ontStatus)
         ;
+
+        if ($isPreInstalled) {
+            $ont->setPreInstalledAt(new \DateTimeImmutable('now'));
+        } else if (!$isInstalled) {
+            $ont->setPreInstalledAt(null);
+        }
+
+        if ($isInstalled) {
+            $ont->setInstalledAt(new \DateTimeImmutable('now'));
+        } else {
+            $ont->setInstalledAt(null);
+        }
 
         $this->entityManager->persist($ont);
         $this->entityManager->flush();
