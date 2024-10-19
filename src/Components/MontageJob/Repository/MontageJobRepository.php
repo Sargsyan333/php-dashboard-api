@@ -113,6 +113,7 @@ class MontageJobRepository extends EntityRepository
             'm.addressLine2',
             'm.buildingType',
             'm.hbFilePath',
+            'm.tbFilePath',
             'n.code as nvtCode',
             's.code as subprojectCode',
             'cbl.cabelTypeEdited as cabelType',

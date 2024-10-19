@@ -122,12 +122,18 @@ class MontageJobController extends BaseController
                 $hbFileUrl = $this->montageJobStorageService->getHbFileUrl($job['hbFilePath']);
             }
 
+            $tbFileUrl = null;
+            if ($job['tbFilePath']) {
+                $tbFileUrl = $this->montageJobStorageService->getHbFileUrl($job['tbFilePath']);
+            }
+
             $responseData[] = [
                 'id' => $job['id'],
                 'address_line1' => $job['addressLine1'],
                 'address_line2' => $job['addressLine2'],
                 'building_type' => $job['buildingType']->value,
                 'hb_file_path' => $hbFileUrl,
+                'tb_file_path' => $tbFileUrl,
                 'nvt_code' => $job['nvtCode'],
                 'subproject_code' => $job['subprojectCode'],
                 'cabel_type' => $job['cabelType'],

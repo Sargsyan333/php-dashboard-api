@@ -46,6 +46,9 @@ class MontageJob
     #[Column(name: 'hb_file_path', type: 'string', nullable: true)]
     private ?string $hbFilePath;
 
+    #[Column(name: 'tb_file_path', type: 'string', nullable: true)]
+    private ?string $tbFilePath;
+
     #[Column(name: 'coworker_id', type: 'string', nullable: false)]
     private string $coworkerId;
 
@@ -145,9 +148,28 @@ class MontageJob
         return $this;
     }
 
+    public function setHbFilePath(?string $hbFilePath): self
+    {
+        $this->hbFilePath = $hbFilePath;
+
+        return $this;
+    }
+
     public function getHbFilePath(): ?string
     {
         return $this->hbFilePath;
+    }
+
+    public function setTbFilePath(?string $tbFilePath): self
+    {
+        $this->tbFilePath = $tbFilePath;
+
+        return $this;
+    }
+
+    public function getTbFilePath(): ?string
+    {
+        return $this->tbFilePath;
     }
 
     public function getStatus(): JobStatus
@@ -158,13 +180,6 @@ class MontageJob
     public function setStatus(JobStatus $status): MontageJob
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function setHbFilePath(?string $hbFilePath): self
-    {
-        $this->hbFilePath = $hbFilePath;
 
         return $this;
     }

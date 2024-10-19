@@ -1,0 +1,1 @@
+ALTER TABLE `montage_jobs` ADD `tb_file_path` VARCHAR(255) NULL AFTER `hb_file_path`;
