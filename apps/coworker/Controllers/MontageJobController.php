@@ -5,6 +5,7 @@ namespace Riconas\RiconasApi\Coworker\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
 use Riconas\RiconasApi\Components\MontageJob\Repository\MontageJobRepository;
+use Riconas\RiconasApi\Components\MontageJob\Service\MontageJobStorageService;
 use Riconas\RiconasApi\Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService;
 use Riconas\RiconasApi\Components\MontageJobComment\Repository\MontageJobCommentRepository;
 use Riconas\RiconasApi\Components\MontageJobComment\Service\MontageJobCommentService;
@@ -23,6 +24,7 @@ class MontageJobController extends BaseController
     private MontageJobCommentService $montageJobCommentService;
     private MontageOntRepository $montageJobOntRepository;
     private MontageJobPhotoRepository $montageJobPhotoRepository;
+    private MontageJobStorageService $montageJobStorageService;
 
     public function __construct(
         MontageJobRepository           $montageJobRepository,
@@ -31,7 +33,8 @@ class MontageJobController extends BaseController
         MontageJobCommentRepository    $montageJobCommentRepository,
         MontageJobCommentService       $montageJobCommentService,
         MontageOntRepository           $montageJobOntRepository,
-        MontageJobPhotoRepository      $montageJobPhotoRepository
+        MontageJobPhotoRepository      $montageJobPhotoRepository,
+        MontageJobStorageService       $montageJobStorageService,
     ) {
         $this->montageJobRepository = $montageJobRepository;
         $this->coworkerRepository = $coworkerRepository;
@@ -40,6 +43,7 @@ class MontageJobController extends BaseController
         $this->montageJobCommentService = $montageJobCommentService;
         $this->montageJobOntRepository = $montageJobOntRepository;
         $this->montageJobPhotoRepository = $montageJobPhotoRepository;
+        $this->montageJobStorageService = $montageJobStorageService;
     }
 
     public function listAction(ServerRequest $request, Response $response): Response
@@ -91,12 +95,17 @@ class MontageJobController extends BaseController
                 ];
             }
 
+            $hbFileUrl = null;
+            if ($job['hbFilePath']) {
+                $hbFileUrl = $this->montageJobStorageService->getHbFileUrl($job['hbFilePath']);
+            }
+
             $responseData[] = [
                 'id' => $job['id'],
                 'address_line1' => $job['addressLine1'],
                 'address_line2' => $job['addressLine2'],
                 'building_type' => $job['buildingType']->value,
-                'hb_file_path' => $job['hbFilePath'],
+                'hb_file_path' => $hbFileUrl,
                 'nvt_code' => $job['nvtCode'],
                 'subproject_code' => $job['subprojectCode'],
                 'cabel_type' => $job['cabelType'],

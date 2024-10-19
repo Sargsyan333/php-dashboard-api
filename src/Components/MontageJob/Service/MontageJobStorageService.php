@@ -8,7 +8,6 @@ use Riconas\RiconasApi\Utility\StringUtility;
 class MontageJobStorageService extends StorageService
 {
     private const STORAGE_BASE_PATH = 'data/uploads/montage_jobs';
-    private const PHOTOS_BASE_PATH = 'montage_jobs/photos';
 
     public function storeTmpHbFile(string $tmpUploadedFileName): ?string
     {
@@ -33,5 +32,10 @@ class MontageJobStorageService extends StorageService
         }
 
         return false;
+    }
+
+    public function getHbFileUrl(string $hbFileName): string
+    {
+        return $_ENV['UPLOADS_DOMAIN'] . '/montage_jobs/' . $hbFileName;
     }
 }
