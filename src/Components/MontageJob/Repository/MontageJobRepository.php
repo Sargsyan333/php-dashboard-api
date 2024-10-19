@@ -98,8 +98,15 @@ class MontageJobRepository extends EntityRepository
         return $totalCount;
     }
 
-    public function getListByCoworkerId(string $coworkerId, ?string $projectId, int $offset, int $limit): array
-    {
+    public function getListByCoworkerId(
+        string $coworkerId,
+        ?string $clientId,
+        ?string $projectId,
+        ?string $subprojectId,
+        ?string $nvtId,
+        int $offset,
+        int $limit
+    ): array {
         $fields = [
             'm.id',
             'm.addressLine1',
@@ -139,16 +146,39 @@ class MontageJobRepository extends EntityRepository
             ->andWhere('m.status = :status')
             ->setParameter('coworkerId', $coworkerId)
             ->setParameter('status', JobStatus::STATUS_PUBLISHED->value)
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
         ;
+
+        if (false === is_null($clientId)) {
+            $queryBuilder
+                ->andWhere('p.clientId = :clientId')
+                ->setParameter('clientId', $clientId)
+            ;
+        }
 
         if (false === is_null($projectId)) {
             $queryBuilder
-                ->where('s.projectId = :projectId')
+                ->andWhere('s.projectId = :projectId')
                 ->setParameter('projectId', $projectId)
             ;
         }
+
+        if (false === is_null($subprojectId)) {
+            $queryBuilder
+                ->andWhere('n.subprojectId = :subprojectId')
+                ->setParameter('subprojectId', $subprojectId)
+            ;
+        }
+
+        if (false === is_null($nvtId)) {
+            $queryBuilder
+                ->andWhere('m.nvtId = :nvtId')
+                ->setParameter('nvtId', $nvtId)
+            ;
+        }
+
+        $queryBuilder
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
         $query = $queryBuilder->getQuery();
 
@@ -157,8 +187,13 @@ class MontageJobRepository extends EntityRepository
         return $result;
     }
 
-    public function getTotalCountByCoworkerId(string $coworkerId, ?string $projectId): int
-    {
+    public function getTotalCountByCoworkerId(
+        string $coworkerId,
+        ?string $clientId,
+        ?string $projectId,
+        ?string $subprojectId,
+        ?string $nvtId
+    ): int {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder
             ->select('COUNT(m.id)')
@@ -169,12 +204,33 @@ class MontageJobRepository extends EntityRepository
             ->where('m.coworkerId = :coworkerId')
             ->andWhere('m.status = :status')
             ->setParameter('coworkerId', $coworkerId)
-            ->setParameter('status', JobStatus::STATUS_PUBLISHED->value)        ;
+            ->setParameter('status', JobStatus::STATUS_PUBLISHED->value);
+
+        if (false === is_null($clientId)) {
+            $queryBuilder
+                ->andWhere('p.clientId = :clientId')
+                ->setParameter('clientId', $clientId)
+            ;
+        }
 
         if (false === is_null($projectId)) {
             $queryBuilder
-                ->where('s.projectId = :projectId')
+                ->andWhere('s.projectId = :projectId')
                 ->setParameter('projectId', $projectId)
+            ;
+        }
+
+        if (false === is_null($subprojectId)) {
+            $queryBuilder
+                ->andWhere('n.subprojectId = :subprojectId')
+                ->setParameter('subprojectId', $subprojectId)
+            ;
+        }
+
+        if (false === is_null($nvtId)) {
+            $queryBuilder
+                ->andWhere('m.nvtId = :nvtId')
+                ->setParameter('nvtId', $nvtId)
             ;
         }
 

@@ -52,7 +52,10 @@ class MontageJobController extends BaseController
         $authenticatedUser = $request->getAttribute('AuthUser');
         $coworker = $this->coworkerRepository->getByUserId($authenticatedUser->getId());
 
+        $clientId = $request->getParam('client_id');
         $projectId = $request->getParam('project_id');
+        $subprojectId = $request->getParam('subproject_id');
+        $nvtId = $request->getParam('nvt_id');
 
         $page = $request->getParam('page', self::DEFAULT_PAGE_NUMBER);
         $perPage = $request->getParam('per_page', self::DEFAULT_PER_PAGE);
@@ -62,7 +65,12 @@ class MontageJobController extends BaseController
             return $response;
         }
 
-        if (!empty($projectId) && false === is_numeric($projectId)) {
+        if (
+            (!empty($clientId) && false === is_numeric($clientId)) ||
+            (!empty($projectId) && false === is_numeric($projectId)) ||
+            (!empty($subprojectId) && false === is_numeric($subprojectId)) ||
+            (!empty($nvtId) && false === is_numeric($nvtId))
+        ) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',
@@ -72,8 +80,22 @@ class MontageJobController extends BaseController
         }
 
         $offset = ($page - self::MIN_PAGE_VALUE) * $perPage;
-        $jobs = $this->montageJobRepository->getListByCoworkerId($coworker->getId(), $projectId, $offset, $perPage);
-        $totalCount = $this->montageJobRepository->getTotalCountByCoworkerId($coworker->getId(), $projectId);
+        $jobs = $this->montageJobRepository->getListByCoworkerId(
+            $coworker->getId(),
+            $clientId,
+            $projectId,
+            $subprojectId,
+            $nvtId,
+            $offset,
+            $perPage
+        );
+        $totalCount = $this->montageJobRepository->getTotalCountByCoworkerId(
+            $coworker->getId(),
+            $clientId,
+            $projectId,
+            $subprojectId,
+            $nvtId
+        );
 
         $responseData = [];
         foreach ($jobs as $job) {
