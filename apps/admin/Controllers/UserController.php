@@ -1,11 +1,11 @@
 <?php
 
-namespace Riconas\RiconasApi\Admin\Controllers;
+namespace Dashboard\DashboardApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
-use Riconas\RiconasApi\Components\User\Service\UserService;
-use Riconas\RiconasApi\Components\UserPreference\Service\UserPreferenceService;
-use Riconas\RiconasApi\Components\UserPreference\UserLanguage;
+use Dashboard\DashboardApi\Components\User\Service\UserService;
+use Dashboard\DashboardApi\Components\UserPreference\Service\UserPreferenceService;
+use Dashboard\DashboardApi\Components\UserPreference\UserLanguage;
 use Slim\Http\ServerRequest;
 
 class UserController extends BaseController

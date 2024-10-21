@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi;
+namespace Dashboard\RiconasApi;
 
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
@@ -59,109 +59,6 @@ return [
             $c->get(Components\UserPreference\Service\UserPreferenceService::class),
             $c->get(Components\UserInvitation\Repository\UserInvitationRepository::class),
         );
-    },
-    Components\MontageJob\Repository\MontageJobRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageJob\Repository\MontageJobRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageJob\Service\MontageJobService::class => function (ContainerInterface $c) {
-        return new Components\MontageJob\Service\MontageJobService(
-            $c->get(EntityManager::class),
-            $c->get(Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class),
-            $c->get(Components\MontageHup\Service\MontageHupService::class),
-            $c->get(Components\MontageJobOnt\Service\MontageOntService::class),
-            $c->get(Components\MontageJob\Service\MontageJobStorageService::class),
-            $c->get(Components\Nvt\Repository\NvtRepository::class),
-            $c->get(Components\Coworker\Repository\CoworkerRepository::class),
-        );
-    },
-    Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageJobCabelProperty\Repository\MontageJobCabelPropertyRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageJobComment\Repository\MontageJobCommentRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageJobComment\Repository\MontageJobCommentRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageJobComment\Service\MontageJobCommentService::class => function (ContainerInterface $c) {
-        return new Components\MontageJobComment\Service\MontageJobCommentService(
-            $c->get(EntityManager::class),
-            $c->get(Components\MontageJobComment\Repository\MontageJobCommentRepository::class),
-        );
-    },
-    Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService::class => function (ContainerInterface $c) {
-        return new Components\MontageJobCabelProperty\Service\MontageJobCabelPropertyService(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageJobCustomer\Repository\MontageJobCustomerRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageJobCustomer\Repository\MontageJobCustomerRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageHup\Repository\MontageHupRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageHup\Repository\MontageHupRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageHupPhoto\Repository\MontageHupPhotoRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageHupPhoto\Repository\MontageHupPhotoRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageHupPhoto\Service\MontageOntPhotoStorageService::class => function (ContainerInterface $c) {
-        return new Components\MontageHupPhoto\Service\MontageOntPhotoStorageService();
-    },
-    Components\MontageHupPhoto\Service\MontageHupPhotoService::class => function (ContainerInterface $c) {
-        return new Components\MontageHupPhoto\Service\MontageHupPhotoService(
-            $c->get(EntityManager::class),
-            $c->get(Components\MontageHupPhoto\Repository\MontageHupPhotoRepository::class),
-            $c->get(Components\MontageHupPhoto\Service\MontageHupPhotoStorageService::class)
-        );
-    },
-    Components\MontageJobOnt\Repository\MontageOntRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageJobOnt\Repository\MontageOntRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageOntPhoto\Repository\MontageOntPhotoRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageOntPhoto\Repository\MontageOntPhotoRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageOntPhoto\Service\MontageOntPhotoStorageService::class => function (ContainerInterface $c) {
-        return new Components\MontageOntPhoto\Service\MontageOntPhotoStorageService();
-    },
-    Components\MontageOntPhoto\Service\MontageOntPhotoService::class => function (ContainerInterface $c) {
-        return new Components\MontageOntPhoto\Service\MontageOntPhotoService(
-            $c->get(EntityManager::class),
-            $c->get(Components\MontageOntPhoto\Repository\MontageOntPhotoRepository::class),
-            $c->get(Components\MontageOntPhoto\Service\MontageOntPhotoStorageService::class),
-        );
-    },
-    Components\MontageJobOnt\Service\MontageOntService::class => function (ContainerInterface $c) {
-        return new Components\MontageJobOnt\Service\MontageOntService(
-            $c->get(EntityManager::class),
-            $c->get(Components\MontageJobOnt\Repository\MontageOntRepository::class),
-        );
-    },
-    Components\MontageJobPhoto\Repository\MontageJobPhotoRepository::class => function (ContainerInterface $c) {
-        return new Components\MontageJobPhoto\Repository\MontageJobPhotoRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\MontageJobPhoto\Service\MontageJobPhotoService::class => function (ContainerInterface $c) {
-        return new Components\MontageJobPhoto\Service\MontageJobPhotoService(
-            $c->get(EntityManager::class),
-            $c->get(Components\MontageJobPhoto\Repository\MontageJobPhotoRepository::class),
-            $c->get(Components\MontageJobPhoto\Service\MontageJobPhotoStorageService::class),
-        );
-    },
-    Components\MontageJob\Service\MontageJobStorageService::class => function (ContainerInterface $c) {
-        return new Components\MontageJob\Service\MontageJobStorageService();
     },
     Components\User\Repository\UserRepository::class => function (ContainerInterface $c) {
         return new Components\User\Repository\UserRepository(
@@ -232,18 +129,6 @@ return [
             $c->get(EntityManager::class),
             $c->get(Components\Coworker\Repository\CoworkerRepository::class),
             $c->get(Components\Project\Repository\ProjectRepository::class),
-        );
-    },
-    Components\Nvt\Repository\NvtRepository::class => function (ContainerInterface $c) {
-        return new Components\Nvt\Repository\NvtRepository(
-            $c->get(EntityManager::class),
-        );
-    },
-    Components\Nvt\Service\NvtService::class => function (ContainerInterface $c) {
-        return new Components\Nvt\Service\NvtService(
-            $c->get(EntityManager::class),
-            $c->get(Components\Coworker\Repository\CoworkerRepository::class),
-            $c->get(Components\Subproject\Repository\SubprojectRepository::class),
         );
     },
     Authentication\AuthenticationService::class => function (ContainerInterface $c) {

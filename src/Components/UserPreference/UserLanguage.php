@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserPreference;
+namespace Dashboard\DashboardApi\Components\UserPreference;
 
 enum UserLanguage: string {
     case English = 'en';

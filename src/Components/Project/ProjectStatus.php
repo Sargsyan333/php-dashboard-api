@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Project;
+namespace Dashboard\DashboardApi\Components\Project;
 
 enum ProjectStatus: string {
     case STATUS_PUBLISHED = 'PUBLISHED';

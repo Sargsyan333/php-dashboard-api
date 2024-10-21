@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserInvitation;
+namespace Dashboard\DashboardApi\Components\UserInvitation;
 
 enum UserInvitationStatus: string {
     case NOT_SENT = 'not_sent';

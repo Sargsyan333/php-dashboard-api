@@ -1,10 +1,10 @@
 <?php
 
-namespace Riconas\RiconasApi\Admin\Controllers;
+namespace Dashboard\DashboardApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
-use Riconas\RiconasApi\Components\Project\Repository\ProjectRepository;
-use Riconas\RiconasApi\Components\Project\Service\ProjectService;
+use Dashboard\DashboardApi\Components\Project\Repository\ProjectRepository;
+use Dashboard\DashboardApi\Components\Project\Service\ProjectService;
 use Slim\Http\ServerRequest;
 
 class ProjectController extends BaseController

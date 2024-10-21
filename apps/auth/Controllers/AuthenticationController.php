@@ -1,10 +1,11 @@
 <?php
 
-namespace Riconas\RiconasApi\Auth\Controllers;
+namespace Dashboard\DashboardApi\Auth\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
-use Riconas\RiconasApi\Authentication\AuthenticationService;
-use Riconas\RiconasApi\Components\User\Repository\UserRepository;
+use Dashboard\DashboardApi\Authentication\AuthenticationService;
+use Dashboard\DashboardApi\Components\User\Repository\UserRepository;
+use Dashboard\DashboardApi\Components\User\UserRole;
 use Slim\Http\ServerRequest;
 
 class AuthenticationController extends BaseController
@@ -22,12 +23,10 @@ class AuthenticationController extends BaseController
 
     public function authenticateAction(ServerRequest $request, Response $response): Response
     {
-        $appName = $this->getAppHeaderValue($request);
-
         $email = $request->getParam('email');
         $password = $request->getParam('password');
 
-        if (empty($email) || empty($password) || empty($appName)) {
+        if (empty($email) || empty($password)) {
             $result = [
                 'code' => self::ERROR_INVALID_REQUEST_PARAMS,
                 'message' => 'Invalid request params',
@@ -36,17 +35,7 @@ class AuthenticationController extends BaseController
             return $response->withJson($result, 400);
         }
 
-        if (false === $this->validateAppHeader($appName)) {
-            $result = [
-                'code' => self::ERROR_INVALID_REQUEST_PARAMS,
-                'message' => 'Invalid request params',
-            ];
-
-            return $response->withJson($result, 400);
-        }
-
-        $userRole = self::APP_NAME_USER_ROLE_MAP[$appName];
-        $user = $this->userRepository->findByEmailAndRole($email, $userRole);
+        $user = $this->userRepository->findByEmailAndRole($email, UserRole::ROLE_ADMIN);
         if (is_null($user)) {
             $result = [
                 'code' => self::ERROR_INCORRECT_CREDENTIALS,

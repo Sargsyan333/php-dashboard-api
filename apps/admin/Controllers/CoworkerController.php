@@ -1,13 +1,13 @@
 <?php
 
-namespace Riconas\RiconasApi\Admin\Controllers;
+namespace Dashboard\DashboardApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
-use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
-use Riconas\RiconasApi\Components\Coworker\Service\CoworkerService;
-use Riconas\RiconasApi\Components\User\Repository\UserRepository;
-use Riconas\RiconasApi\Components\User\UserRole;
-use Riconas\RiconasApi\Components\UserInvitation\Service\UserInvitationService;
+use Dashboard\DashboardApi\Components\Coworker\Repository\CoworkerRepository;
+use Dashboard\DashboardApi\Components\Coworker\Service\CoworkerService;
+use Dashboard\DashboardApi\Components\User\Repository\UserRepository;
+use Dashboard\DashboardApi\Components\User\UserRole;
+use Dashboard\DashboardApi\Components\UserInvitation\Service\UserInvitationService;
 use Slim\Http\ServerRequest;
 
 class CoworkerController extends BaseController

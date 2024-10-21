@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Utility;
+namespace Dashboard\DashboardApi\Utility;
 
 class StringUtility
 {

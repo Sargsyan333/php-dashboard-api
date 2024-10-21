@@ -1,5 +1,5 @@
 {
-    "name": "riconas/riconas-api",
+    "name": "dashboard/dashboard-api",
     "type": "project",
     "config": {
         "platform": {
@@ -11,10 +11,9 @@
     },
     "autoload": {
         "psr-4": {
-            "Riconas\\RiconasApi\\Admin\\": "apps/admin/",
-            "Riconas\\RiconasApi\\Coworker\\": "apps/coworker/",
-            "Riconas\\RiconasApi\\Auth\\": "apps/auth/",
-            "Riconas\\RiconasApi\\": "src/"
+            "Dashboard\\DashboardApi\\Admin\\": "apps/admin/",
+            "Dashboard\\DashboardApi\\Auth\\": "apps/auth/",
+            "Dashboard\\DashboardApi\\": "src/"
         }
     },
     "require": {

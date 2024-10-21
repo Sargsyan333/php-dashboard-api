@@ -1,12 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Integrations\Slim\Middleware;
+namespace Dashboard\DashboardApi\Integrations\Slim\Middleware;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Riconas\RiconasApi\Authentication\AuthenticationService;
-use Riconas\RiconasApi\Components\User\UserRole;
+use Dashboard\DashboardApi\Authentication\AuthenticationService;
+use Dashboard\DashboardApi\Components\User\UserRole;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Routing\RouteContext;
 

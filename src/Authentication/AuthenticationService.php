@@ -1,12 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Authentication;
+namespace Dashboard\DashboardApi\Authentication;
 
-use Riconas\RiconasApi\Components\User\Repository\UserRepository;
-use Riconas\RiconasApi\Components\User\User;
-use Riconas\RiconasApi\Components\User\UserRole;
-use Riconas\RiconasApi\Integrations\Firebase\Jwt\JwtDecoder;
-use Riconas\RiconasApi\Integrations\Firebase\Jwt\JwtEncoder;
+use Dashboard\DashboardApi\Components\User\Repository\UserRepository;
+use Dashboard\DashboardApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\UserRole;
+use Dashboard\DashboardApi\Integrations\Firebase\Jwt\JwtDecoder;
+use Dashboard\DashboardApi\Integrations\Firebase\Jwt\JwtEncoder;
 
 class AuthenticationService
 {

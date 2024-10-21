@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\PasswordResetRequest;
+namespace Dashboard\DashboardApi\Components\PasswordResetRequest;
 
 use DateTimeImmutable;
 
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Riconas\RiconasApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\User;
 
 #[Entity, Table(name: 'password_reset_requests')]
 final class PasswordResetRequest

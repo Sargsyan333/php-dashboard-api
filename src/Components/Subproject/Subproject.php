@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Subproject;
+namespace Dashboard\DashboardApi\Components\Subproject;
 
 use DateTimeImmutable;
 
@@ -14,9 +14,9 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Riconas\RiconasApi\Components\Coworker\Coworker;
-use Riconas\RiconasApi\Components\Nvt\Nvt;
-use Riconas\RiconasApi\Components\Project\Project;
+use Dashboard\DashboardApi\Components\Coworker\Coworker;
+use Dashboard\DashboardApi\Components\Nvt\Nvt;
+use Dashboard\DashboardApi\Components\Project\Project;
 
 #[Entity, Table(name: 'subprojects')]
 class Subproject

@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Integrations\Firebase\Jwt;
+namespace Dashboard\DashboardApi\Integrations\Firebase\Jwt;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

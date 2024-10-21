@@ -1,9 +1,9 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\User\Service;
+namespace Dashboard\DashboardApi\Components\User\Service;
 
 use Doctrine\ORM\EntityManager;
-use Riconas\RiconasApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\User;
 
 class UserService
 {

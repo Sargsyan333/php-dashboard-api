@@ -1,12 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Subproject\Repository;
+namespace Dashboard\DashboardApi\Components\Subproject\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\Subproject\Subproject;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
+use Dashboard\DashboardApi\Components\Subproject\Subproject;
+use Dashboard\DashboardApi\Exceptions\RecordNotFoundException;
 
 class SubprojectRepository extends EntityRepository
 {

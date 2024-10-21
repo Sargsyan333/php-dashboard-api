@@ -1,18 +1,18 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\PasswordResetRequest\Service;
+namespace Dashboard\DashboardApi\Components\PasswordResetRequest\Service;
 
 use Doctrine\ORM\EntityManager;
-use Riconas\RiconasApi\Auth\Controllers\BaseController;
-use Riconas\RiconasApi\Components\PasswordResetRequest\PasswordResetRequest;
-use Riconas\RiconasApi\Components\PasswordResetRequest\Repository\PasswordResetRequestRepository;
-use Riconas\RiconasApi\Components\User\Service\UserService;
-use Riconas\RiconasApi\Components\User\User;
-use Riconas\RiconasApi\Components\User\UserStatus;
-use Riconas\RiconasApi\Components\UserPreference\Service\UserPreferenceService;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
-use Riconas\RiconasApi\Mailing\MailingService;
-use Riconas\RiconasApi\Utility\StringUtility;
+use Dashboard\DashboardApi\Auth\Controllers\BaseController;
+use Dashboard\DashboardApi\Components\PasswordResetRequest\PasswordResetRequest;
+use Dashboard\DashboardApi\Components\PasswordResetRequest\Repository\PasswordResetRequestRepository;
+use Dashboard\DashboardApi\Components\User\Service\UserService;
+use Dashboard\DashboardApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\UserStatus;
+use Dashboard\DashboardApi\Components\UserPreference\Service\UserPreferenceService;
+use Dashboard\DashboardApi\Exceptions\RecordNotFoundException;
+use Dashboard\DashboardApi\Mailing\MailingService;
+use Dashboard\DashboardApi\Utility\StringUtility;
 
 class PasswordResetRequestService
 {
@@ -42,7 +42,7 @@ class PasswordResetRequestService
         $this->userPreferenceService = $userPreferenceService;
     }
 
-    public function requestPasswordReset(User $user, string $app): void
+    public function requestPasswordReset(User $user): void
     {
         if ($user->getStatus() === UserStatus::STATUS_INACTIVE) {
             throw new \RuntimeException('Inactive user encountered');
@@ -68,7 +68,7 @@ class PasswordResetRequestService
         $this->entityManager->flush();
 
         $userPreferenceLang = $this->userPreferenceService->getLanguagePreference($user->getId());
-        $passwordResetLink = $this->buildResetPasswordLink($passwordResetRequest->getCode(), $app);
+        $passwordResetLink = $this->buildResetPasswordLink($passwordResetRequest->getCode());
         $this->mailingService->sendPasswordRecoveryEmail($user->getEmail(), $userPreferenceLang, $passwordResetLink);
     }
 
@@ -90,13 +90,8 @@ class PasswordResetRequestService
         $this->entityManager->flush();
     }
 
-    private function buildResetPasswordLink(string $passwordResetRequestCode, string $app): string
+    private function buildResetPasswordLink(string $passwordResetRequestCode): string
     {
-        $baseUrl = $_ENV['WEBSITE_DOMAIN'];
-        if ($app === BaseController::APP_NAME_ADMIN) {
-            $baseUrl = $_ENV['ADMIN_WEBSITE_DOMAIN'];
-        }
-
-        return "{$baseUrl}/reset-password?code={$passwordResetRequestCode}";
+        return "{$_ENV['WEBSITE_DOMAIN']}/reset-password?code={$passwordResetRequestCode}";
     }
 }

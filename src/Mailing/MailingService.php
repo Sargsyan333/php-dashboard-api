@@ -1,8 +1,8 @@
 <?php
 
-namespace Riconas\RiconasApi\Mailing;
+namespace Dashboard\DashboardApi\Mailing;
 
-use Riconas\RiconasApi\Integrations\Mailgun\MailgunClient;
+use Dashboard\DashboardApi\Integrations\Mailgun\MailgunClient;
 
 class MailingService
 {
@@ -22,9 +22,6 @@ class MailingService
         string $languageCode,
         string $passwordResetLink
     ): void {
-        // TODO TMP replace recipient email address with hardcoded one. This will be removed with account upgrade
-        $recipientEmailAddress = 'developer.hovakimyan@gmail.com';
-
         $dirPath = "{$this->mailTemplatesPath}/password_recovery/{$languageCode}";
 
         $this->client->sendEmail(
@@ -44,14 +41,11 @@ class MailingService
         string $languageCode,
         string $invitationLink
     ): void {
-        // TODO TMP replace recipient email address with hardcoded one. This will be removed with account upgrade
-        $recipientEmailAddress = 'developer.hovakimyan@gmail.com';
-
-        $dirPath = "{$this->mailTemplatesPath}/coworker_invitation/{$languageCode}";
+        $dirPath = "{$this->mailTemplatesPath}/user_invitation/{$languageCode}";
 
         $this->client->sendEmail(
             $recipientEmailAddress,
-            $this->config['mail_subjects']['coworker_invitation'][$languageCode],
+            $this->config['mail_subjects']['user_invitation'][$languageCode],
             file_get_contents("{$dirPath}/template.txt"),
             file_get_contents("{$dirPath}/template.html"),
             [

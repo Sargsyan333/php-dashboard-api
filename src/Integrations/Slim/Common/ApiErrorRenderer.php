@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Integrations\Slim\Common;
+namespace Dashboard\DashboardApi\Integrations\Slim\Common;
 
 
 use Slim\Interfaces\ErrorRendererInterface;

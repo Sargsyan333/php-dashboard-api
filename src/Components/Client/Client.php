@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Client;
+namespace Dashboard\DashboardApi\Components\Client;
 
 use DateTimeImmutable;
 
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Riconas\RiconasApi\Components\Project\Project;
+use Dashboard\DashboardApi\Components\Project\Project;
 
 #[Entity, Table(name: 'clients')]
 class Client

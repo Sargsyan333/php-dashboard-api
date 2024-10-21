@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Admin\Controllers;
+namespace Dashboard\DashboardApi\Admin\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 

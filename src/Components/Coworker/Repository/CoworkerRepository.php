@@ -1,12 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Coworker\Repository;
+namespace Dashboard\DashboardApi\Components\Coworker\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\Coworker\Coworker;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
+use Dashboard\DashboardApi\Components\Coworker\Coworker;
+use Dashboard\DashboardApi\Exceptions\RecordNotFoundException;
 
 class CoworkerRepository extends EntityRepository
 {

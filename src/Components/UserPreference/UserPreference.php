@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserPreference;
+namespace Dashboard\DashboardApi\Components\UserPreference;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping\Column;

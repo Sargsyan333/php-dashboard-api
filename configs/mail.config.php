@@ -5,7 +5,7 @@ return [
         'api_key' => $_ENV['MAILGUN_API_KEY'],
         'domain' => $_ENV['MAILGUN_DOMAIN'],
         'from' => [
-            'name' => 'Riconas GMBH',
+            'name' => 'House Agency',
             'email' => $_ENV['MAILGUN_FROM_EMAIL'],
         ],
     ],
@@ -14,9 +14,9 @@ return [
             'en' => 'Recover your password',
             'de' => 'Passwort wiederherstellen',
         ],
-        'coworker_invitation' => [
-            'en' => 'Invitation to collaborate on Riconas',
-            'de' => 'Einladung zur Mitarbeit bei Riconas',
+        'user_invitation' => [
+            'en' => 'Invitation to collaborate',
+            'de' => 'Einladung zur Mitarbeit',
         ],
     ],
 ];

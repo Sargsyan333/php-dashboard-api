@@ -1,11 +1,11 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\PasswordResetRequest\Repository;
+namespace Dashboard\DashboardApi\Components\PasswordResetRequest\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\PasswordResetRequest\PasswordResetRequest;
+use Dashboard\DashboardApi\Components\PasswordResetRequest\PasswordResetRequest;
 
 class PasswordResetRequestRepository extends EntityRepository
 {

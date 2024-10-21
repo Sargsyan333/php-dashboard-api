@@ -1,11 +1,11 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserPreference\Repository;
+namespace Dashboard\DashboardApi\Components\UserPreference\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\UserPreference\UserPreference;
+use Dashboard\DashboardApi\Components\UserPreference\UserPreference;
 
 class UserPreferenceRepository extends EntityRepository
 {

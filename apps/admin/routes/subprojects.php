@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Admin;
+namespace Dashboard\DashboardApi\Admin;
 
 use Slim\Routing\RouteCollectorProxy;
 

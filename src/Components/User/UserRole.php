@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\User;
+namespace Dashboard\DashboardApi\Components\User;
 
 enum UserRole: string {
     case ROLE_ADMIN = 'ADMIN';

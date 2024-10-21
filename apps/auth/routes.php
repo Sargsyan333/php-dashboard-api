@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Auth;
+namespace Dashboard\DashboardApi\Auth;
 
 global $app;
 

@@ -1,19 +1,19 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserInvitation\Service;
+namespace Dashboard\DashboardApi\Components\UserInvitation\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Riconas\RiconasApi\Auth\Controllers\BaseController;
-use Riconas\RiconasApi\Components\User\Service\UserService;
-use Riconas\RiconasApi\Components\User\User;
-use Riconas\RiconasApi\Components\User\UserStatus;
-use Riconas\RiconasApi\Components\UserInvitation\Repository\UserInvitationRepository;
-use Riconas\RiconasApi\Components\UserInvitation\UserInvitation;
-use Riconas\RiconasApi\Components\UserInvitation\UserInvitationStatus;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
-use Riconas\RiconasApi\Utility\StringUtility;
+use Dashboard\DashboardApi\Auth\Controllers\BaseController;
+use Dashboard\DashboardApi\Components\User\Service\UserService;
+use Dashboard\DashboardApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\UserStatus;
+use Dashboard\DashboardApi\Components\UserInvitation\Repository\UserInvitationRepository;
+use Dashboard\DashboardApi\Components\UserInvitation\UserInvitation;
+use Dashboard\DashboardApi\Components\UserInvitation\UserInvitationStatus;
+use Dashboard\DashboardApi\Exceptions\RecordNotFoundException;
+use Dashboard\DashboardApi\Utility\StringUtility;
 
 class UserInvitationService
 {
@@ -35,7 +35,7 @@ class UserInvitationService
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function createInvitation(User $user, string $app): string
+    public function createInvitation(User $user): string
     {
         $userInvitation = $this->userInvitationRepository->findByUserId($user->getId());
         if (false === is_null($userInvitation)) {
@@ -54,7 +54,7 @@ class UserInvitationService
         $this->entityManager->persist($userInvitation);
         $this->entityManager->flush();
 
-        return $this->buildInvitationLink($userInvitation->getCode(), $app);
+        return $this->buildInvitationLink($userInvitation->getCode());
     }
 
     public function getInvitationStatus(string $userId): UserInvitationStatus
@@ -98,13 +98,8 @@ class UserInvitationService
         $this->entityManager->flush();
     }
 
-    private function buildInvitationLink(string $invitationCode, string $app): string
+    private function buildInvitationLink(string $invitationCode): string
     {
-        $baseUrl = $_ENV['WEBSITE_DOMAIN'];
-        if ($app === BaseController::APP_NAME_ADMIN) {
-            $baseUrl = $_ENV['ADMIN_WEBSITE_DOMAIN'];
-        }
-
-        return "{$baseUrl}/accept-invite?code={$invitationCode}";
+        return "{$_ENV['WEBSITE_DOMAIN']}/accept-invite?code={$invitationCode}";
     }
 }

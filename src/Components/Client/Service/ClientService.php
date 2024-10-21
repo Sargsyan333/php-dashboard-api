@@ -1,9 +1,9 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Client\Service;
+namespace Dashboard\DashboardApi\Components\Client\Service;
 
 use Doctrine\ORM\EntityManager;
-use Riconas\RiconasApi\Components\Client\Client;
+use Dashboard\DashboardApi\Components\Client\Client;
 
 class ClientService
 {

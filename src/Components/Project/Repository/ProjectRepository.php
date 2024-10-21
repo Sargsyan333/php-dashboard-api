@@ -1,15 +1,15 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Project\Repository;
+namespace Dashboard\DashboardApi\Components\Project\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Parameter;
-use Riconas\RiconasApi\Components\Client\Client;
-use Riconas\RiconasApi\Components\Project\Project;
-use Riconas\RiconasApi\Components\Project\ProjectStatus;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
+use Dashboard\DashboardApi\Components\Client\Client;
+use Dashboard\DashboardApi\Components\Project\Project;
+use Dashboard\DashboardApi\Components\Project\ProjectStatus;
+use Dashboard\DashboardApi\Exceptions\RecordNotFoundException;
 
 class ProjectRepository extends EntityRepository
 {

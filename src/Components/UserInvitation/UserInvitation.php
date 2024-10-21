@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserInvitation;
+namespace Dashboard\DashboardApi\Components\UserInvitation;
 
 use DateTimeImmutable;
 
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Riconas\RiconasApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\User;
 
 #[Entity, Table(name: 'user_invitations')]
 class UserInvitation

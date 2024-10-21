@@ -1,10 +1,10 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserPreference\Service;
+namespace Dashboard\DashboardApi\Components\UserPreference\Service;
 use Doctrine\ORM\EntityManager;
-use Riconas\RiconasApi\Components\UserPreference\Repository\UserPreferenceRepository;
-use Riconas\RiconasApi\Components\UserPreference\UserLanguage;
-use Riconas\RiconasApi\Components\UserPreference\UserPreference;
+use Dashboard\DashboardApi\Components\UserPreference\Repository\UserPreferenceRepository;
+use Dashboard\DashboardApi\Components\UserPreference\UserLanguage;
+use Dashboard\DashboardApi\Components\UserPreference\UserPreference;
 
 class UserPreferenceService
 {

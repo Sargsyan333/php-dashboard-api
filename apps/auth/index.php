@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../src/bootstrap.php';
 
-use Riconas\RiconasApi\Integrations\Slim\Common\ApiErrorRenderer;
+use Dashboard\DashboardApi\Integrations\Slim\Common\ApiErrorRenderer;
 use DI\Bridge\Slim\Bridge;
 
 $app = Bridge::create($container);

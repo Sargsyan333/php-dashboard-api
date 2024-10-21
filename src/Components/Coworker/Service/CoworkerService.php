@@ -1,16 +1,16 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Coworker\Service;
+namespace Dashboard\DashboardApi\Components\Coworker\Service;
 use Doctrine\ORM\EntityManager;
-use Riconas\RiconasApi\Auth\Controllers\BaseController;
-use Riconas\RiconasApi\Components\Coworker\Coworker;
-use Riconas\RiconasApi\Components\User\User;
-use Riconas\RiconasApi\Components\User\UserRole;
-use Riconas\RiconasApi\Components\User\UserStatus;
-use Riconas\RiconasApi\Components\UserInvitation\Repository\UserInvitationRepository;
-use Riconas\RiconasApi\Components\UserInvitation\Service\UserInvitationService;
-use Riconas\RiconasApi\Components\UserPreference\Service\UserPreferenceService;
-use Riconas\RiconasApi\Mailing\MailingService;
+use Dashboard\DashboardApi\Auth\Controllers\BaseController;
+use Dashboard\DashboardApi\Components\Coworker\Coworker;
+use Dashboard\DashboardApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\UserRole;
+use Dashboard\DashboardApi\Components\User\UserStatus;
+use Dashboard\DashboardApi\Components\UserInvitation\Repository\UserInvitationRepository;
+use Dashboard\DashboardApi\Components\UserInvitation\Service\UserInvitationService;
+use Dashboard\DashboardApi\Components\UserPreference\Service\UserPreferenceService;
+use Dashboard\DashboardApi\Mailing\MailingService;
 
 class CoworkerService
 {
@@ -90,7 +90,7 @@ class CoworkerService
             return;
         }
 
-        $invitationLink = $this->userInvitationService->createInvitation($coworkerUser, BaseController::APP_NAME_COWORKER);
+        $invitationLink = $this->userInvitationService->createInvitation($coworkerUser);
 
         $userPreferenceLang = $this->userPreferenceService->getLanguagePreference($coworkerUser->getId());
         $this->mailingService->sendCoworkerInvitationEmail(

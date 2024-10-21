@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Coworker;
+namespace Dashboard\DashboardApi\Components\Coworker;
 
 use DateTimeImmutable;
 
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Riconas\RiconasApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\User;
 
 #[Entity, Table(name: 'coworkers')]
 class Coworker

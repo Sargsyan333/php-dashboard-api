@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Exceptions;
+namespace Dashboard\DashboardApi\Exceptions;
 
 class RecordNotFoundException extends \Exception
 {

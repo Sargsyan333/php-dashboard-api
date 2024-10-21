@@ -1,12 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\User\Repository;
+namespace Dashboard\DashboardApi\Components\User\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\User\User;
-use Riconas\RiconasApi\Components\User\UserRole;
+use Dashboard\DashboardApi\Components\User\User;
+use Dashboard\DashboardApi\Components\User\UserRole;
 
 class UserRepository extends EntityRepository
 {

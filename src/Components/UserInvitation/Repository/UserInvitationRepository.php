@@ -1,12 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\UserInvitation\Repository;
+namespace Dashboard\DashboardApi\Components\UserInvitation\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\UserInvitation\UserInvitation;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
+use Dashboard\DashboardApi\Components\UserInvitation\UserInvitation;
+use Dashboard\DashboardApi\Exceptions\RecordNotFoundException;
 
 class UserInvitationRepository extends EntityRepository
 {

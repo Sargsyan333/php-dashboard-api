@@ -1,6 +1,6 @@
 <?php
 
-namespace Riconas\RiconasApi\Integrations\Mailgun;
+namespace Dashboard\DashboardApi\Integrations\Mailgun;
 use Mailgun\Mailgun;
 
 class MailgunClient

@@ -1,12 +1,12 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Client\Repository;
+namespace Dashboard\DashboardApi\Components\Client\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Riconas\RiconasApi\Components\Client\Client;
-use Riconas\RiconasApi\Exceptions\RecordNotFoundException;
+use Dashboard\DashboardApi\Components\Client\Client;
+use Dashboard\DashboardApi\Exceptions\RecordNotFoundException;
 
 class ClientRepository extends EntityRepository
 {

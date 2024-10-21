@@ -1,11 +1,11 @@
 <?php
 
-namespace Riconas\RiconasApi\Components\Project\Service;
+namespace Dashboard\DashboardApi\Components\Project\Service;
 use Doctrine\ORM\EntityManager;
-use Riconas\RiconasApi\Components\Client\Repository\ClientRepository;
-use Riconas\RiconasApi\Components\Coworker\Repository\CoworkerRepository;
-use Riconas\RiconasApi\Components\Project\Project;
-use Riconas\RiconasApi\Components\Project\ProjectStatus;
+use Dashboard\DashboardApi\Components\Client\Repository\ClientRepository;
+use Dashboard\DashboardApi\Components\Coworker\Repository\CoworkerRepository;
+use Dashboard\DashboardApi\Components\Project\Project;
+use Dashboard\DashboardApi\Components\Project\ProjectStatus;
 
 class ProjectService
 {
